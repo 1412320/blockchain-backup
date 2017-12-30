@@ -12,14 +12,15 @@ class Api::V1::ConfirmationsController < Devise::ConfirmationsController
 
   # GET /resource/confirmation?confirmation_token=abcdef
   def show
-    super
-    redirect_to root_path
+    self.resource = resource_class.confirm_by_token(params[:confirmation_token])
+    if resource.errors.empty?
+      message = "Confirm account successfully!"
+      status = :ok
+    else
+      message = "Invalid confirmation url!"
+      status = 401
+    end
+    response = {message: message, status: status}
+    render json: response
   end
-
-  # protected
-
-  # The path used after resending confirmation instructions.
-  # def after_resending_confirmation_instructions_path_for(resource_name)
-  #   super(resource_name)
-  # end
 end

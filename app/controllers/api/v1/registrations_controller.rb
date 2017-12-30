@@ -13,8 +13,8 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
     @user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:password_confirmation])
     if @user.save
       auth_token = JsonWebToken.encode(user_id: @user.id)
-      tfa_code = @user.otp_code 
-      response = { message: Message.account_created, auth_token: auth_token, user: @user, tfa_code: tfa_code}
+      tfa_code = @user.otp_secret_key 
+      response = { message: Message.account_created, auth_token: auth_token, tfa_code: tfa_code}
       render json: response
     else
       render json: @user.errors.full_messages, status: 401
