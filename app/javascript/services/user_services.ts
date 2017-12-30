@@ -2,13 +2,14 @@ import { authenHeader } from '../helpers';
 import axios from 'axios';
 
 export const userServices = {
-  signup
+  signup,
+  signin
 }
 
 function signup(user) {
-  let response
+  let response;
   axios.post('/users/signup', {
-    body: JSON.stringify(user)
+    data: JSON.stringify(user)
   })
   .then(function(r) {
     response = r;
@@ -17,4 +18,22 @@ function signup(user) {
     return Promise.reject(error);
   })
   return Promise.resolve(response);
+}
+
+function signin(email, password) {
+  axios.post('/users/signin', {
+    data: JSON.stringify(email, password)
+  })
+  .catch(function(error) {
+    return Promise.reject(error);
+  })
+  .then(function(response) {
+    return JSON.stringify(response);
+  })
+  .then(function(user:any) {
+    if (user && user.token) {
+      localStorage.setItem('user', JSON.stringify(user));
+    }
+    return user;
+  });
 }
