@@ -1,16 +1,18 @@
 class Api::V1::SessionsController < Devise::SessionsController
+  skip_before_action :check_authenticate_user, only: :create  
   # POST /resource/sign_in
   def create
-    @user = User.find_by(wallet_id: params[:user][:wallet_id])
+    @user = User.find_by(email: params[:email])
     if (@user.present?)
-      if @user.valid_password?(params[:user][:password])
-        sign_in(:user, @user)
-        render json: @user
+      if @user.valid_password?(params[:password])
+        auth_token = JsonWebToken.encode(user_id: @user.id)
+        response = {auth_token: auth_token, user: @user }
+        render json: response
       else
         render json: "Invalid password!", status: 401
       end
     else
-      render json: "Invalid wallet id!", status: 401      
+      render json: "Invalid email!", status: 401      
     end
   end
 
