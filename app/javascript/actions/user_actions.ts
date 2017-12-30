@@ -6,7 +6,8 @@ import { alertActions } from './';
 
 export const UserActions = {
   signup,
-  signin
+  signin,
+  signout
 }
 
 function signup(user) {
@@ -83,5 +84,12 @@ function signin(email, password) {
       type: UserContants.LOGIN_FAILURE,
       error
     }
+  }
+}
+
+function signout() {
+  userServices.signout();
+  return {
+    type: UserContants.LOGOUT
   }
 }
