@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, :controllers => { :registrations => 'api/v1/registrations', :sessions  => 'api/v1/sessions', :confirmations => 'api/v1/confirmations'}
   namespace :api do
     namespace :v1 do
       devise_scope :user do
         post "sign_up", :to => 'registrations#create'
+        post "sign_in_2_step", :to => 'sessions#authenticate_2_step'        
         post "sign_in", :to => 'sessions#create'
         delete "sign_out", :to => 'sessions#destroy'
       end
