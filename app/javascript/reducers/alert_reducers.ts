@@ -1,4 +1,4 @@
-import { AlertContants } from '../contants/alert_contants';
+import { AlertContants } from '../contants';
 
 export function alert(state = {}, action) {
   switch (action.type) {
