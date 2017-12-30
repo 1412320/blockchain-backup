@@ -10,7 +10,7 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    @user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:password_confirmation])
+    @user = User.new(user_params)
     if @user.save
       auth_token = JsonWebToken.encode(user_id: @user.id)
       tfa_code = @user.otp_secret_key 

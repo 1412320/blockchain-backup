@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
-  devise_for :users, :controllers => { :registrations => 'api/v1/registrations', :sessions  => 'api/v1/sessions', :confirmations => 'api/v1/confirmations'}
+  devise_for :users, :controllers => 
+  { 
+    :registrations => 'api/v1/registrations', 
+    :sessions  => 'api/v1/sessions', 
+    :confirmations => 'api/v1/confirmations',
+    :passwords => 'api/v1/passwords'
+  }
   namespace :api do
     namespace :v1 do
       devise_scope :user do
