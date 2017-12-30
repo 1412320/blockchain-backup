@@ -5,10 +5,11 @@ import { userServices } from '../services';
 import { alertActions } from './';
 
 export const UserActions = {
-  signup
+  signup,
+  signin
 }
 
-export function signup(user) {
+function signup(user) {
   return dispatch => {
     dispatch(request(user));
       userServices.signup(user)
@@ -42,6 +43,44 @@ export function signup(user) {
   function failure(error) {
     return {
       type: UserContants.SIGNUP_FAILURE,
+      error
+    }
+  }
+}
+
+function signin(email, password) {
+  return dispatch => {
+    dispatch(request({ email }));
+    userServices.signin(email, password)
+      .then(
+        user => {
+          dispatch(success(user));
+          history.push('/');
+        },
+        error => {
+          dispatch(failure(error));
+          dispatch(alertActions.error(error));
+        }
+      );
+  }
+
+  function request(user) {
+    return {
+      type: UserContants.LOGIN_REQUEST,
+      user
+    }
+  }
+
+  function success(user) {
+    return {
+      type: UserContants.LOGIN_SUCCESS,
+      user
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: UserContants.LOGIN_FAILURE,
       error
     }
   }

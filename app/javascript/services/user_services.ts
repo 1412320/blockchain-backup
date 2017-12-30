@@ -21,14 +21,16 @@ function signup(user) {
 }
 
 function signin(email, password) {
+  let response;
   axios.post('/users/signin', {
     data: JSON.stringify(email, password)
   })
   .catch(function(error) {
     return Promise.reject(error);
   })
-  .then(function(response) {
-    return JSON.stringify(response);
+  .then(function(r) {
+    response = r;
+    return JSON.stringify(r);
   })
   .then(function(user:any) {
     if (user && user.token) {
@@ -36,4 +38,5 @@ function signin(email, password) {
     }
     return user;
   });
+  return Promise.resolve(response);
 }
