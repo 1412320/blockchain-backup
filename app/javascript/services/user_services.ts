@@ -3,7 +3,8 @@ import axios from 'axios';
 
 export const userServices = {
   signup,
-  signin
+  signin,
+  signout
 }
 
 function signup(user) {
@@ -39,4 +40,8 @@ function signin(email, password) {
     return user;
   });
   return Promise.resolve(response);
+}
+
+function signout() {
+  localStorage.removeItem('user');
 }
