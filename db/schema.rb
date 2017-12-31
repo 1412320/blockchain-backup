@@ -10,7 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20171230055105) do
+=======
+ActiveRecord::Schema.define(version: 20171231060518) do
+
+  create_table "outputs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "output_ref", null: false
+    t.integer "output_index", null: false
+    t.float "amount", limit: 24
+    t.string "receiver"
+    t.string "sender"
+    t.boolean "is_used", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["output_ref", "output_index"], name: "index_outputs_on_output_ref_and_output_index", unique: true
+  end
+>>>>>>> Create Output Model
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "email", default: "", null: false
