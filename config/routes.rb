@@ -14,6 +14,7 @@ Rails.application.routes.draw do
         delete 'signout', :to => 'sessions#destroy'
         post 'sign_in_2_step', :to => 'sessions#authenticate_2_step'
       end
+       get 'wallet', :to => 'wallets#show'
     end
   end
   root to: 'home#index'
