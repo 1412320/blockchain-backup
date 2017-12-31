@@ -12,9 +12,9 @@ Rails.application.routes.draw do
         post 'signup', :to => 'registrations#create'
         post 'signin', :to => 'sessions#create'
         delete 'signout', :to => 'sessions#destroy'
-        post "sign_in_2_step", :to => 'sessions#authenticate_2_step'
+        post 'sign_in_2_step', :to => 'sessions#authenticate_2_step'
       end
     end
   end
-  get 'home', to: 'home#index'
+  root to: 'home#index'
 end

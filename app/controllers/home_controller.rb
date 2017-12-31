@@ -1,6 +1,5 @@
 class HomeController < ApplicationController
+  skip_before_action :check_authenticate_user
   def index
-    welcome = {user: current_user}
-    render json: welcome
   end
 end
