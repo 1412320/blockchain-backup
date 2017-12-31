@@ -53,7 +53,7 @@ class SignInPage extends React.Component<SignInProps, SignInState> {
         <form name="form" onSubmit={this.handleSubmit}>
           <div className={'form-group' + (is_submit && !email ? ' has-error' : '')}>
             <label htmlFor="email">Email</label>
-            <input type="text" className="form-control" name="email" value={email} onChange={this.handleChange} />
+            <input type="email" className="form-control" name="email" value={email} onChange={this.handleChange} />
             {is_submit && !email &&
                 <div className="help-block">Username is required</div>
             }
