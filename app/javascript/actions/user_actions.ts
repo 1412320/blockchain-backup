@@ -1,5 +1,5 @@
 import { UserContants } from '../contants';
-import { history } from 'history';
+import { history } from '../helpers';
 import { authenHeader } from '../helpers';
 import { userServices } from '../services';
 import { alertActions } from './';
