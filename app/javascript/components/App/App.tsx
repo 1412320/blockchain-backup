@@ -6,6 +6,7 @@ import { history } from '../../helpers';
 import { alertActions } from '../../actions';
 import { AuthenRouter } from '../../containers';
 import { SignInPage } from '../SignIn';
+import { SignUpPage } from '../SignUp';
 
 interface AppProps {
   dispatch: any,
@@ -35,7 +36,8 @@ class App extends React.Component<AppProps, {}> {
             }
             <Router history={history}>
               <div>
-                <Route path="/" component={SignInPage} />
+                <Route path="/" component={SignUpPage} />
+                <Route path="/users/sign_in" component={SignInPage} />
               </div>
             </Router>
           </div>
