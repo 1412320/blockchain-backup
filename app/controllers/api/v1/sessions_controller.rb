@@ -2,9 +2,9 @@ class Api::V1::SessionsController < Devise::SessionsController
   skip_before_action :check_authenticate_user, only: :create  
   # POST /resource/sign_in
   def create
-    @user = User.find_by(email: params[:email])
+    @user = User.find_by(email: params[:user][:email])
     if (@user.present?)
-      if @user.valid_password?(params[:password])
+      if @user.valid_password?(params[:user][:password])
         if @user.confirmed_at.present?
           auth_token = JsonWebToken.encode(user_id: @user.id)
           if @user.authenticate_otp(params[:otp_code])
