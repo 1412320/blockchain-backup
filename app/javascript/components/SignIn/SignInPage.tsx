@@ -6,7 +6,9 @@ import { UserActions } from '../../actions';
 
 interface SignInProps {
   dispatch: any,
-  logged_in: boolean
+  logged_in: boolean,
+  title: string,
+  desc: string
 }
 
 interface SignInState {
