@@ -1,8 +1,4 @@
-require 'net/http'
-require 'json'
-
 namespace :kcoin do
-  BASE_URL = 'https://api.kcoin.club'
 
   desc "Sync server data with kcoin server"
   task sync: [:environment] do
@@ -47,12 +43,3 @@ def find_sender(transaction)
   output['lockScript'].split(' ')[1]
 end
 
-def parse_json(response)
-  JSON.parse(response.body)
-end
-
-def get_data(endpoint, params = {})
-  uri = URI(BASE_URL + endpoint)
-  uri.query = URI.encode_www_form(params) if params
-  response = Net::HTTP.get_response(uri)
-end
