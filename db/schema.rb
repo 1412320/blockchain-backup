@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171231060518) do
+ActiveRecord::Schema.define(version: 20171231164553) do
 
   create_table "outputs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "output_ref", null: false
@@ -47,4 +47,18 @@ ActiveRecord::Schema.define(version: 20171231060518) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "wallets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "user_id"
+    t.string "address"
+    t.string "public_key"
+    t.string "secret_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address"], name: "index_wallets_on_address", unique: true
+    t.index ["public_key"], name: "index_wallets_on_public_key", unique: true
+    t.index ["secret_key"], name: "index_wallets_on_secret_key", unique: true
+    t.index ["user_id"], name: "index_wallets_on_user_id"
+  end
+
+  add_foreign_key "wallets", "users"
 end
