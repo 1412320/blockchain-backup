@@ -59,7 +59,7 @@ class SignInPage extends React.Component<SignInProps, SignInState> {
             }
           </div>
           <div className={'form-group' + (is_submit && !password ? ' has-error' : '')}>
-            <label htmlFor="password">PassloggingInword</label>
+            <label htmlFor="password">Password</label>
             <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
             {is_submit && !password &&
                 <div className="help-block">Password is required</div>

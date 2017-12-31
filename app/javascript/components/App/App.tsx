@@ -35,7 +35,7 @@ class App extends React.Component<AppProps, {}> {
             }
             <Router history={history}>
               <div>
-                <Route path="/signin" component={SignInPage} />
+                <Route path="/" component={SignInPage} />
               </div>
             </Router>
           </div>
