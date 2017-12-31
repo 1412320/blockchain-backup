@@ -12,6 +12,12 @@
 
 ActiveRecord::Schema.define(version: 20171231110750) do
 
+  create_table "blocks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "hash_str"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "outputs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "output_ref", null: false
     t.integer "output_index", null: false
@@ -22,6 +28,14 @@ ActiveRecord::Schema.define(version: 20171231110750) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["output_ref", "output_index"], name: "index_outputs_on_output_ref_and_output_index", unique: true
+  end
+
+  create_table "transactions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "hash_str"
+    t.string "block_hash"
+    t.boolean "is_confirm"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

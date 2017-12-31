@@ -10,6 +10,5 @@ class User < ApplicationRecord
     response =  KcoinCrawler.get_data('/generate-address')
     data = KcoinCrawler.parse_json(response)
     self.wallet = Wallet.create(address: data['address'], public_key: data['publicKey'], private_key: data['privateKey'])
-    p self.wallet
   end
 end
