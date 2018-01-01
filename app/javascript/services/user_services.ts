@@ -38,10 +38,11 @@ function signin(email, password) {
   })
   .then(function(r) {
     response = r;
+    console.log(r);
     return JSON.stringify(r);
   })
   .then(function(user:any) {
-    if (user && user.token) {
+    if (user && user.auth_token) {
       localStorage.setItem('user', JSON.stringify(user));
     }
     return user;

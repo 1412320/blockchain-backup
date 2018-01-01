@@ -6,7 +6,7 @@ interface SubHeaderProps {
   wallet_id: string;
 }
 
-export default class SubHeader extends React.Component<SubHeaderProps, {}> {
+export class SubHeader extends React.Component<SubHeaderProps, {}> {
   constructor(props: SubHeaderProps) {
     super(props);
   }

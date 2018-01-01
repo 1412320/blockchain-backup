@@ -7,7 +7,7 @@ interface LoginContainerProps {
 }
 
 export default class LoginContainer extends React.Component<LoginContainerProps, {}> {
-  constructor(props) {
+  constructor(props: LoginContainerProps) {
     super(props);
   }
   render() {
