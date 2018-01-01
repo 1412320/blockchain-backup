@@ -10,7 +10,11 @@ export const userServices = {
 function signup(user) {
   let response;
   axios.post('/users/sign_up', {
-    data: JSON.stringify(user)
+    user: {
+      email: user.email,
+      password: user.password,
+      password_confirmation: user.password_confirmation
+    }
   })
   .then(function(r) {
     response = r;
@@ -24,7 +28,10 @@ function signup(user) {
 function signin(email, password) {
   let response;
   axios.post('/users/sign_in', {
-    data: JSON.stringify(email, password)
+    user: {
+      email: email,
+      password: password
+    }
   })
   .catch(function(error) {
     return Promise.reject(error);
