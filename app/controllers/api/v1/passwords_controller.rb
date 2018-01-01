@@ -5,14 +5,10 @@ class Api::V1::PasswordsController < Devise::PasswordsController
     self.resource = resource_class.send_reset_password_instructions(resource_params)
     p resource_params
     if successfully_sent?(resource)
-      message = "An reset password url has been sent to your mail!"
-      status = :ok      
+      render json: {message: "An reset password url has been sent to your mail!"}
     else
-      message = "Invalid email!"
-      status = 401      
+      render json: {errors: "Invalid email!"}, status: 401   
     end    
-    response = {message: message, status: status}
-    render json: response
   end
   # GET /resource/password/edit?reset_password_token=abcdef
   def edit
@@ -27,14 +23,11 @@ class Api::V1::PasswordsController < Devise::PasswordsController
     self.resource = resource_class.reset_password_by_token(params[resource_name])
     set_minimum_password_length
     if resource.errors.empty?
-      message = "An reset password url has been sent to your mail!"
-      status = :ok    
+      render json: {message: "An reset password url has been sent to your mail!"}   
     else
-      message = resource.errors
-      status = 401 
+      response = {errors: resource.errors}
+      render json: response, status: 401   
     end
-    response = {message: message, status: status}
-    render json: response
   end
 
 end

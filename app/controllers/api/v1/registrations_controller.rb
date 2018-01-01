@@ -19,7 +19,7 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
         :auth_token => auth_token,
       }
     else
-      render json: @user.errors.full_messages, status: 401
+      render json: {errors: @user.errors.full_messages}, status: 401
     end
   end  
 

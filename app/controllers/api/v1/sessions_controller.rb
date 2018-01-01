@@ -15,17 +15,14 @@ class Api::V1::SessionsController < Devise::SessionsController
               :auth_token => auth_token
             }
           end
-        else 
-          response = {message: "You have to confirm your account before sign in!", status: 401}          
-          render json: response
+        else          
+          render json: {errors: "You have to confirm your account before sign in!"}, status: 401
         end
-      else
-        response = {message: "Invalid password!", status: 401}                  
-        render json: response
+      else             
+        render json: {errors: "Invalid password!"}, status: 401
       end
-    else
-      response = {message: "Invalid email!", status: 401}                  
-      render json: response      
+    else           
+      render json: {errors: "Invalid email!"} , status: 401    
     end
   end
   def authenticate_2_step
@@ -37,8 +34,7 @@ class Api::V1::SessionsController < Devise::SessionsController
         :auth_token => auth_token,
       }      
     else
-      response = {message: "Invalid google authenticator code!", status: 401}   
-      render json: response
+      render json: {errors: "Invalid google authenticator code!"}, status: 401
     end
   end
   # DELETE /resource/sign_out

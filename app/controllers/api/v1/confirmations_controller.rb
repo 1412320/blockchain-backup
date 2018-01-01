@@ -14,13 +14,9 @@ class Api::V1::ConfirmationsController < Devise::ConfirmationsController
   def show
     self.resource = resource_class.confirm_by_token(params[:confirmation_token])
     if resource.errors.empty?
-      message = "Confirm account successfully!"
-      status = :ok
+      render json: {message: "Confirm account successfully!"}
     else
-      message = "Invalid confirmation url!"
-      status = 401
+      render json: {errors: "Invalid confirmation url!"}, status: 401
     end
-    response = {message: message, status: status}
-    render json: response
   end
 end
