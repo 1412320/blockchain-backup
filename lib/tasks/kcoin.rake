@@ -1,23 +1,27 @@
 require 'crawlers/kcoin_crawler'
+require 'utils/parser'
+
 namespace :kcoin do
 
   desc "Sync server data with kcoin server"
   task sync: [:environment] do
     @receivers = Wallet.all.map(&:address)
-    time = 0
     loop do
       response = KcoinCrawler.get_data('/blocks', limit: 20, offset: Block.count)
       data = KcoinCrawler.parse_json(response)
+      # Loop through all data to find record
       data.each do |d|
         @block = Block.create(hash_str: d['hash'])
         d['transactions'].each do |transaction|
           record_output(transaction)
         end
       end
-      time += 1
+
+      # Print process
       total = Block.count
       print " Syncing... #{(total / response['x-total-count'].to_f * 100).to_i}% \r"
       $stdout.flush      
+
       break if response['x-total-count'].to_i <= total    
     end
     print "Completed\n"
@@ -38,17 +42,15 @@ def record_output(transaction)
         output_index: index,
         amount: output['value'],
         receiver: receiver,
-        sender: find_sender(transaction)
+        sender: find_sender(transaction['inputs'])
       )
     end
   end
 end
 
-def find_sender(transaction)
-  hash = transaction['inputs'][0]['referencedOutputHash']
-  output_index = transaction['inputs'][0]['referencedOutputIndex'].to_i
-  data = KcoinCrawler.parse_json(KcoinCrawler.get_data("/transactions/#{hash}"))
-  output = data['outputs'][output_index]
-  output['lockScript'].split(' ')[1]
+def find_sender(inputs)
+  script = inputs[0]['unlockScript']
+  sender = script.split(' ')[1]
+  Parser.pub_to_address sender
 end
 
