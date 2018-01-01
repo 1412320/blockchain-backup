@@ -1,6 +1,6 @@
 class Wallet < ApplicationRecord
   belongs_to :user
-  def self.real_amount
+  def real_amount
     @outputs = Output.where('receiver = ? and is_used = ?', self.address, false)
     if @outputs.present?
       sum = @outputs.sum(:amount)
