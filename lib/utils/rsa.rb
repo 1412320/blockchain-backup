@@ -10,4 +10,11 @@ module RSA
     pk = get_private_key_from_hex(private_key)
     pub = pk.public_key
   end
+
+  def self.sign(message, private_key)
+    algorithm = OpenSSL::Digest::SHA256.new
+    pk = get_private_key_from_hex(private_key)
+    sign = pk.sign(algorithm, message)
+    sign.unpack('H*').first
+  end
 end
