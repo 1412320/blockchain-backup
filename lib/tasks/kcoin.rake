@@ -1,5 +1,5 @@
 require 'crawlers/kcoin_crawler'
-require 'utils/parser'
+require 'parser'
 
 namespace :kcoin do
 
