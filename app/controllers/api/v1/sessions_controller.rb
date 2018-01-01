@@ -7,13 +7,13 @@ class Api::V1::SessionsController < Devise::SessionsController
       if @user.valid_password?(params[:user][:password])
         if @user.confirmed_at.present?
           auth_token = JsonWebToken.encode(user_id: @user.id)
-          if @user.authenticate_otp(params[:otp_code])
-            response = {auth_token: auth_token, user: @user}
-            render json: response
+          if @user.used_tfa
+            render json: @user.as_json(:only => [:id, :email, :used_tfa])
           else
-            response = {message: "Invalid google authenticator code!", status: 401}
-            render json: response
-          end
+            render :json => {
+              :user => @user.as_json(:only => [:id, :email, :used_tfa]),
+              :auth_token => auth_token,
+            }
         else 
           response = {message: "You have to confirm your account before sign in!", status: 401}          
           render json: response
@@ -29,8 +29,11 @@ class Api::V1::SessionsController < Devise::SessionsController
   end
   def authenticate_2_step
     @user = User.find(params[:user_id])    
-    if @user.authenticate_otp(params[:otp_code].to_s)
-      response = {auth_token: auth_token, user: @user }      
+    if @user.authenticate_otp(params[:otp_code])
+      render :json => {
+        :user => @user.as_json(:only => [:id, :email, :used_tfa]),
+        :auth_token => auth_token,
+      }      
     else
       render json: "Invalid google authenticator code!", status: 401
     end
