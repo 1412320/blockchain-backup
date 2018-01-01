@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-interface LoginBoxProps {
+interface LoginContainerProps {
   title: string;
   desc: string;
 }
 
-export default class LoginBox extends React.Component<LoginBoxProps, {}> {
+export default class LoginContainer extends React.Component<LoginContainerProps, {}> {
   constructor(props) {
     super(props);
   }

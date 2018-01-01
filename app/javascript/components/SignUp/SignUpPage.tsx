@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { UserActions } from '../../actions';
 
-import LoginBox from '../../containers/LoginBox';
+import LoginContainer from '../../containers/LoginContainer';
 
 interface SignUpProps {
   dispatch: any,
@@ -60,7 +60,7 @@ class SignUpPage extends React.Component<SignUpProps, SignUpState> {
     const { registering } = this.props;
     const { user, is_submit } = this.state;
     return(
-      <LoginBox title="Sign Up" desc="Create a free wallet">
+      <LoginContainer title="Sign Up" desc="Create a free wallet">
         <form name="form" onSubmit={this.handleSubmit}>
           <div className='form-group'>
             <label htmlFor="email">Email</label>
@@ -95,7 +95,7 @@ class SignUpPage extends React.Component<SignUpProps, SignUpState> {
             <Link to="/users/sign_in" className="btn btn-link">Sign In</Link>
           </div>
         </form>
-      </LoginBox>
+      </LoginContainer>
     );
   }
 }
