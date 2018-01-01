@@ -9,7 +9,7 @@ export const userServices = {
 
 function signup(user) {
   let response;
-  axios.post('/users/sign_up', {
+  axios.post('/users', {
     user: {
       email: user.email,
       password: user.password,
@@ -18,6 +18,7 @@ function signup(user) {
   })
   .then(function(r) {
     response = r;
+    return JSON.stringify(r);
   })
   .catch(function(error) {
     return Promise.reject(error);
