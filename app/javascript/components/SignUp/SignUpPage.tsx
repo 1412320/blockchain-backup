@@ -58,39 +58,48 @@ class SignUpPage extends React.Component<SignUpProps, SignUpState> {
     const { registering  } = this.props;
     const { user, is_submit } = this.state;
     return(
-      <div className="col-md-6 col-md-offset-3">
-        <h2>Signup</h2>
-        <form name="form" onSubmit={this.handleSubmit}>
-          <div className={'form-group' + (is_submit && !user.email ? ' has-error' : '')}>
-            <label htmlFor="email">Email</label>
-            <input type="email" className="form-control" name="email" value={user.email} onChange={this.handleChange} />
-            {
-              is_submit && !user.email &&
-              <div className="help-block">Email is required</div>
-            }
+      <div className="login-pg">
+        <h2 className="banner">BLOCKCHAIN</h2>
+        <div className="login-box">
+          <div className="row justify-content-between">
+            <div className="col-md-4">
+            <h2>Sign Up</h2>
+            </div>
           </div>
+        <p className="description">Create a free wallet</p>
+        <hr></hr>
+          <form name="form" onSubmit={this.handleSubmit}>
+            <div className={'form-group' + (is_submit && !user.email ? ' has-error' : '')}>
+              <label htmlFor="email">Email</label>
+              <input type="email" className="form-control" name="email" value={user.email} onChange={this.handleChange} />
+              {
+                is_submit && !user.email &&
+                <div className="help-block">Email is required</div>
+              }
+            </div>
 
-          <div className={'form-group' + (is_submit && !user.password ? ' has-error' : '')}>
-            <label htmlFor="password">Password</label>
-            <input type="password" className="form-control" name="password" value={user.password} onChange={this.handleChange} />
-            {is_submit && !user.password &&
-                <div className="help-block">Password is required</div>
-            }
-          </div>
+            <div className={'form-group' + (is_submit && !user.password ? ' has-error' : '')}>
+              <label htmlFor="password">Password</label>
+              <input type="password" className="form-control" name="password" value={user.password} onChange={this.handleChange} />
+              {is_submit && !user.password &&
+                  <div className="help-block">Password is required</div>
+              }
+            </div>
 
-          <div className={'form-group' + (is_submit && !user.password_confirmation ? ' has-error' : '')}>
-            <label htmlFor="password_confirmation">Password confirmation</label>
-            <input type="password" className="form-control" name="password_confirmation" value={user.password_confirmation} onChange={this.handleChange} />
-            {is_submit && !user.password_confirmation &&
-                <div className="help-block">Password confirmation is required</div>
-            }
-          </div>
+            <div className={'form-group' + (is_submit && !user.password_confirmation ? ' has-error' : '')}>
+              <label htmlFor="password_confirmation">Password confirmation</label>
+              <input type="password" className="form-control" name="password_confirmation" value={user.password_confirmation} onChange={this.handleChange} />
+              {is_submit && !user.password_confirmation &&
+                  <div className="help-block">Password confirmation is required</div>
+              }
+            </div>
 
-          <div className="form-group">
-            <button className="btn btn-primary">Register</button>
-            <Link to="/users/sign_in" className="btn btn-link">Signin</Link>
-          </div>
-        </form>
+            <div className="form-group">
+              <button className="btn btn-primary">Register</button>
+              <Link to="/users/sign_in" className="btn btn-link">Sign In</Link>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }

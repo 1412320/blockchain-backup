@@ -77,7 +77,7 @@ class SignInPage extends React.Component<SignInProps, SignInState> {
               }
             </div>
             <div className="form-group">
-              <button className="btn btn-primary">Signin</button>
+              <button className="btn btn-primary">Sign In</button>
               <Link to="/users/sign_up" className="btn btn-link">Sign Up</Link>
             </div>
           </form>
