@@ -1,6 +1,6 @@
 .login-pg {
   background: #044a7c;
-  height: 100vh;
+  height: 120vh;
   margin: 0;
 
   .banner {
@@ -125,6 +125,11 @@
   }
 }
 
-#login-alert {
-  color: red !important;
+.login-alert{
+  border-color: red !important;
+}
+
+.help-block {
+  color: red;
+  font-style: italic;
 }
