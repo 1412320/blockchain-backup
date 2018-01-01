@@ -38,12 +38,12 @@ function signin(email, password) {
   })
   .then(function(r) {
     response = r;
-    console.log(r);
     return JSON.stringify(r);
   })
   .then(function(user:any) {
-    if (user && user.auth_token) {
+    if (user) {
       localStorage.setItem('user', JSON.stringify(user));
+      location.href = "/";
     }
     return user;
   });
