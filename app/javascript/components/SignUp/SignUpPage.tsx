@@ -58,7 +58,6 @@ class SignUpPage extends React.Component<SignUpProps, SignUpState> {
 
   render() {
     const { registering } = this.props;
-
     const { user, is_submit } = this.state;
     return(
       <LoginBox title="Sign Up" desc="Create a free wallet">

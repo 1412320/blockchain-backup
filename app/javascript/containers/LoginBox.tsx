@@ -6,7 +6,7 @@ interface LoginBoxProps {
   desc: string;
 }
 
-class LoginBox extends React.Component<LoginBoxProps, {}> {
+export default class LoginBox extends React.Component<LoginBoxProps, {}> {
   constructor(props) {
     super(props);
   }
@@ -28,5 +28,3 @@ class LoginBox extends React.Component<LoginBoxProps, {}> {
     );
   }
 }
-
-export default LoginBox;
