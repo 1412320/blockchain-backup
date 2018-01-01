@@ -13,9 +13,11 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
     @user = User.new(user_params)
     if @user.save
       auth_token = JsonWebToken.encode(user_id: @user.id)
-      tfa_code = @user.otp_secret_key 
-      response = { message: Message.account_created, auth_token: auth_token, tfa_code: tfa_code}
-      render json: response
+      render :json => {
+        :user => @user.as_json(:only => [:id, :email]),
+        :message => Message.account_created,
+        :auth_token => auth_token,
+      }
     else
       render json: @user.errors.full_messages, status: 401
     end

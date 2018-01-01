@@ -8,13 +8,11 @@ Rails.application.routes.draw do
   }
   namespace :api do
     namespace :v1 do
-      devise_scope :user do
-        post 'signup', :to => 'registrations#create'
-        post 'signin', :to => 'sessions#create'
-        delete 'signout', :to => 'sessions#destroy'
-        post 'sign_in_2_step', :to => 'sessions#authenticate_2_step'
-      end
        get 'wallet', :to => 'wallets#show'
+       devise_scope :user do
+        post 'authenticate_2_step', :to => 'sessions#authenticate_2_step'
+       end
+       get 'tfa_code', :to => 'users#get_tfa_code'       
     end
   end
   root to: 'home#index'
