@@ -34,18 +34,18 @@ class SignInPage extends React.Component<SignInProps, SignInState> {
   }
 
   handleChange(e) {
-      const { name, value } = e.target;
-      this.setState({ [name]: value });
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
   }
 
   handleSubmit(e) {
-      e.preventDefault();
-      this.setState({ is_submit: true });
-      const { email, password } = this.state;
-      const { dispatch } = this.props;
-      if (email && password) {
-          dispatch(UserActions.signin(email, password));
-      }
+    e.preventDefault();
+    this.setState({ is_submit: true });
+    const { email, password } = this.state;
+    const { dispatch } = this.props;
+    if (email && password) {
+      dispatch(UserActions.signin(email, password));
+    }
   }
   render() {
     const { logged_in } = this.props;

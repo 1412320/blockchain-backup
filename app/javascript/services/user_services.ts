@@ -18,7 +18,7 @@ function signup(user) {
   })
   .then(function(r) {
     response = r;
-    return JSON.stringify(r);
+    location.href = "/users/sign_in";
   })
   .catch(function(error) {
     return Promise.reject(error);
@@ -26,29 +26,32 @@ function signup(user) {
   return Promise.resolve(response);
 }
 
-function signin(email, password) {
+function signin(email, password){
   let response;
-  axios.post('/users/sign_in', {
-    user: {
-      email: email,
-      password: password
-    }
+  let error;
+  return new Promise((resolve, reject) => {
+    axios.post('/users/sign_in', {
+      user: {
+        email: email,
+        password: password
+      }
+    })
+    .catch(function(e) {
+      error = e.response.data.errors;
+      reject(error);
+    })
+    .then(function(r) {
+      response = r;
+      return JSON.stringify(r);
+    })
+    .then(function(user:any) {
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
+        location.href = "/";
+      }
+      resolve(user);
+    });
   })
-  .catch(function(error) {
-    return Promise.reject(error);
-  })
-  .then(function(r) {
-    response = r;
-    return JSON.stringify(r);
-  })
-  .then(function(user:any) {
-    if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
-      location.href = "/";
-    }
-    return user;
-  });
-  return Promise.resolve(response);
 }
 
 function signout() {
