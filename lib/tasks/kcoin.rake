@@ -14,6 +14,7 @@ namespace :kcoin do
         @block = Block.create(hash_str: d['hash'])
         d['transactions'].each do |transaction|
           record_output(transaction)
+          record_input(transaction)
         end
       end
 
@@ -42,14 +43,29 @@ def record_output(transaction)
         output_index: index,
         amount: output['value'],
         receiver: receiver,
-        sender: find_sender(transaction['inputs'])
+        sender: find_sender(transaction['inputs'][0])
       )
     end
   end
 end
 
-def find_sender(inputs)
-  script = inputs[0]['unlockScript']
+def record_input(transaction)
+  transaction['inputs'].each do |input|
+    output_ref = input['referencedOutputHash']
+    next if output_ref == "0000000000000000000000000000000000000000000000000000000000000000"
+    output_index = input['referencedOutputIndex']
+    sender = find_sender(input)
+    output = Output.find_by(output_ref: output_ref, 
+                            output_index: output_index,
+                            receiver: sender)
+    if output
+      output.update(is_used: true)
+    end
+  end
+end
+
+def find_sender(input)
+  script = input['unlockScript']
   sender = script.split(' ')[1]
   Parser.pub_to_address sender
 end
