@@ -13,7 +13,8 @@ interface HomeContainerProps {
 
 interface HomeContainerState {
   wallet_address: string,
-  real_amount: number
+  real_amount: number,
+  modal: boolean
 }
 
 class HomeContainer extends React.Component<HomeContainerProps, HomeContainerState> {
@@ -22,8 +23,15 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
 
     this.state = {
       wallet_address: this.props.wallet_address,
-      real_amount: this.props.real_amount
+      real_amount: this.props.real_amount,
+      modal: false
     }
+  }
+
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
+    })
   }
 
   componentWillMount() {
@@ -33,8 +41,18 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   render() {
     return (
       <Header>
-        <SubHeader wallet_address={this.props.wallet_address}></SubHeader>
+        <SubHeader toggle={this.toggle.bind(this)} wallet_address={this.props.wallet_address}></SubHeader>
         <HomePage real_amount={this.props.real_amount}></HomePage>
+        <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this)}>
+          <ModalHeader toggle={this.toggle.bind(this)}>
+            <i className="send-icon fa fa-paper-plane"></i>
+            Send
+          </ModalHeader>
+          <hr/>
+          <ModalBody>
+
+          </ModalBody>
+        </Modal>
       </Header>
     );
   }
