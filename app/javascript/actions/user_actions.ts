@@ -7,7 +7,7 @@ import { alertActions } from './';
 export const UserActions = {
   signup,
   signin,
-  signout, 
+  signout,
   forgotpassword,
   resetpassword
 }
@@ -19,7 +19,6 @@ function signup(user) {
         .then(
           user => {
             dispatch(success(user));
-            history.push('/users/sign_up');
             dispatch(alertActions.success('Signup successful'));
           },
           error => {
@@ -58,7 +57,6 @@ function signin(email, password) {
       .then(
         user => {
           dispatch(success(user));
-          history.push('/users/sign_in');
         },
         error => {
           dispatch(failure(error));

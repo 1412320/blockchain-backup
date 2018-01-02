@@ -24,9 +24,7 @@ class App extends React.Component<AppProps, {}> {
   constructor(props: AppProps) {
     super(props);
     const { dispatch } = this.props;
-    history.listen((location, action) => {
-      dispatch(alertActions.clear());
-    });
+
   }
 
   render() {
@@ -41,8 +39,8 @@ class App extends React.Component<AppProps, {}> {
             <AuthenRouter exact path="/" component={HomeContainer} />
             <Route path="/users/sign_in" component={SignInPage} />
             <Route path="/users/sign_up" component={SignUpPage} />
-            <Route path="/users/password/new" component={ForgotPasswordPage} /> 
-            <Route path="/password_reset" component={ResetPasswordPage} />                       
+            <Route path="/users/password/new" component={ForgotPasswordPage} />
+            <Route path="/password_reset" component={ResetPasswordPage} />
           </div>
         </HashRouter>
       </div>

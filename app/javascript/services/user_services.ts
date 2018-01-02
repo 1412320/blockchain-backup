@@ -3,7 +3,7 @@ import axios from 'axios';
 export const userServices = {
   signup,
   signin,
-  signout, 
+  signout,
   forgotpassword,
   resetpassword
 }
@@ -48,10 +48,10 @@ function signin(email, password) {
     })
     .then(function(user:any) {
       if (user) {
-        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('user', JSON.stringify(user.data));
         location.hash = "/";
       }
-      resolve(user);
+      resolve(user.data);
     });
   })
 }
@@ -68,7 +68,7 @@ function forgotpassword(email) {
       }
     })
     .then(function(r) {
-      location.hash = "/users/sign_in";      
+      location.hash = "/users/sign_in";
       resolve(r.data)
     })
     .catch(function(error) {
@@ -88,7 +88,7 @@ function resetpassword(user) {
     })
     .then(function(r) {
       resolve(r.data);
-      location.hash = "/users/sign_in";            
+      location.hash = "/users/sign_in";
     })
     .catch(function(error) {
       reject(error.response.data.errors);
