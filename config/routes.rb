@@ -12,7 +12,7 @@ Rails.application.routes.draw do
        devise_scope :user do
         post 'authenticate_2_step', :to => 'sessions#authenticate_2_step'
        end
-       get 'tfa_code', :to => 'users#get_tfa_code'       
+       get 'tfa_code', :to => 'users#get_tfa_code'
     end
   end
   get 'users/password/edit/:token', to: 'api/v1/passwords#reset'

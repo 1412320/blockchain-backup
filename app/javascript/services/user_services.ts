@@ -1,4 +1,3 @@
-import { authenHeader } from '../helpers';
 import axios from 'axios';
 
 export const userServices = {
@@ -45,7 +44,7 @@ function signin(email, password) {
     })
     .then(function(r) {
       response = r;
-      return JSON.stringify(r);
+      return r;
     })
     .then(function(user:any) {
       if (user) {
