@@ -1,33 +1,29 @@
 import * as React from 'react';
 import { Row, Col, Button, Card, CardText,
          CardBody, CardTitle, CardSubtitle, Table } from 'reactstrap';
+import { connect } from 'react-redux';
 
 interface HomePageProps {
-  dispatch: any,
+  real_amount: number
 }
 
-interface HomePageState {
-  is_all: boolean
-}
-
-export class HomePage extends React.Component<HomePageProps, HomePageState> {
+export class HomePage extends React.Component<HomePageProps, {}> {
   constructor(props: HomePageProps) {
     super(props);
-    this.setState({
-      is_all: false
-    })
-    this.handleAll = this.handleAll.bind(this);
-    this.handleNewest = this.handleNewest.bind(this);
   }
-  handleAll() {
-    this.setState({
-      is_all: true
-    })
-  }
-
-  handleNewest() {
-    this.setState({
-      is_all: false
-    })
+  render() {
+    return (
+      <Row>
+        <Col sm="12" md="3">
+          <div className="wallet-card">
+            <Card className="card-balance">
+              <CardTitle>YOUR BALANCES</CardTitle>
+              <hr/>
+              <CardText>{this.props.real_amount}</CardText>
+            </Card>
+          </div>
+        </Col>
+      </Row>
+    );
   }
 }

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { authenHeader } from '../helpers';
 
 export const walletServices = {
   getWalletInfo,
@@ -8,11 +9,14 @@ export const walletServices = {
 }
 
 function getWalletInfo() {
-  const token = JSON.parse(window.localStorage.getItem('user')).auth_token;
   return new Promise((resolve, reject) => {
-    axios.get(`/wallet/${token}`)
+    axios({
+      method: 'GET',
+      url: '/api/v1/wallet',
+      headers: authenHeader()
+    })
     .then(response => {
-      resolve(response);
+      resolve(response.data);
     })
     .catch(error => {
       reject(error);

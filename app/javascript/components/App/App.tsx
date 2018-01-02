@@ -10,6 +10,7 @@ import { SignUpPage } from '../SignUp';
 import { ForgotPasswordPage } from '../ResetPassword';
 import { ResetPasswordPage } from '../ResetPassword';
 import { Header } from '../Commons';
+import { HomeContainer } from '../../containers';
 
 interface AppProps {
   dispatch: any,
@@ -37,7 +38,7 @@ class App extends React.Component<AppProps, {}> {
         }
         <HashRouter>
           <div>
-            <AuthenRouter exact path="/" component={Header} />
+            <AuthenRouter exact path="/" component={HomeContainer} />
             <Route path="/users/sign_in" component={SignInPage} />
             <Route path="/users/sign_up" component={SignUpPage} />
             <Route path="/users/password/new" component={ForgotPasswordPage} /> 
