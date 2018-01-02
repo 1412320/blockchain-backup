@@ -4,7 +4,9 @@ import axios from 'axios';
 export const userServices = {
   signup,
   signin,
-  signout
+  signout, 
+  forgotpassword,
+  resetpassword
 }
 
 function signup(user) {
@@ -57,4 +59,38 @@ function signin(email, password) {
 
 function signout() {
   localStorage.removeItem('user');
+}
+function forgotpassword(email) {
+  let response;
+  return new Promise((resolve, reject) => {
+    axios.post('/users/password', {
+      user: {
+        email: email,
+      }
+    })
+    .then(function(r) {
+      console.log(r)
+    })
+    .catch(function(error) {
+      reject(error.response.data.errors);
+    })
+  })
+}
+function resetpassword(user) {
+  let response;
+  return new Promise((resolve, reject) => {
+    axios.put('/users/password', {
+      user: {
+        password: user.password,
+        password_confirmation: user.password_confirmation,
+        reset_password_token: user.reset_password_token
+      }
+    })
+    .then(function(r) {
+      location.href = "/users/sign_in";
+    })
+    .catch(function(error) {
+      reject(error.response.data.errors);
+    })
+  })
 }

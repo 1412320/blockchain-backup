@@ -7,7 +7,9 @@ import { alertActions } from './';
 export const UserActions = {
   signup,
   signin,
-  signout
+  signout, 
+  forgotpassword,
+  resetpassword
 }
 
 function signup(user) {
@@ -91,5 +93,82 @@ function signout() {
   userServices.signout();
   return {
     type: UserContants.LOGOUT
+  }
+}
+function forgotpassword(email) {
+  return dispatch => {
+    dispatch(request({email}));
+      userServices.forgotpassword(email)
+        .then(
+          message => {
+            console.log("slsd")
+            dispatch(success({message}));
+            history.push('/users/password/new');
+            dispatch(alertActions.success(message));
+          },
+          error => {
+            dispatch(failure(error));
+            dispatch(alertActions.error(error));
+          }
+        );
+  }
+
+  function request(user) {
+    return {
+      type: UserContants.RESETPASSWORD_REQUEST,
+      user
+    }
+  }
+
+  function success(user) {
+    return {
+      type: UserContants.RESETPASSWORD_SUCCESS,
+      user
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: UserContants.RESETPASSWORD_FAILURE,
+      error
+    }
+  }
+}
+function resetpassword(user) {
+  return dispatch => {
+    dispatch(request({user}));
+      userServices.resetpassword(user)
+        .then(
+          user => {
+            dispatch(success({user}));
+            history.push('/users/password');
+            dispatch(alertActions.success("Reset password successfull"));
+          },
+          error => {
+            dispatch(failure(error));
+            dispatch(alertActions.error(error));
+          }
+        );
+  }
+
+  function request(user) {
+    return {
+      type: UserContants.RESETPASSWORD_REQUEST,
+      user
+    }
+  }
+
+  function success(user) {
+    return {
+      type: UserContants.RESETPASSWORD_SUCCESS,
+      user
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: UserContants.RESETPASSWORD_FAILURE,
+      error
+    }
   }
 }
