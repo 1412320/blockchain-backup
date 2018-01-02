@@ -17,7 +17,12 @@ export class HomePage extends React.Component<HomePageProps, {}> {
         <Col sm="12" md="3">
           <div className="wallet-card">
             <Card className="card-balance">
-              <CardTitle>YOUR BALANCES</CardTitle>
+              <CardTitle>YOUR REAL BALANCE</CardTitle>
+              <hr/>
+              <CardText>{this.props.real_amount}</CardText>
+            </Card>
+            <Card className="card-balance">
+              <CardTitle>YOUR ACTIVE BALANCE</CardTitle>
               <hr/>
               <CardText>{this.props.real_amount}</CardText>
             </Card>
