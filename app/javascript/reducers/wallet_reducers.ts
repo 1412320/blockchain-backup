@@ -23,6 +23,10 @@ export function getInfo(state = initState, action) {
         description: action.description,
         amount: action.amount
       }
+    case WalletContants.TRANSFER:
+      return {
+        transactions: action.transactions
+      }
     default:
       return state;
   }

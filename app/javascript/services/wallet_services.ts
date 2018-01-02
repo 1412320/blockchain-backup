@@ -3,7 +3,8 @@ import axios from 'axios';
 export const walletServices = {
   getWalletInfo,
   getAllTransaction,
-  getNewestTransaction
+  getNewestTransaction,
+  transferCoin
 }
 
 function getWalletInfo() {
@@ -39,6 +40,25 @@ function getNewestTransaction() {
     })
     .catch(error => {
       reject(error);
+    })
+  })
+}
+
+function transferCoin(transactions) {
+  return new Promise((resolve, reject) => {
+    axios.post('/transactions', {
+      transcription: {
+        sender_id: transactions.sender_id,
+        recipient_id: transactions.recipient_id,
+        amount: transactions.amount,
+        description: transactions.description
+      }
+    })
+    .then(response => {
+
+    })
+    .catch(error => {
+      
     })
   })
 }
