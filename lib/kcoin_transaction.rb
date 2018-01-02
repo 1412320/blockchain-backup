@@ -27,8 +27,15 @@ module KcoinTransaction
     version: 1 
   }
 =end
-  def self.sign(trans)
-    OpenSSL::Digest::SHA256.hexdigest to_binary(trans)
+  def self.sign(transaction, private_key)
+    trans_binary = to_binary transaction
+    signature = RSA.sign trans_binary, private_key
+    public_key = RSA.get_public_key private_key
+    pub = Parser.s_to_hex public_key.to_pem
+    transaction[:inputs].each do |input|
+      input[:unlockScript] = "PUB #{pub} SIG #{signature}"
+    end
+    transaction
   end
 
   def self.to_binary(transaction)
