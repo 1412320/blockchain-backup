@@ -1,12 +1,20 @@
 import { WalletContants } from '../contants';
 
+interface TranscriptionInfo {
+   sender: string;
+   recipient: string;
+   amount: number;
+   description: string;
+}
+
 const initState = {
   wallet_id: '',
   balance: 0,
   sender: '',
   recipient: '',
   description: '',
-  amount: 0
+  amount: 0,
+  transactions: new Array<TranscriptionInfo>()
 }
 
 export function getInfo(state = initState, action) {

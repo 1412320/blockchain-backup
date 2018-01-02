@@ -55,10 +55,10 @@ function transferCoin(transactions) {
       }
     })
     .then(response => {
-
+      resolve(response);
     })
     .catch(error => {
-      
+      reject(error);
     })
   })
 }
