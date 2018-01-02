@@ -10,7 +10,7 @@ export class Header extends React.Component<{}, {}> {
           <NavbarBrand className="banner">BLOCKCHAIN</NavbarBrand>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="/users/sign_out">Logout</NavLink>
+                <Link to="/users/sign_in">Logout</Link>
               </NavItem>
             </Nav>
         </Navbar>
