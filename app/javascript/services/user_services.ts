@@ -9,24 +9,25 @@ export const userServices = {
 
 function signup(user) {
   let response;
-  axios.post('/users', {
-    user: {
-      email: user.email,
-      password: user.password,
-      password_confirmation: user.password_confirmation
-    }
+  return new Promise((resolve, reject) => {
+    axios.post('/users', {
+      user: {
+        email: user.email,
+        password: user.password,
+        password_confirmation: user.password_confirmation
+      }
+    })
+    .then(function(r) {
+      response = r;
+      location.href = "/users/sign_in";
+    })
+    .catch(function(error) {
+      reject(error.response.data.errors[0]);
+    })
   })
-  .then(function(r) {
-    response = r;
-    location.href = "/users/sign_in";
-  })
-  .catch(function(error) {
-    return Promise.reject(error);
-  })
-  return Promise.resolve(response);
 }
 
-function signin(email, password){
+function signin(email, password) {
   let response;
   let error;
   return new Promise((resolve, reject) => {

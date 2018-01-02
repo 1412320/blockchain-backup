@@ -51,7 +51,7 @@ class SignUpPage extends React.Component<SignUpProps, SignUpState> {
     this.setState({ is_submit: true });
     const { user } = this.state;
     const { dispatch } = this.props;
-    if (user.email && user.password && user.password_confirmation && user.password == user.password_confirmation) {
+    if (user.email && user.password && user.password_confirmation) {
       dispatch(UserActions.signup(user));
     }
   }
