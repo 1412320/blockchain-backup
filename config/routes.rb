@@ -15,5 +15,6 @@ Rails.application.routes.draw do
        get 'tfa_code', :to => 'users#get_tfa_code'       
     end
   end
+  get 'users/password/edit/:token', to: 'api/v1/passwords#reset'
   root to: 'home#index'
 end

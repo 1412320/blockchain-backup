@@ -4,7 +4,9 @@ import axios from 'axios';
 export const userServices = {
   signup,
   signin,
-  signout
+  signout, 
+  forgotpassword,
+  resetpassword
 }
 
 function signup(user) {
@@ -19,7 +21,7 @@ function signup(user) {
     })
     .then(function(r) {
       response = r;
-      location.href = "/users/sign_in";
+      location.hash = "/users/sign_in";
     })
     .catch(function(error) {
       reject(error.response.data.errors[0]);
@@ -48,7 +50,7 @@ function signin(email, password) {
     .then(function(user:any) {
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
-        location.href = "/";
+        location.hash = "/";
       }
       resolve(user);
     });
@@ -57,4 +59,40 @@ function signin(email, password) {
 
 function signout() {
   localStorage.removeItem('user');
+}
+function forgotpassword(email) {
+  let response;
+  return new Promise((resolve, reject) => {
+    axios.post('/users/password', {
+      user: {
+        email: email,
+      }
+    })
+    .then(function(r) {
+      location.hash = "/users/sign_in";      
+      resolve(r.data)
+    })
+    .catch(function(error) {
+      reject(error.response.data.errors);
+    })
+  })
+}
+function resetpassword(user) {
+  let response;
+  return new Promise((resolve, reject) => {
+    axios.put('/users/password', {
+      user: {
+        password: user.password,
+        password_confirmation: user.password_confirmation,
+        reset_password_token: user.reset_password_token
+      }
+    })
+    .then(function(r) {
+      resolve(r.data);
+      location.hash = "/users/sign_in";            
+    })
+    .catch(function(error) {
+      reject(error.response.data.errors);
+    })
+  })
 }
