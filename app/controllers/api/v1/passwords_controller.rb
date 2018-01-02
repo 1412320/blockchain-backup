@@ -23,7 +23,7 @@ class Api::V1::PasswordsController < Devise::PasswordsController
     self.resource = resource_class.reset_password_by_token(params[resource_name])
     set_minimum_password_length
     if resource.errors.empty?
-      render json: {message: "An reset password url has been sent to your mail!"}   
+      render json: {message: "Reset password successfully"}   
     else
       response = {errors: resource.errors}
       render json: response, status: 401   
