@@ -1,5 +1,9 @@
 require 'rsa'
 require 'parser'
+require 'net/http'
+require 'net/https'
+require 'uri'
+require 'json'
 
 module KcoinTransaction
 =begin TRANSACTION STRUCTURE
@@ -27,6 +31,16 @@ module KcoinTransaction
     version: 1 
   }
 =end
+  def self.create(transaction, private_key)
+    trans = sign(transaction, private_key)
+    uri = URI.parse('https://api.kcoin.club/transactions')
+    https = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl = true
+    req = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
+    req.body = trans.to_json
+    res = https.request(req)
+  end
+
   def self.sign(transaction, private_key)
     trans_binary = to_binary transaction
     signature = RSA.sign trans_binary, private_key
