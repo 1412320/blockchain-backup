@@ -21,7 +21,7 @@ function signup(user) {
     })
     .then(function(r) {
       response = r;
-      location.href = "/users/sign_in";
+      location.hash = "/users/sign_in";
     })
     .catch(function(error) {
       reject(error.response.data.errors[0]);
@@ -50,7 +50,7 @@ function signin(email, password) {
     .then(function(user:any) {
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
-        location.href = "/";
+        location.hash = "/";
       }
       resolve(user);
     });
@@ -69,7 +69,8 @@ function forgotpassword(email) {
       }
     })
     .then(function(r) {
-      console.log(r)
+      location.hash = "/users/sign_in";      
+      resolve(r.data)
     })
     .catch(function(error) {
       reject(error.response.data.errors);
@@ -87,7 +88,8 @@ function resetpassword(user) {
       }
     })
     .then(function(r) {
-      location.href = "/users/sign_in";
+      resolve(r.data);
+      location.hash = "/users/sign_in";            
     })
     .catch(function(error) {
       reject(error.response.data.errors);

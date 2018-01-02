@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Router, Route } from 'react-router-dom';
+import { HashRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { history } from '../../helpers';
@@ -8,6 +8,7 @@ import { AuthenRouter } from '../../containers';
 import { SignInPage } from '../SignIn';
 import { SignUpPage } from '../SignUp';
 import { ForgotPasswordPage } from '../ResetPassword';
+import { ResetPasswordPage } from '../ResetPassword';
 import { Header } from '../Commons';
 
 interface AppProps {
@@ -34,14 +35,15 @@ class App extends React.Component<AppProps, {}> {
         {alert.message &&
           <div className={`alert ${alert.type}`}>{alert.message}</div>
         }
-        <Router history={history}>
+        <HashRouter>
           <div>
             <AuthenRouter exact path="/" component={Header} />
             <Route path="/users/sign_in" component={SignInPage} />
             <Route path="/users/sign_up" component={SignUpPage} />
-            <Route path="/users/password/new" component={ForgotPasswordPage} />            
+            <Route path="/users/password/new" component={ForgotPasswordPage} /> 
+            <Route path="/password_reset" component={ResetPasswordPage} />                       
           </div>
-        </Router>
+        </HashRouter>
       </div>
     );
   }

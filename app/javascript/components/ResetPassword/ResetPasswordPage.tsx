@@ -40,17 +40,36 @@ class ResetPasswordPage extends React.Component<ResetPasswordProps, ResetPasswor
 
   handleChange(e) {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
+    const { user } = this.state;
+    this.setState({
+      user: {
+        ...user,
+        [name]: value
+      }
+    });
   }
-
+  getUrlParameter(){
+    var token = window.location.hash.split('=')[1]
+    return token
+  };
   handleSubmit(e) {
     e.preventDefault();
-    this.setState({ is_submit: true });
-    const {user} = this.state;
-    const { dispatch } = this.props;
-    if (user.reset_password_token && user.password && user.password_confirmation) {
-      dispatch(UserActions.forgotpassword(user));
-    }
+    console.log(this.getUrlParameter())
+    this.setState( {
+      is_submit: true,
+      user: {
+        reset_password_token: this.getUrlParameter(),
+        password: this.state.user.password,
+        password_confirmation: this.state.user.password_confirmation      
+      }
+    }, () => {
+      const {user} = this.state;
+      console.log("jdnskda"  + this.state.user.reset_password_token)
+      const { dispatch } = this.props;
+      if (user.reset_password_token && user.password && user.password_confirmation) {
+        dispatch(UserActions.resetpassword(user));
+      }
+    });    
   }
   render() {
     const { user, is_submit } = this.state;
@@ -75,7 +94,7 @@ class ResetPasswordPage extends React.Component<ResetPasswordProps, ResetPasswor
             }
           </div>
           <div className="form-group">
-            <button className="btn btn-login">Continue</button>
+            <button className="btn btn-login">Reset password</button>
             <Link to="/users/sign_up" className="btn btn-link">Send reset password link</Link>
           </div>
         </form>

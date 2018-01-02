@@ -100,11 +100,9 @@ function forgotpassword(email) {
     dispatch(request({email}));
       userServices.forgotpassword(email)
         .then(
-          message => {
-            console.log("slsd")
-            dispatch(success({message}));
-            history.push('/users/password/new');
-            dispatch(alertActions.success(message));
+          (response: {message: string}) => {
+            dispatch(success(response.message));
+            dispatch(alertActions.success(response.message));
           },
           error => {
             dispatch(failure(error));
@@ -139,10 +137,9 @@ function resetpassword(user) {
     dispatch(request({user}));
       userServices.resetpassword(user)
         .then(
-          user => {
-            dispatch(success({user}));
-            history.push('/users/password');
-            dispatch(alertActions.success("Reset password successfull"));
+          (response: {message: string}) => {
+            dispatch(success(response.message));
+            dispatch(alertActions.success(response.message));
           },
           error => {
             dispatch(failure(error));

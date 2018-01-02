@@ -25,7 +25,7 @@ class Api::V1::PasswordsController < Devise::PasswordsController
     if resource.errors.empty?
       render json: {message: "Reset password successfully"}   
     else
-      response = {errors: resource.errors}
+      response = {errors: resource.errors.full_messages}
       render json: response, status: 401   
     end
   end
