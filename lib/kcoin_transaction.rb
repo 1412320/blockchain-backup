@@ -4,6 +4,7 @@ require 'net/http'
 require 'net/https'
 require 'uri'
 require 'json'
+require 'crawlers/kcoin_crawler'
 
 module KcoinTransaction
 =begin TRANSACTION STRUCTURE
@@ -39,6 +40,16 @@ module KcoinTransaction
     req = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
     req.body = trans.to_json
     res = https.request(req)
+  end
+
+  def self.syncing_transaction
+    data = KcoinCrawler.get_data('/unconfirmed-transactions')
+    transactions = KcoinCrawler.parse_json(data)
+    @receivers = Wallet.all.map(&:address)    
+    transactions.each do |transaction|
+      record_output(transaction)
+      record_input(transaction)
+    end
   end
 
   def self.sign(transaction, private_key)
@@ -91,5 +102,57 @@ module KcoinTransaction
     end
 
     version + inputs_length + inputs_buff + outputs_length + outputs_buff
+  end
+
+  def self.record_output(transaction)
+    transaction['outputs'].each_with_index do |output, index|
+      receiver = output['lockScript'].split(' ')[1]
+      if @receivers.include? receiver
+        unless Transaction.find_by(hash_str: transaction['hash'])
+          Transaction.create(
+            hash_str: transaction['hash'],
+            is_confirm: false
+          )
+        end
+        o = Output.find_by(output_ref: transaction['hash'], 
+                                output_index: index,
+                                receiver: receiver)
+        unless o
+          Output.create(
+            output_ref: transaction['hash'],
+            output_index: index,
+            amount: output['value'],
+            receiver: receiver,
+            sender: find_sender(transaction['inputs'][0])
+          )
+        end
+      end
+    end
+  end
+  
+  def self.record_input(transaction)
+    transaction['inputs'].each do |input|
+      output_ref = input['referencedOutputHash']
+      output_index = input['referencedOutputIndex']
+      sender = find_sender(input)
+      output = Output.find_by(output_ref: output_ref, 
+                              output_index: output_index,
+                              receiver: sender)
+      if output
+        unless Transaction.find_by(hash_str: transaction['referencedOutputHash'])
+          Transaction.create(
+            hash_str: transaction['referencedOutputHash'],
+            is_confirm: false
+          )
+        end
+        output.update(is_used: true)
+      end
+    end
+  end
+
+  def self.find_sender(input)
+    script = input['unlockScript']
+    sender = script.split(' ')[1]
+    Parser.pub_to_address sender
   end
 end
