@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 
 import { UserActions } from '../../actions';
 
+import LoginContainer from '../../containers/LoginContainer';
+
 interface SignUpProps {
   dispatch: any,
   registering: boolean
@@ -49,52 +51,51 @@ class SignUpPage extends React.Component<SignUpProps, SignUpState> {
     this.setState({ is_submit: true });
     const { user } = this.state;
     const { dispatch } = this.props;
-    if (user.email && user.password && user.password_confirmation && user.password == user.password_confirmation) {
+    if (user.email && user.password && user.password_confirmation) {
       dispatch(UserActions.signup(user));
     }
   }
 
   render() {
-    const { registering  } = this.props;
+    const { registering } = this.props;
     const { user, is_submit } = this.state;
     return(
-      <div className="col-md-6 col-md-offset-3">
-        <h2>Signup</h2>
+      <LoginContainer title="Sign Up" desc="Create a free wallet">
         <form name="form" onSubmit={this.handleSubmit}>
-          <div className={'form-group' + (is_submit && !user.email ? ' has-error' : '')}>
+          <div className='form-group'>
             <label htmlFor="email">Email</label>
-            <input type="email" className="form-control" name="email" value={user.email} onChange={this.handleChange} />
+            <input type="email" className={ 'form-control' + (is_submit && !user.email ? ' login-alert' : '')}
+                   name="email" value={user.email} onChange={this.handleChange} />
             {
               is_submit && !user.email &&
               <div className="help-block">Email is required</div>
             }
           </div>
 
-          <div className={'form-group' + (is_submit && !user.password ? ' has-error' : '')}>
+          <div className='form-group'>
             <label htmlFor="password">Password</label>
-            <input type="password" className="form-control" name="password" value={user.password} onChange={this.handleChange} />
+            <input type="password" className={'form-control'  + (is_submit && !user.password ? ' login-alert' : '')}
+                   name="password" value={user.password} onChange={this.handleChange} />
             {is_submit && !user.password &&
-                <div className="help-block">Password is required</div>
+              <div className="help-block">Password is required</div>
             }
           </div>
 
-          <div className={'form-group' + (is_submit && !user.password_confirmation ? ' has-error' : '')}>
+          <div className='form-group'>
             <label htmlFor="password_confirmation">Password confirmation</label>
-            <input type="password" className="form-control" name="password_confirmation" value={user.password_confirmation} onChange={this.handleChange} />
+            <input type="password" className={'form-control' + (is_submit && !user.password_confirmation ? ' login-alert' : '')}
+                   name="password_confirmation" value={user.password_confirmation} onChange={this.handleChange} />
             {is_submit && !user.password_confirmation &&
-                <div className="help-block">Password confirmation is required</div>
+              <div className="help-block">Password confirmation is required</div>
             }
           </div>
 
           <div className="form-group">
-            <button className="btn btn-primary">Register</button>
-            {registering &&
-              <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-            }
-            <Link to="/users/sign_up" className="btn btn-link">Cancel</Link>
+            <button className="btn btn-login">Register</button>
+            <Link to="/users/sign_in" className="btn btn-link">Sign In</Link>
           </div>
         </form>
-      </div>
+      </LoginContainer>
     );
   }
 }

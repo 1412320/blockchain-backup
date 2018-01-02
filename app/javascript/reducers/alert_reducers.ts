@@ -5,12 +5,12 @@ export function alert(state = {}, action) {
     case AlertContants.SUCCESS:
       return {
         type: 'alert-success',
-        action: action.message
+        message: action.message
       };
     case AlertContants.ERROR:
       return {
         type: 'alert-error',
-        action: action.message
+        message: action.message
       };
     case AlertContants.CLEAR:
       return { };

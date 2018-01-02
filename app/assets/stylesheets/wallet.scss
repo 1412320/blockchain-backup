@@ -1,0 +1,105 @@
+.nav-header {
+  background-color: rgb(0, 74, 124);
+  .banner {
+    font-family: "Montserrat Bold", sans-serif !important;
+    color: white !important;
+    font-weight: bold;
+  }
+  a {
+    color: white;
+    &:hover {
+      color: rgb(165, 169, 172);
+    }
+  }
+}
+
+.container-fluid {
+  padding: 20px;
+}
+
+.wallet-header {
+  padding-top: 10px;
+  font-family: "Montserrat Light", sans-serif !important;
+}
+
+.wallet-copyright {
+  font-size: 0.5em;
+  font-weight: 300;
+  vertical-align: text-top;
+}
+
+.btn-wallet {
+  background-color: white !important;
+  border-color: #e0e0e0 !important;
+  color: black !important;
+  margin-right: 5px !important;
+  &:hover {
+    background-color: rgb(165, 169, 172) !important;
+    cursor: pointer;
+  }
+}
+
+.send-icon {
+  margin-right: 5px;
+}
+
+.card-table {
+  padding-top: 10px;
+}
+
+.btn-newest {
+  margin-right: 2px;
+  width: 100px;
+}
+
+.btn-all {
+  width: 100px;
+}
+
+.wallet-card {
+  padding-top: 10px;
+  .card {
+    border-radius: 0% !important;
+    padding: 15px !important;
+    .card-title {
+      color: #004a7c !important;
+      font-weight: 300;
+    }
+    .card-text {
+      color: #5f5f5f !important;
+      text-align: center;
+    }
+  }
+  .card-balance {
+    .card-text {
+      font-size: 28px;
+      font-weight: 300;
+    }
+  }
+}
+
+.wallet-id {
+  float: right !important;
+  font-style: italic;
+}
+
+.modal-content {
+  color: #5f5f5f !important;
+  padding: 10px;
+  border-radius: 0% !important;
+}
+
+.wallet-form {
+  input, textarea, .input-group-addon {
+    border-radius: 0% !important;
+  }
+  label {
+    font-weight: bold !important;
+  }
+  .wallet-submit{
+    width: 100%;
+    background-color: #0e9bcc !important;
+    border: none !important;
+    border-radius: 0% !important;
+  }
+}

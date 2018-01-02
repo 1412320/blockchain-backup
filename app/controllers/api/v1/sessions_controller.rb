@@ -1,5 +1,5 @@
 class Api::V1::SessionsController < Devise::SessionsController
-  skip_before_action :check_authenticate_user, only: [:create, :authenticate_2_step]
+  skip_before_action :check_authenticate_user, only: [:create, :authenticate_2_step, :new]
   # POST /resource/sign_in
   def create
     @user = User.find_by(email: params[:user][:email])
@@ -15,24 +15,24 @@ class Api::V1::SessionsController < Devise::SessionsController
               :auth_token => auth_token
             }
           end
-        else          
+        else
           render json: {errors: "You have to confirm your account before sign in!"}, status: 401
         end
-      else             
+      else
         render json: {errors: "Invalid password!"}, status: 401
       end
-    else           
-      render json: {errors: "Invalid email!"} , status: 401    
+    else
+      render json: {errors: "Invalid email!"} , status: 401
     end
   end
   def authenticate_2_step
-    @user = User.find(params[:user_id])    
-    auth_token = JsonWebToken.encode(user_id: @user.id)    
+    @user = User.find(params[:user_id])
+    auth_token = JsonWebToken.encode(user_id: @user.id)
     if @user.authenticate_otp(params[:otp_code])
       render :json => {
         :user => @user.as_json(:only => [:id, :email, :used_tfa]),
         :auth_token => auth_token,
-      }      
+      }
     else
       render json: {errors: "Invalid google authenticator code!"}, status: 401
     end

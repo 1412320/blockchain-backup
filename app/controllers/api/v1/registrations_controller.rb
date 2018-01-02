@@ -1,5 +1,5 @@
 class Api::V1::RegistrationsController < Devise::RegistrationsController
-  skip_before_action :check_authenticate_user, only: :create
+  skip_before_action :check_authenticate_user, only: [:create, :new]
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
@@ -21,7 +21,7 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
     else
       render json: {errors: @user.errors.full_messages}, status: 401
     end
-  end  
+  end
 
   # GET /resource/edit
   # def edit
