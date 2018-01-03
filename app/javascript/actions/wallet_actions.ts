@@ -117,19 +117,22 @@ function transfer(transactions) {
   }
   function request(transactions) {
     return {
-      type: WalletContants.INFO_REQUEST
+      type: WalletContants.INFO_REQUEST,
+      transactions
     }
   }
 
   function success(transactions) {
     return {
-      type: WalletContants.INFO_SUCCESS
+      type: WalletContants.INFO_SUCCESS,
+      transactions
     }
   }
 
-  function failure(transactions) {
+  function failure(error) {
     return {
-      type: WalletContants.INFO_FAILURE
+      type: WalletContants.INFO_FAILURE,
+      error
     }
   }
 }
