@@ -40,7 +40,7 @@ export class WalletForm extends React.Component<WalletFormProps, {}> {
                  id="description" onChange={this.props.handleChange}/>
         </FormGroup>
         <hr/>
-        <Button className="wallet-submit">CONTINUE</Button>
+        <Button type="submit" className="wallet-submit">CONTINUE</Button>
       </Form>
     );
   }

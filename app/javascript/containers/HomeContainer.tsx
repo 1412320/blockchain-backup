@@ -56,7 +56,8 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     this.props.dispatch(walletActions.getInfo());
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault();
     this.props.dispatch(walletActions.transfer(this.state.transfer_info));
   }
 
