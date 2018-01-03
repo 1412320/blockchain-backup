@@ -51,7 +51,7 @@ function getNewestTransaction() {
 function transferCoin(transactions) {
   return new Promise((resolve, reject) => {
     axios.post('/transactions', {
-      transcription: {
+      transaction: {
         sender_id: transactions.sender_id,
         recipient_id: transactions.recipient_id,
         amount: transactions.amount,

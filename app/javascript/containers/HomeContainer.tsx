@@ -62,11 +62,11 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
 
   handleChange(e) {
     e.preventDefault();
-    if (e.target.name == 'transcription[recipient_id]')
+    if (e.target.name == 'transaction[recipient_id]')
       this.state.transfer_info.recipient_id = e.target.value
-    if (e.target.name == 'transcription[amount]')
+    if (e.target.name == 'transaction[amount]')
       this.state.transfer_info.amount = e.target.value
-    if (e.target.name == 'transcription[description]')
+    if (e.target.name == 'transaction[description]')
       this.state.transfer_info.desc = e.target.value
   }
 
