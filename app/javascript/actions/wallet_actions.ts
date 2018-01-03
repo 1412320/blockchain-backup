@@ -97,7 +97,7 @@ function getNewest() {
 
   function failure() {
     return {
-      type: WalletContants.TRANSFER_FAILURE
+      type: WalletContants.NEWEST_FAILURE
     }
   }
 }
@@ -117,21 +117,21 @@ function transfer(transactions) {
   }
   function request(transactions) {
     return {
-      type: WalletContants.INFO_REQUEST,
+      type: WalletContants.TRANSFER_REQUEST,
       transactions
     }
   }
 
   function success(transactions) {
     return {
-      type: WalletContants.INFO_SUCCESS,
+      type: WalletContants.TRANSFER_SUCCESS,
       transactions
     }
   }
 
   function failure(error) {
     return {
-      type: WalletContants.INFO_FAILURE,
+      type: WalletContants.TRANSFER_FAILURE,
       error
     }
   }
