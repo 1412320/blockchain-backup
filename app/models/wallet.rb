@@ -5,6 +5,6 @@ class Wallet < ApplicationRecord
   end
 
   def available_amount
-    Output.get_confirm_receive.where(is_used: false).sum(:amount)
+    Output.get_confirm_receive(address).where(is_used: false).sum(:amount)
   end
 end

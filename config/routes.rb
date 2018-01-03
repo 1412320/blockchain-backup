@@ -17,4 +17,6 @@ Rails.application.routes.draw do
   end
   get 'users/password/edit/:token', to: 'api/v1/passwords#reset'
   root to: 'home#index'
+
+  resources :transactions, only: [:create]
 end

@@ -15,4 +15,12 @@ class Output < ApplicationRecord
     )
   end
   
+  def self.usable(wallet_hash)
+    includes(:trans).where(
+      transactions: { is_confirm: true },
+      receiver: wallet_hash,
+      is_used: false
+    )
+  end
+
 end
