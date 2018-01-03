@@ -1,20 +1,28 @@
 import * as React from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { Header, SubHeader } from '../components/Commons';
-import { HomePage } from '../components/Home';
+import { HomePage, WalletForm } from '../components/Home';
 import { walletActions } from '../actions';
 import { connect } from 'react-redux';
 
 interface HomeContainerProps {
   dispatch: any,
   wallet_address: string,
-  real_amount: number
+  real_amount: number,
+  transfer_info: TransferInfo
 }
 
 interface HomeContainerState {
   wallet_address: string,
   real_amount: number,
   modal: boolean
+  transfer_info: TransferInfo
+}
+
+interface TransferInfo {
+  recipient_id: string,
+  amount: number,
+  desc: string
 }
 
 class HomeContainer extends React.Component<HomeContainerProps, HomeContainerState> {
@@ -24,7 +32,12 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     this.state = {
       wallet_address: this.props.wallet_address,
       real_amount: this.props.real_amount,
-      modal: false
+      modal: false,
+      transfer_info: {
+        recipient_id: '',
+        amount: 0,
+        desc: ''
+      }
     }
   }
 
@@ -36,6 +49,25 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
 
   componentWillMount() {
     this.props.dispatch(walletActions.getInfo());
+  }
+
+  handleSuccess() {
+    this.toggle();
+    this.props.dispatch(walletActions.getInfo());
+  }
+
+  handleSubmit() {
+    this.props.dispatch(walletActions.transfer(this.state.transfer_info));
+  }
+
+  handleChange(e) {
+    e.preventDefault();
+    if (e.target.name == 'transcription[recipient_id]')
+      this.state.transfer_info.recipient_id = e.target.value
+    if (e.target.name == 'transcription[amount]')
+      this.state.transfer_info.amount = e.target.value
+    if (e.target.name == 'transcription[description]')
+      this.state.transfer_info.desc = e.target.value
   }
 
   render() {
@@ -50,7 +82,11 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
           </ModalHeader>
           <hr/>
           <ModalBody>
-
+            <WalletForm sender_id={this.props.wallet_address}
+                        handleSuccess={this.handleSuccess.bind(this)}
+                        handleSubmit={this.handleSubmit.bind(this)}
+                        handleChange={this.handleChange.bind(this)}>
+            </WalletForm>
           </ModalBody>
         </Modal>
       </Header>
@@ -60,9 +96,11 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
 
 function mapStateToProps(state) {
     const { wallet_address, real_amount } = state.get_info;
+    const { transfer_info } = state.transfer_kcoin;
     return {
         wallet_address,
-        real_amount
+        real_amount,
+        transfer_info
     };
 }
 

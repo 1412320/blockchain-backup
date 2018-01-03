@@ -109,11 +109,11 @@ function transfer(transactions) {
       .then(
         transactions => {
           dispatch(success(transactions))
+        },
+        error => {
+          dispatch(failure(error))
         }
       )
-      .catch(
-        dispatch(failure(transactions))
-      );
   }
   function request(transactions) {
     return {
