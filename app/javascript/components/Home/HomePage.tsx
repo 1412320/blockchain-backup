@@ -4,7 +4,8 @@ import { Row, Col, Button, Card, CardText,
 import { connect } from 'react-redux';
 
 interface HomePageProps {
-  real_amount: number
+  real_amount: number,
+  available_amount: number,
 }
 
 export class HomePage extends React.Component<HomePageProps, {}> {
@@ -24,7 +25,7 @@ export class HomePage extends React.Component<HomePageProps, {}> {
             <Card className="card-balance">
               <CardTitle>YOUR ACTIVE BALANCE</CardTitle>
               <hr/>
-              <CardText>{this.props.real_amount}</CardText>
+              <CardText>{this.props.available_amount}</CardText>
             </Card>
           </div>
         </Col>

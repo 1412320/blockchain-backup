@@ -9,12 +9,14 @@ interface HomeContainerProps {
   dispatch: any,
   wallet_address: string,
   real_amount: number,
+  available_amount: number,
   transfer_info: TransferInfo
 }
 
 interface HomeContainerState {
   wallet_address: string,
   real_amount: number,
+  available_amount: number,
   modal: boolean
   transfer_info: TransferInfo
 }
@@ -32,6 +34,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     this.state = {
       wallet_address: this.props.wallet_address,
       real_amount: this.props.real_amount,
+      available_amount: this.props.available_amount,
       modal: false,
       transfer_info: {
         recipient_id: '',
@@ -76,7 +79,8 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     return (
       <Header>
         <SubHeader toggle={this.toggle.bind(this)} wallet_address={this.props.wallet_address}></SubHeader>
-        <HomePage real_amount={this.props.real_amount}></HomePage>
+        <HomePage real_amount={this.props.real_amount}
+                  available_amount={this.props.available_amount}></HomePage>
         <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this)}>
           <ModalHeader toggle={this.toggle.bind(this)}>
             <i className="send-icon fa fa-paper-plane"></i>

@@ -51,12 +51,10 @@ function getNewestTransaction() {
 function transferCoin(transactions) {
   return new Promise((resolve, reject) => {
     axios.post('/transactions', {
-      transaction: {
-        sender_id: transactions.sender_id,
-        recipient_id: transactions.recipient_id,
-        amount: transactions.amount,
-        description: transactions.description
-      }
+      sender: transactions.sender_id,
+      receiver: transactions.recipient_id,
+      amount: transactions.amount,
+      description: transactions.description
     })
     .then(response => {
       resolve(response);

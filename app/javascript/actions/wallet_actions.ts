@@ -14,8 +14,8 @@ function getInfo() {
     dispatch(request());
     walletServices.getWalletInfo()
       .then(
-        (response: {wallet_address: string, real_amount: number}) => {
-          dispatch(success(response.wallet_address, response.real_amount))
+        (response: {wallet_address: string, real_amount: number, available_amount: number}) => {
+          dispatch(success(response.wallet_address, response.real_amount, response.available_amount))
         },
         error => {
           dispatch(failure(error))
@@ -29,11 +29,12 @@ function getInfo() {
     }
   }
 
-  function success(wallet_address, real_amount) {
+  function success(wallet_address, real_amount, available_amount) {
     return {
       type: WalletContants.INFO_SUCCESS,
       wallet_address,
-      real_amount
+      real_amount,
+      available_amount
     }
   }
 
