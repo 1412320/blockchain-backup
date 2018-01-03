@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { Header, SubHeader } from '../components/Commons';
 import { HomePage, WalletForm } from '../components/Home';
-import { walletActions } from '../actions';
+import { walletActions, alertActions } from '../actions';
 import { connect } from 'react-redux';
 
 interface HomeContainerProps {
@@ -45,6 +45,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     this.setState({
       modal: !this.state.modal
     })
+    this.props.dispatch(alertActions.clear());
   }
 
   componentWillMount() {

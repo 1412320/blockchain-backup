@@ -1,5 +1,6 @@
 import { WalletContants } from '../contants';
 import { walletServices } from '../services';
+import { alertActions } from '../actions';
 
 export const walletActions = {
   getInfo,
@@ -17,7 +18,8 @@ function getInfo() {
           dispatch(success(response.wallet_address, response.real_amount))
         },
         error => {
-          dispatch(failure())
+          dispatch(failure(error))
+          dispatch(alertActions.error(error));
         }
       );
   }
@@ -35,9 +37,10 @@ function getInfo() {
     }
   }
 
-  function failure() {
+  function failure(error) {
     return {
-      type: WalletContants.INFO_FAILURE
+      type: WalletContants.INFO_FAILURE,
+      error
     }
   }
 }
@@ -111,7 +114,8 @@ function transfer(transactions) {
           dispatch(success(transactions))
         },
         error => {
-          dispatch(failure(error))
+          dispatch(failure(error));
+          dispatch(alertActions.error(error));
         }
       )
   }

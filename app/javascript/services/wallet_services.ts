@@ -62,7 +62,8 @@ function transferCoin(transactions) {
       resolve(response);
     })
     .catch(error => {
-      reject(error);
+      console.log(error);
+      reject(error.response.statusText);
     })
   })
 }
