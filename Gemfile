@@ -17,7 +17,7 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'jwt'
 gem 'active_model_otp'
-gem 'bootstrap'
+gem 'bootstrap', '4.0.0.beta2.1'
 gem 'jquery-rails'
 gem 'font-awesome-rails'
 gem 'whenever', require: false

@@ -30,7 +30,7 @@ export class WalletForm extends React.Component<WalletFormProps, {}> {
             <Input type="text" name="transaction[amount]"
                    id="amount" placeholder="0"
                    onChange={this.props.handleChange}/>
-            <InputGroupAddon>BTC</InputGroupAddon>
+            <InputGroupAddon>KCOIN</InputGroupAddon>
           </InputGroup>
         </FormGroup>
 
