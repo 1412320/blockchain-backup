@@ -33,7 +33,10 @@ def record_output(transaction)
   transaction['outputs'].each_with_index do |output, index|
     receiver = output['lockScript'].split(' ')[1]
     if @receivers.include? receiver
-      unless Transaction.find_by(hash_str: transaction['hash'])
+      trans = Transaction.find_by(hash_str: transaction['hash'])
+      if trans
+        trans.update(is_confirm: true)
+      else  
         Transaction.create(
           hash_str: transaction['hash'],
           is_confirm: true
@@ -65,7 +68,10 @@ def record_input(transaction)
                             output_index: output_index,
                             receiver: sender)
     if output
-      unless Transaction.find_by(hash_str: transaction['referencedOutputHash'])
+      trans = Transaction.find_by(hash_str: transaction['hash'])
+      if trans
+        trans.update(is_confirm: true)
+      else 
         Transaction.create(
           hash_str: transaction['referencedOutputHash'],
           is_confirm: true
