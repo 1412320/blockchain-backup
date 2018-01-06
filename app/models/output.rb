@@ -22,5 +22,15 @@ class Output < ApplicationRecord
       is_used: false
     )
   end
-
+  def self.real_amount()
+    where(
+      is_used: false
+    )
+  end
+  def self.available_amount()
+    includes(:trans).where(
+      transactions: { is_confirm: true },
+      is_used: false 
+    )
+  end
 end

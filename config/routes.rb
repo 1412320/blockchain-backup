@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get 'wallet', :to => 'wallets#show'
+      get 'all-users-info', :to => 'admin#all_user_infos'      
+      get 'system-info', :to => 'admin#system_info'      
       devise_scope :user do
        post 'authenticate_2_step', :to => 'sessions#authenticate_2_step'
       end
