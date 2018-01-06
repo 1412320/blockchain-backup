@@ -11,7 +11,9 @@ class Api::V1::AdminController < ApplicationController
         available_amount: user.wallet.available_amount
       })
     end
-    render json: users_info
+    page = params[:page_number].to_i
+    p page
+    render json: users_info[10*(page-1),10]
   end
   def system_info
     user_count = User.where("id != ?", current_user.id).count
