@@ -4,6 +4,7 @@ class User < ApplicationRecord
   after_create :generate_address
   has_one_time_password
   has_one :wallet
+  has_many :pending_transactions
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
   def generate_address

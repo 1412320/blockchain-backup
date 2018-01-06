@@ -1,7 +1,7 @@
 class Api::V1::TransactionsController < ApplicationController
   before_action :init_service
   def create
-    res = @service.create_transaction(params[:receiver], params[:amount])
+    # res = @service.create_transaction(params[:receiver], params[:amount])
     if res
       if res.code == "200"
         KcoinTransaction.syncing_transaction
