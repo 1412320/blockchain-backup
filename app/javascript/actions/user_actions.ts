@@ -7,7 +7,7 @@ import { alertActions } from './';
 export const UserActions = {
   signup,
   signin,
-  signout,
+  signout, 
   forgotpassword,
   resetpassword
 }

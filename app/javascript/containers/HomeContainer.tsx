@@ -3,17 +3,20 @@ import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { Header, SubHeader } from '../components/Commons';
 import { HomePage } from '../components/Home';
 import { walletActions } from '../actions';
+import { UserActions } from '../actions';
 import { connect } from 'react-redux';
 
 interface HomeContainerProps {
   dispatch: any,
   wallet_address: string,
-  real_amount: number
+  real_amount: number,
+  role: number  
 }
 
 interface HomeContainerState {
   wallet_address: string,
-  real_amount: number
+  real_amount: number,
+  role: number    
 }
 
 class HomeContainer extends React.Component<HomeContainerProps, HomeContainerState> {
@@ -22,7 +25,8 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
 
     this.state = {
       wallet_address: this.props.wallet_address,
-      real_amount: this.props.real_amount
+      real_amount: this.props.real_amount,
+      role: this.props.role
     }
   }
 
@@ -41,10 +45,11 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
 }
 
 function mapStateToProps(state) {
-    const { wallet_address, real_amount } = state.get_info;
+    const { wallet_address, real_amount , role} = state.get_info;
     return {
         wallet_address,
-        real_amount
+        real_amount,
+        role
     };
 }
 

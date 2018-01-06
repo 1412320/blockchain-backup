@@ -6,7 +6,8 @@ class Api::V1::WalletsController < ApplicationController
     response = {
       wallet_address: wallet.address,
       real_amount: real_amount,
-      available_amount: available_amount
+      available_amount: available_amount,
+      role: current_user.role
     }
     render json: response
   end
