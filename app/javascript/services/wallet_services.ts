@@ -3,8 +3,6 @@ import { authenHeader } from '../helpers';
 
 export const walletServices = {
   getWalletInfo,
-  getAllTransaction,
-  getNewestTransaction,
   transferCoin
 }
 
@@ -17,30 +15,6 @@ function getWalletInfo() {
     })
     .then(response => {
       resolve(response.data);
-    })
-    .catch(error => {
-      reject(error);
-    })
-  })
-}
-
-function getAllTransaction() {
-  return new Promise((resolve, reject) => {
-    axios.get('/transactions/newest')
-    .then(response => {
-      resolve(response);
-    })
-    .catch(error => {
-      reject(error);
-    })
-  })
-}
-
-function getNewestTransaction() {
-  return new Promise((resolve, reject) => {
-    axios.get('/transactions/all')
-    .then(response => {
-      resolve(response);
     })
     .catch(error => {
       reject(error);

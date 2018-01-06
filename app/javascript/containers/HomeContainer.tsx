@@ -10,7 +10,8 @@ interface HomeContainerProps {
   wallet_address: string,
   real_amount: number,
   available_amount: number,
-  transfer_info: TransferInfo
+  transfer_info: TransferInfo,
+  transactions: Array<TransactionInfo>,
 }
 
 interface HomeContainerState {
@@ -21,12 +22,20 @@ interface HomeContainerState {
   transfer_info: TransferInfo,
   is_me: boolean,
   is_newest: boolean,
-  is_pending: boolean
+  is_pending: boolean,
+  transactions: Array<TransactionInfo>,
 }
 
 interface TransferInfo {
   recipient_id: string,
   amount: number,
+}
+
+export interface TransactionInfo {
+  transaction_hash:string;
+  sender: string;
+  recipient: string;
+  value: number;
 }
 
 class HomeContainer extends React.Component<HomeContainerProps, HomeContainerState> {
@@ -42,6 +51,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
         recipient_id: '',
         amount: 0
       },
+      transactions: [],
       is_me: false,
       is_newest: true,
       is_pending: false

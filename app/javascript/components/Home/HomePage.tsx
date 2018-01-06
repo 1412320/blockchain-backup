@@ -2,11 +2,12 @@ import * as React from 'react';
 import { Row, Col, Button, Card, CardText,
          CardBody, CardTitle, CardSubtitle, Table } from 'reactstrap';
 import { connect } from 'react-redux';
+import { TransactionInfo } from '../../containers';
 
 interface HomePageProps {
   real_amount: number,
   available_amount: number,
-  transcriptions: Array<TranscriptionInfo>,
+  transcriptions: Array<TransactionInfo>,
   dispatch: any,
   handleNewest() :void,
   handleMe() :void,
@@ -14,13 +15,6 @@ interface HomePageProps {
   is_me: boolean,
   is_newest: boolean,
   is_pending: boolean
-}
-
-interface TranscriptionInfo {
-  transaction_hash:string;
-  sender: string;
-  recipient: string;
-  value: number;
 }
 
 export class HomePage extends React.Component<HomePageProps, {}> {
@@ -76,13 +70,16 @@ export class HomePage extends React.Component<HomePageProps, {}> {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td></td>
-                      {!this.props.is_pending? <td></td> : <td></td>}
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
+                    {this.props.transcriptions.map((e, i) => (
+                      <tr key={i}>
+                        <th scope="row">{i + 1}</th>
+                        {!this.props.is_pending? <td>{e.transaction_hash}</td> : <td></td>}
+                        <td>{e.sender}</td>
+                        <td>{e.recipient}</td>
+                        <td>{e.value}</td>
+                        </tr>
+                      ))
+                    }
                   </tbody>
                 </Table>
               </div>
