@@ -1,4 +1,4 @@
-class TransactionsController < ApplicationController
+class Api::V1::TransactionsController < ApplicationController
   def create
     @sender = current_user.wallet.address
     @receiver = params[:receiver]
@@ -7,7 +7,7 @@ class TransactionsController < ApplicationController
     @availble_amount = @outputs.sum(:amount)
     if @availble_amount >= @amount
       trans = create_transaction
-      p res = KcoinTransaction.create(trans, current_user.wallet.private_key)
+      res = KcoinTransaction.create(trans, current_user.wallet.private_key)
       if res.code == "200"
         KcoinTransaction.syncing_transaction
         render json:{ message: "Transaction created" }, status: 201
@@ -18,6 +18,12 @@ class TransactionsController < ApplicationController
     else
       render json: { errors: "Not enough money" }, status: 400
     end
+  end
+
+  def index
+    per_page = params[:per_page] || PER_PAGE
+    @transactions = KcoinService.new.get_lastest per_page: per_page
+    render json: { data: @transactions, total: @transactions.length }, status: 200    
   end
 
   private
