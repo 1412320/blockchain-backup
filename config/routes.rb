@@ -19,6 +19,7 @@ Rails.application.routes.draw do
         get 'my', on: :collection  
       end
       resources :pending_transactions, only: [:index, :destroy] do
+        post 'confirm', on: :member
       end
     end
   end
