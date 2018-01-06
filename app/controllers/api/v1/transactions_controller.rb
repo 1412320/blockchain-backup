@@ -21,6 +21,22 @@ class Api::V1::TransactionsController < ApplicationController
     render json: { data: @transactions, total: @transactions.length }, status: 200    
   end
 
+  def my
+    @address = current_user.wallet.address
+    @outputs = Output.where(sender: @address).or(
+      Output.where(receiver: @address)
+    )
+    @transactions = @outputs.map do |output|
+      {
+        hash: output.output_ref,
+        sender: output.sender,
+        receiver: output.receiver,
+        value: output.amount
+      }
+    end
+    render json: { data: @transactions, total: @transactions.length }, status: 200
+  end
+
   private 
   def init_service
     @service = KcoinService.new current_user
