@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180101084240) do
+ActiveRecord::Schema.define(version: 20180106171701) do
 
   create_table "blocks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "hash_str"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 20180101084240) do
     t.datetime "updated_at", null: false
     t.string "otp_secret_key"
     t.boolean "used_tfa", default: false
+    t.integer "role"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
