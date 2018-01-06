@@ -21,10 +21,10 @@ class Api::V1::TransactionsController < ApplicationController
   def index
     per_page = params[:per_page] || PER_PAGE
     @transactions = @service.get_lastest_transactions per_page: per_page
-    render json: { data: @transactions, total: @transactions.length }, status: 200    
+    render json: { data: @transactions, total: @transactions.length }, status: 200
   end
 
-  def my
+  def me
     @address = current_user.wallet.address
     @outputs = Output.where(sender: @address).or(
       Output.where(receiver: @address)
@@ -42,10 +42,10 @@ class Api::V1::TransactionsController < ApplicationController
 
   def show
     transaction = @service.get_transaction(params[:id])
-    render json: { data: transaction }, status: 200 
+    render json: { data: transaction }, status: 200
   end
 
-  private 
+  private
   def init_service
     @service = KcoinService.new current_user
   end

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { Header, SubHeader } from '../components/Commons';
 import { HomePage, WalletForm } from '../components/Home';
-import { walletActions, alertActions } from '../actions';
+import { walletActions, alertActions, transactionActions } from '../actions';
 import { connect } from 'react-redux';
 
 interface HomeContainerProps {
@@ -11,7 +11,7 @@ interface HomeContainerProps {
   real_amount: number,
   available_amount: number,
   transfer_info: TransferInfo,
-  transactions: Array<TransactionInfo>,
+  transactions: Array<TransactionInfo>
 }
 
 interface HomeContainerState {
@@ -23,7 +23,7 @@ interface HomeContainerState {
   is_me: boolean,
   is_newest: boolean,
   is_pending: boolean,
-  transactions: Array<TransactionInfo>,
+  transactions: Array<TransactionInfo>
 }
 
 interface TransferInfo {
@@ -32,16 +32,15 @@ interface TransferInfo {
 }
 
 export interface TransactionInfo {
-  transaction_hash:string;
+  hash:string;
   sender: string;
-  recipient: string;
+  receiver: string;
   value: number;
 }
 
 class HomeContainer extends React.Component<HomeContainerProps, HomeContainerState> {
   constructor(props: HomeContainerProps) {
     super(props);
-
     this.state = {
       wallet_address: this.props.wallet_address,
       real_amount: this.props.real_amount,
@@ -74,6 +73,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
 
   componentWillMount() {
     this.props.dispatch(walletActions.getInfo());
+    this.props.dispatch(transactionActions.getNewest());
   }
 
   handleSuccess() {
@@ -93,6 +93,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
       is_newest: false,
       is_pending: false
     })
+    this.props.dispatch(transactionActions.getMy())
   }
 
   handleNewest(e) {
@@ -102,6 +103,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
       is_newest: true,
       is_pending: false
     })
+    this.props.dispatch(transactionActions.getNewest())
   }
 
   handlePending(e) {
@@ -111,6 +113,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
       is_newest: false,
       is_pending: true
     })
+    this.props.dispatch(transactionActions.getPending())
   }
 
   handleChange(e) {
@@ -122,6 +125,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   }
 
   render() {
+    console.log(this.props.transactions)
     return (
       <Header>
         <SubHeader toggle={this.openModal.bind(this)} wallet_address={this.props.wallet_address}></SubHeader>
@@ -131,7 +135,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
                   handleMe={this.handleMe.bind(this)}
                   handleNewest={this.handleNewest.bind(this)}
                   handlePending={this.handlePending.bind(this)}
-                  transcriptions={this.closeModal.bind(this)}
+                  transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}
                   is_me={this.state.is_me}
                   is_newest={this.state.is_newest}
                   is_pending={this.state.is_pending}/>
@@ -155,14 +159,16 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
 }
 
 function mapStateToProps(state) {
-    const { wallet_address, real_amount, available_amount } = state.get_info;
-    const { transfer_info } = state.transfer_kcoin;
-    return {
-        wallet_address,
-        real_amount,
-        available_amount,
-        transfer_info
-    };
+  const { wallet_address, real_amount, available_amount } = state.get_info;
+  const { transfer_info } = state.transfer_kcoin;
+  const { transactions } = state.get_my;
+  return {
+    wallet_address,
+    real_amount,
+    available_amount,
+    transfer_info,
+    transactions
+  };
 }
 
 const connectedHomeContainer = connect(mapStateToProps)(HomeContainer);

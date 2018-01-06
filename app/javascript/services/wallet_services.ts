@@ -24,7 +24,7 @@ function getWalletInfo() {
 
 function transferCoin(transactions) {
   return new Promise((resolve, reject) => {
-    axios.post('api/v1/transactions', {
+    axios.post('/api/v1/transactions', {
       sender: transactions.sender_id,
       receiver: transactions.recipient_id,
       amount: parseInt(transactions.amount)

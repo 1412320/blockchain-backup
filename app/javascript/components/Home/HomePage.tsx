@@ -7,7 +7,7 @@ import { TransactionInfo } from '../../containers';
 interface HomePageProps {
   real_amount: number,
   available_amount: number,
-  transcriptions: Array<TransactionInfo>,
+  transactions: Array<TransactionInfo>,
   dispatch: any,
   handleNewest() :void,
   handleMe() :void,
@@ -44,7 +44,7 @@ export class HomePage extends React.Component<HomePageProps, {}> {
           <div className="wallet-card">
             <Card className="card-transcription">
               <Row>
-                <Col md="9" sm="12">
+                <Col lg="8" sm="12">
                   <CardTitle>
                     {`${this.props.is_pending? 'PENDING ' : ''}`}
                     {`${this.props.is_me? 'MY ' : ''}`}
@@ -52,7 +52,7 @@ export class HomePage extends React.Component<HomePageProps, {}> {
                     TRANSACTIONS
                   </CardTitle>
                 </Col>
-                <Col md="3" sm="4">
+                <Col lg="4" sm="4">
                   <Button disabled={!!this.props.is_newest} className="btn-newest" onClick={this.props.handleNewest}>Newest</Button>
                   <Button disabled={!!this.props.is_me} className="btn-me" onClick={this.props.handleMe}>Me</Button>
                   <Button disabled={!!this.props.is_pending} className="btn-pending" onClick={this.props.handlePending}>Pending</Button>
@@ -65,21 +65,23 @@ export class HomePage extends React.Component<HomePageProps, {}> {
                       <th>#</th>
                       {!this.props.is_pending? <th>Hash</th> : <th></th>}
                       <th>Sender</th>
-                      <th>Recipient</th>
+                      <th>Reciever</th>
                       <th>Amount</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {this.props.transcriptions.map((e, i) => (
+                  { this.props.transactions.length > 0 ?
+                    this.props.transactions.map((e, i) => (
                       <tr key={i}>
                         <th scope="row">{i + 1}</th>
-                        {!this.props.is_pending? <td>{e.transaction_hash}</td> : <td></td>}
-                        <td>{e.sender}</td>
-                        <td>{e.recipient}</td>
+                        {!this.props.is_pending? <td>{e.hash.slice(0, 20)}...</td> : <td></td>}
+                        <td>{e.sender.slice(0, 25)}...</td>
+                        <td>{e.receiver.slice(0, 25)}...</td>
                         <td>{e.value}</td>
                         </tr>
                       ))
-                    }
+                    : null
+                  }
                   </tbody>
                 </Table>
               </div>

@@ -10,9 +10,11 @@ function getMyTransaction() {
   return new Promise((resolve, reject) => {
     axios.get('/api/v1/transactions/me')
     .then(response => {
-      resolve(response);
+      console.log(response);
+      resolve(response.data.data);
     })
     .catch(error => {
+      console.log(error);
       reject(error);
     })
   })
@@ -22,7 +24,7 @@ function getNewestTransaction() {
   return new Promise((resolve, reject) => {
     axios.get('/api/v1/transactions')
     .then(response => {
-      resolve(response);
+      resolve(response.data.data);
     })
     .catch(error => {
       reject(error);
