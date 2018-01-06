@@ -12,4 +12,12 @@ class Api::V1::PendingTransactionsController < ApplicationController
     end
     render json: { data: pendings, total: pendings.length }, status: 200
   end
+
+    def destroy
+    pending = PendingTransaction.find_by(id: params[:id], user: current_user)
+    if pending
+      pending.destroy
+    end
+    head 204    
+  end
 end

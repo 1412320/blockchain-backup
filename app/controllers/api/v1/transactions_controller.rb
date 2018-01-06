@@ -15,18 +15,7 @@ class Api::V1::TransactionsController < ApplicationController
     else
       render json: { errors: "Not enough money" }, status: 400
     end
-    # res = @service.create_transaction(params[:receiver], params[:amount])
-    # if res
-      # if res.code == "200"
-        # KcoinTransaction.syncing_transaction
-        # render json:{ message: "Transaction created" }, status: 201
-      # else
-        # res = JSON.parse(res.body)
-        # render json: { errors: res["message"] }, status: res.code.to_i
-      # end
-    # else
-      # render json: { errors: "Not enough money" }, status: 400
-    # end
+    
   end
 
   def index
