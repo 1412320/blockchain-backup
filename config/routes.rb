@@ -8,12 +8,14 @@ Rails.application.routes.draw do
   }
   namespace :api do
     namespace :v1 do
-       get 'wallet', :to => 'wallets#show'
-       devise_scope :user do
-        post 'authenticate_2_step', :to => 'sessions#authenticate_2_step'
-       end
-       get 'tfa_code', :to => 'users#get_tfa_code'
-       resources :transactions, only: [:create, :index]
+      get 'wallet', :to => 'wallets#show'
+      devise_scope :user do
+       post 'authenticate_2_step', :to => 'sessions#authenticate_2_step'
+      end
+      get 'tfa_code', :to => 'users#get_tfa_code'
+      resources :transactions, only: [:create, :index, :show] do
+        get 'my', on: :collection  
+      end
     end
   end
   get 'users/password/edit/:token', to: 'api/v1/passwords#reset'
