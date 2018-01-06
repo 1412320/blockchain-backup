@@ -19,6 +19,7 @@ gem 'jwt'
 gem 'active_model_otp'
 gem 'bootstrap'
 gem 'jquery-rails'
+gem 'whenever', require: false
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  PER_PAGE = 20  
   include Response
   include ExceptionHandler
   protect_from_forgery with: :exception
