@@ -6,13 +6,11 @@ export function transfer_kcoin(state = {}, action) {
       return {
         recipient_id: action.recipient_id,
         amount: action.amount,
-        desc: action.desc
       }
     case WalletContants.TRANSFER_SUCCESS:
       return {
         recipient_id: action.recipient_id,
         amount: action.amount,
-        desc: action.desc
       }
     case WalletContants.TRANSFER_FAILURE:
       return {}

@@ -22,8 +22,9 @@ export class HomePage extends React.Component<HomePageProps, {}> {
               <hr/>
               <CardText>{this.props.real_amount}</CardText>
             </Card>
+            <br/>
             <Card className="card-balance">
-              <CardTitle>YOUR ACTIVE BALANCE</CardTitle>
+              <CardTitle>YOUR AVAILABLE BALANCE</CardTitle>
               <hr/>
               <CardText>{this.props.available_amount}</CardText>
             </Card>

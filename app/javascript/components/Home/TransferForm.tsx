@@ -33,12 +33,6 @@ export class WalletForm extends React.Component<WalletFormProps, {}> {
             <InputGroupAddon>KCOIN</InputGroupAddon>
           </InputGroup>
         </FormGroup>
-
-        <FormGroup>
-          <Label for="description">Description: </Label>
-          <Input type="textarea" name="transaction[description]"
-                 id="description" onChange={this.props.handleChange}/>
-        </FormGroup>
         <hr/>
         <Button type="submit" className="wallet-submit">CONTINUE</Button>
       </Form>

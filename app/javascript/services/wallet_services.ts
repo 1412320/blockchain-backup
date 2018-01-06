@@ -50,11 +50,10 @@ function getNewestTransaction() {
 
 function transferCoin(transactions) {
   return new Promise((resolve, reject) => {
-    axios.post('/transactions', {
+    axios.post('api/v1/transactions', {
       sender: transactions.sender_id,
       receiver: transactions.recipient_id,
-      amount: transactions.amount,
-      description: transactions.description
+      amount: parseInt(transactions.amount)
     })
     .then(response => {
       resolve(response);
