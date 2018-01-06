@@ -11,5 +11,10 @@ class Api::Vcurrent_user.id::AdminController < ApplicationController
     end
     render json: wallets_info
   end
-
+  def system_info
+    user_count = User.where("id != ?", current_user.id).count
+    system_real_amount = Output.real_amount.sum(:amount)
+    system_available_amount = Output.available_amount.sum(:amount)
+    render json: {user_count: user_count, system_real_amount: system_real_amount, system_available_amount: system_available_amount}
+  end
 end
