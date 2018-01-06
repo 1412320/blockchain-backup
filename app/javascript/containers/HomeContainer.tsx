@@ -101,11 +101,12 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
 }
 
 function mapStateToProps(state) {
-    const { wallet_address, real_amount } = state.get_info;
+    const { wallet_address, real_amount, available_amount } = state.get_info;
     const { transfer_info } = state.transfer_kcoin;
     return {
         wallet_address,
         real_amount,
+        available_amount,
         transfer_info
     };
 }
