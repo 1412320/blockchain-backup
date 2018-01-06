@@ -17,14 +17,16 @@ interface HomeContainerState {
   wallet_address: string,
   real_amount: number,
   available_amount: number,
-  modal: boolean
-  transfer_info: TransferInfo
+  modal: boolean,
+  transfer_info: TransferInfo,
+  is_me: boolean,
+  is_newest: boolean,
+  is_pending: boolean
 }
 
 interface TransferInfo {
   recipient_id: string,
   amount: number,
-  desc: string
 }
 
 class HomeContainer extends React.Component<HomeContainerProps, HomeContainerState> {
@@ -38,15 +40,24 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
       modal: false,
       transfer_info: {
         recipient_id: '',
-        amount: 0,
-        desc: ''
-      }
+        amount: 0
+      },
+      is_me: false,
+      is_newest: true,
+      is_pending: false
     }
   }
 
-  toggle() {
+  closeModal() {
     this.setState({
-      modal: !this.state.modal
+      modal: false
+    })
+    this.props.dispatch(alertActions.clear());
+  }
+
+  openModal() {
+    this.setState({
+      modal: true
     })
     this.props.dispatch(alertActions.clear());
   }
@@ -56,7 +67,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   }
 
   handleSuccess() {
-    this.toggle();
+    this.closeModal();
     this.props.dispatch(walletActions.getInfo());
   }
 
@@ -65,24 +76,42 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     this.props.dispatch(walletActions.transfer(this.state.transfer_info));
   }
 
+  handleMe(e) {
+
+  }
+
+  handleNewest(e) {
+
+  }
+
+  handlePending(e) {
+
+  }
+
   handleChange(e) {
     e.preventDefault();
     if (e.target.name == 'transaction[recipient_id]')
       this.state.transfer_info.recipient_id = e.target.value
     if (e.target.name == 'transaction[amount]')
       this.state.transfer_info.amount = e.target.value
-    if (e.target.name == 'transaction[description]')
-      this.state.transfer_info.desc = e.target.value
   }
 
   render() {
     return (
       <Header>
-        <SubHeader toggle={this.toggle.bind(this)} wallet_address={this.props.wallet_address}></SubHeader>
+        <SubHeader toggle={this.openModal.bind(this)} wallet_address={this.props.wallet_address}></SubHeader>
         <HomePage real_amount={this.props.real_amount}
-                  available_amount={this.props.available_amount}></HomePage>
-        <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this)}>
-          <ModalHeader toggle={this.toggle.bind(this)}>
+                  available_amount={this.props.available_amount}
+                  dispatch={this.props.dispatch}
+                  handleMe={this.handleMe.bind(this)}
+                  handleNewest={this.handleNewest.bind(this)}
+                  handlePending={this.handlePending.bind(this)}
+                  transcriptions={this.closeModal.bind(this)}
+                  is_me={this.state.is_me}
+                  is_newest={this.state.is_newest}
+                  is_pending={this.state.is_pending}/>
+        <Modal isOpen={this.state.modal} toggle={this.closeModal.bind(this)}>
+          <ModalHeader toggle={this.closeModal.bind(this)}>
             <i className="send-icon fa fa-paper-plane"></i>
             Send
           </ModalHeader>

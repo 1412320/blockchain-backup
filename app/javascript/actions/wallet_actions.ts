@@ -16,6 +16,7 @@ function getInfo() {
       .then(
         (response: {wallet_address: string, real_amount: number, available_amount: number}) => {
           dispatch(success(response.wallet_address, response.real_amount, response.available_amount))
+          dispatch(walletServices.getWalletInfo());
         },
         error => {
           dispatch(failure(error))

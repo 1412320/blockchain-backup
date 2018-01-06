@@ -6,12 +6,28 @@ import { connect } from 'react-redux';
 interface HomePageProps {
   real_amount: number,
   available_amount: number,
+  transcriptions: Array<TranscriptionInfo>,
+  dispatch: any,
+  handleNewest() :void,
+  handleMe() :void,
+  handlePending() :void,
+  is_me: boolean,
+  is_newest: boolean,
+  is_pending: boolean
+}
+
+interface TranscriptionInfo {
+  transaction_hash:string;
+  sender: string;
+  recipient: string;
+  value: number;
 }
 
 export class HomePage extends React.Component<HomePageProps, {}> {
   constructor(props: HomePageProps) {
     super(props);
   }
+
   render() {
     return (
       <Row>
@@ -27,6 +43,49 @@ export class HomePage extends React.Component<HomePageProps, {}> {
               <CardTitle>YOUR AVAILABLE BALANCE</CardTitle>
               <hr/>
               <CardText>{this.props.available_amount}</CardText>
+            </Card>
+          </div>
+        </Col>
+        <Col sm="12" md="9">
+          <div className="wallet-card">
+            <Card className="card-transcription">
+              <Row>
+                <Col md="9" sm="12">
+                  <CardTitle>
+                    {`${this.props.is_pending? 'PENDING ' : ''}`}
+                    {`${this.props.is_me? 'MY ' : ''}`}
+                    {`${this.props.is_newest? 'NEWEST ' : ''}`}
+                    TRANSACTIONS
+                  </CardTitle>
+                </Col>
+                <Col md="3" sm="4">
+                  <Button disabled={!!this.props.is_newest} className="btn-newest" onClick={this.props.handleNewest}>Newest</Button>
+                  <Button disabled={!!this.props.is_me} className="btn-me" onClick={this.props.handleMe}>Me</Button>
+                  <Button disabled={!!this.props.is_pending} className="btn-pending" onClick={this.props.handlePending}>Pending</Button>
+                </Col>
+              </Row>
+              <div className="card-table">
+                <Table>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      {!this.props.is_pending? <th>Hash</th> : <th></th>}
+                      <th>Sender</th>
+                      <th>Recipient</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td></td>
+                      {!this.props.is_pending? <td></td> : <td></td>}
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </div>
             </Card>
           </div>
         </Col>
