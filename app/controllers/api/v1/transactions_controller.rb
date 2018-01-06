@@ -37,6 +37,11 @@ class Api::V1::TransactionsController < ApplicationController
     render json: { data: @transactions, total: @transactions.length }, status: 200
   end
 
+  def show
+    transaction = @service.get_transaction(params[:id])
+    render json: { data: transaction }, status: 200 
+  end
+
   private 
   def init_service
     @service = KcoinService.new current_user

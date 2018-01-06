@@ -4,6 +4,24 @@ class KcoinService
     @user = user
   end
 
+  def get_transaction(id)
+    data = KcoinCrawler.get_data("/transactions/#{id}")
+    transaction = KcoinCrawler.parse_json(data)
+    transaction['inputs'].map! do |input|
+      {
+        outputHash: input['referencedOutputHash'],
+        outputIndex: input['referencedOutputIndex']
+      }
+    end
+    transaction['outputs'].map! do |output|
+      {
+        to: output['lockScript'].split(' ')[1],
+        value: output['value']
+      }
+    end
+    transaction
+  end
+
   def create_transaction(receiver, amount)
     @sender = @user.wallet.address
     @receiver = receiver
