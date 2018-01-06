@@ -77,15 +77,30 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   }
 
   handleMe(e) {
-
+    e.preventDefault();
+    this.setState({
+      is_me: true,
+      is_newest: false,
+      is_pending: false
+    })
   }
 
   handleNewest(e) {
-
+    e.preventDefault();
+    this.setState({
+      is_me: false,
+      is_newest: true,
+      is_pending: false
+    })
   }
 
   handlePending(e) {
-
+    e.preventDefault();
+    this.setState({
+      is_me: false,
+      is_newest: false,
+      is_pending: true
+    })
   }
 
   handleChange(e) {
