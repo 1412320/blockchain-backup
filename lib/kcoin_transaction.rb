@@ -139,9 +139,9 @@ module KcoinTransaction
                               output_index: output_index,
                               receiver: sender)
       if output
-        unless Transaction.find_by(hash_str: transaction['referencedOutputHash'])
+        unless Transaction.find_by(hash_str: input['referencedOutputHash'])
           Transaction.create(
-            hash_str: transaction['referencedOutputHash'],
+            hash_str: input['referencedOutputHash'],
             is_confirm: false
           )
         end
