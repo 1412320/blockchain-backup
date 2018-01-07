@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {  Form, FormGroup, Label, Input, InputGroup, InputGroupAddon, Button, Modal, ModalBody, ModalHeader } from 'reactstrap';
-import { Header, SubHeader, AdminSubHeader } from '../components/Commons';
+import { Header, SubHeader, AdminSubHeader, Footer } from '../components/Commons';
 import { HomePage, WalletForm, AdminPage } from '../components/Home';
 import { walletActions, alertActions, transactionActions } from '../actions';
 import { TwoFactorForm } from '../components/TwoFactorAuth';
@@ -51,7 +51,7 @@ interface HomeContainerState {
   is_newest: boolean,
   is_pending: boolean,
   transactions: Array<TransactionInfo>,
-  system_transactions: Array<TransactionInfo>,    
+  system_transactions: Array<TransactionInfo>,
   is_confirmed: boolean,
   transactions_count: number,
   used_tfa: boolean,
@@ -93,7 +93,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
         amount: 0
       },
       transactions: [],
-      system_transactions: [],      
+      system_transactions: [],
       is_me: false,
       is_newest: true,
       is_pending: false,
@@ -126,7 +126,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   }
 
   openTFAModal() {
-    this.props.dispatch(UserActions.get_tfa_code());    
+    this.props.dispatch(UserActions.get_tfa_code());
     this.setState({
       tfa_modal: true,
       tfa_code: this.props.tfa_code
@@ -151,7 +151,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     this.props.dispatch(walletActions.getInfo());
     this.props.dispatch(transactionActions.getNewest());
     this.props.dispatch(adminActions.getAllUsersInfo(1));
-    this.props.dispatch(adminActions.getSystemInfo());    
+    this.props.dispatch(adminActions.getSystemInfo());
     this.props.dispatch(adminActions.getTransactions(1));
   }
 
@@ -196,7 +196,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   }
 
   handlePending(e) {
-    e.preventDefault();    
+    e.preventDefault();
     this.setState({
       is_me: false,
       is_newest: false,
@@ -209,14 +209,14 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
       is_confirmed: false,
       is_pending: true
     })
-    this.props.dispatch(adminActions.getPendingTransactions(1));         
+    this.props.dispatch(adminActions.getPendingTransactions(1));
   }
   handleAdminConfirmed(){
     this.setState({
-      is_confirmed: true,      
+      is_confirmed: true,
       is_pending: false
     })
-    this.props.dispatch(adminActions.getTransactions(1));      
+    this.props.dispatch(adminActions.getTransactions(1));
   }
 
   handleConfirm(e) {
@@ -266,13 +266,13 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     this.setState(this.state);;
   }
   getUserPage(r){
-    this.props.dispatch(adminActions.getAllUsersInfo(r));       
+    this.props.dispatch(adminActions.getAllUsersInfo(r));
   }
   getTransactionsPage(r, type){
     if (type)
-    this.props.dispatch(adminActions.getTransactions(r));  
+    this.props.dispatch(adminActions.getTransactions(r));
     else
-    this.props.dispatch(adminActions.getPendingTransactions(r));     
+    this.props.dispatch(adminActions.getPendingTransactions(r));
   }
   turnonTFA()
   {
@@ -281,72 +281,85 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   }
   render() {
     return (
-      <Header>
-        {this.props.role == 1 ?<SubHeader toggle={this.openModal.bind(this)} toggleTFA={this.openTFAModal.bind(this)} used_tfa={this.props.used_tfa} wallet_address={this.props.wallet_address}></SubHeader>
-        : <AdminSubHeader />}
-        {this.props.role == 1 ? <HomePage real_amount={this.props.real_amount}
-                  available_amount={this.props.available_amount}
-                  dispatch={this.props.dispatch}
-                  handleMe={this.handleMe.bind(this)}
-                  handleNewest={this.handleNewest.bind(this)}
-                  handlePending={this.handlePending.bind(this)}
-                  handleConfirm={this.handleConfirm.bind(this)}
-                  handleDelete={this.handleDelete.bind(this)}
-                  transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}
-                  is_me={this.state.is_me}
-                  is_newest={this.state.is_newest}
-                  is_pending={this.state.is_pending}/>
-                  : <AdminPage users={this.props.users}
-                  user_count={this.props.user_count}
-                  system_real_amount={this.props.system_real_amount}
-                  system_available_amount={this.props.system_available_amount}
-                  getUserPage={this.getUserPage.bind(this)}
-                  is_confirmed={this.state.is_confirmed}
-                  is_pending={this.state.is_pending}
-                  transactions={this.props.system_transactions}
-                  handleAdminPending={this.handleAdminPending.bind(this)}
-                  handleAdminConfirmed={this.handleAdminConfirmed.bind(this)}
-                  getTransactionsPage={this.getTransactionsPage.bind(this)}
-                  transactions_count={this.props.transactions_count}/>}
-        <Modal isOpen={this.state.modal} toggle={this.closeModal.bind(this)}>
-          <ModalHeader toggle={this.closeModal.bind(this)}>
-            <i className="send-icon fa fa-paper-plane"></i>
-            Send
-          </ModalHeader>
-          <hr/>
-          <ModalBody>
-            <WalletForm sender_id={this.props.wallet_address}
-                        handleSuccess={this.handleSuccess.bind(this)}
-                        handleSubmit={this.handleSubmit.bind(this)}
-                        handleChange={this.handleChange.bind(this)}
-                        >
-            </WalletForm>
-          </ModalBody>
-        </Modal>
+      <div>
+      <Header></Header>
+        <div className="content">
+          <div className="content-inside">
+            {this.props.role == 1 ? <SubHeader toggle={this.openModal.bind(this)}
+                                               toggleTFA={this.openTFAModal.bind(this)}
+                                               used_tfa={this.props.used_tfa}
+                                               wallet_address={this.props.wallet_address}>
+                                    </SubHeader>
+                                    : <AdminSubHeader />
+            }
 
-        <TwoFactorForm closeModal={this.closeOtpModal.bind(this)}
-                       openModal={this.openOtpModal.bind(this)}
-                       modal={this.state.otp_modal}
-                       handleSubmit={this.handleSubmitConfirm.bind(this)}
-                       handleChange={this.handleChangeOtp.bind(this)}>
-        </TwoFactorForm>
-        <Modal isOpen={this.state.tfa_modal} toggle={this.closeTFAModal.bind(this)}>
-          <ModalHeader toggle={this.closeTFAModal.bind(this)}>
-            <i className="send-icon fa fa-paper-plane"></i>
-            Send
-          </ModalHeader>
-          <hr/>
-          <ModalBody>
-            <Form className="wallet-form" onSubmit={this.turnonTFA.bind(this)}>
-              <FormGroup>
-                <Label for="recipient-id">Enter this code to your google authenticator app: {this.props.tfa_code} </Label>
-              </FormGroup>
+            {this.props.role == 1 ? <HomePage real_amount={this.props.real_amount}
+                      available_amount={this.props.available_amount}
+                      dispatch={this.props.dispatch}
+                      handleMe={this.handleMe.bind(this)}
+                      handleNewest={this.handleNewest.bind(this)}
+                      handlePending={this.handlePending.bind(this)}
+                      handleConfirm={this.handleConfirm.bind(this)}
+                      handleDelete={this.handleDelete.bind(this)}
+                      transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}
+                      is_me={this.state.is_me}
+                      is_newest={this.state.is_newest}
+                      is_pending={this.state.is_pending}/>
+                      : <AdminPage users={this.props.users}
+                      user_count={this.props.user_count}
+                      system_real_amount={this.props.system_real_amount}
+                      system_available_amount={this.props.system_available_amount}
+                      getUserPage={this.getUserPage.bind(this)}
+                      is_confirmed={this.state.is_confirmed}
+                      is_pending={this.state.is_pending}
+                      transactions={this.props.system_transactions}
+                      handleAdminPending={this.handleAdminPending.bind(this)}
+                      handleAdminConfirmed={this.handleAdminConfirmed.bind(this)}
+                      getTransactionsPage={this.getTransactionsPage.bind(this)}
+                      transactions_count={this.props.transactions_count}/>}
+            <Modal isOpen={this.state.modal} toggle={this.closeModal.bind(this)}>
+              <ModalHeader toggle={this.closeModal.bind(this)}>
+                <i className="send-icon fa fa-paper-plane"></i>
+                Send
+              </ModalHeader>
               <hr/>
-              <Button type="submit" className="wallet-submit">CONTINUE</Button>
-            </Form>
-          </ModalBody>
-        </Modal>
-      </Header>
+              <ModalBody>
+                <WalletForm sender_id={this.props.wallet_address}
+                            handleSuccess={this.handleSuccess.bind(this)}
+                            handleSubmit={this.handleSubmit.bind(this)}
+                            handleChange={this.handleChange.bind(this)}
+                            >
+                </WalletForm>
+              </ModalBody>
+            </Modal>
+
+            <TwoFactorForm closeModal={this.closeOtpModal.bind(this)}
+                           openModal={this.openOtpModal.bind(this)}
+                           modal={this.state.otp_modal}
+                           handleSubmit={this.handleSubmitConfirm.bind(this)}
+                           handleChange={this.handleChangeOtp.bind(this)}>
+            </TwoFactorForm>
+            <Modal isOpen={this.state.tfa_modal} toggle={this.closeTFAModal.bind(this)}>
+              <ModalHeader toggle={this.closeTFAModal.bind(this)}>
+                <i className="send-icon fa fa-paper-plane"></i>
+                Send
+              </ModalHeader>
+              <hr/>
+              <ModalBody>
+                <Form className="wallet-form" onSubmit={this.turnonTFA.bind(this)}>
+                  <FormGroup>
+                    <Label for="recipient-id">Enter this code to your google authenticator app: {this.props.tfa_code} </Label>
+                  </FormGroup>
+                  <hr/>
+                  <Button type="submit" className="wallet-submit">CONTINUE</Button>
+                </Form>
+              </ModalBody>
+            </Modal>
+          </div>
+        </div>
+
+        <Footer></Footer>
+      </div>
     );
   }
 }
@@ -355,7 +368,7 @@ function mapStateToProps(state) {
   const { wallet_address, real_amount, role, available_amount, used_tfa, tfa_code} = state.get_info;
   const { transfer_info } = state.transfer_kcoin;
   const { transactions } = state.get_my;
-  const { users, user_count, system_real_amount, system_available_amount, system_transactions, transactions_count} = state.admin; 
+  const { users, user_count, system_real_amount, system_available_amount, system_transactions, transactions_count} = state.admin;
   return {
     wallet_address,
     real_amount,
