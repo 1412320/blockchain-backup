@@ -17,7 +17,9 @@ interface HomePageProps {
   handlePending() :void,
   is_me: boolean,
   is_newest: boolean,
-  is_pending: boolean
+  is_pending: boolean,
+  handleDelete() :void,
+  handleConfirm():void
 }
 
 export class HomePage extends React.Component<HomePageProps> {
@@ -65,7 +67,9 @@ export class HomePage extends React.Component<HomePageProps> {
                 {
                   !this.props.is_pending?
                   <TransactionsTable transactions={this.props.transactions} page={1}/> :
-                  <PendingsTable transactions={this.props.transactions}/>
+                  <PendingsTable transactions={this.props.transactions}
+                                 handleConfirm={this.props.handleConfirm}
+                                 handleDelete={this.props.handleDelete}/>
                 }
               </div>
             </Card>

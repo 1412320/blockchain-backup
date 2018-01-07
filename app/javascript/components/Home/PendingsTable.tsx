@@ -2,9 +2,11 @@ import * as React from 'react';
 import { Row, Col, Button, Card, CardText,
          CardBody, CardTitle, CardSubtitle, Table } from 'reactstrap';
 import { TransactionInfo } from '../../containers';
-         
+
 export interface PendingsTableProps {
-  transactions: Array<TransactionInfo>
+  transactions: Array<TransactionInfo>,
+  handleDelete() :void,
+  handleConfirm():void
 }
 
 export class PendingsTable extends React.Component< PendingsTableProps ,{}> {
@@ -33,8 +35,8 @@ export class PendingsTable extends React.Component< PendingsTableProps ,{}> {
               <td className="col-3">{e.receiver.slice(0, 20)}...</td>
               <td className="col-2">{e.value}</td>
               <td className="col-3">
-              <Button color="primary" className="btn-me">Confirm</Button>
-              <Button color="danger" className="btn-me">Delete</Button>
+              <Button color="primary" className="btn-me" onClick={this.props.handleConfirm}>Confirm</Button>
+              <Button color="danger" className="btn-me" onClick={this.props.handleDelete}>Delete</Button>
               </td>
               </tr>
             ))

@@ -35,7 +35,7 @@ interface HomeContainerState {
   users: Array<UserInfo>,
   system_real_amount: number,
   system_available_amount: number,
-  user_count: number  
+  user_count: number
   available_amount: number,
   modal: boolean,
   transfer_info: TransferInfo,
@@ -163,6 +163,15 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     })
     this.props.dispatch(adminActions.getTransactions(1));      
   }
+
+  handleConfirm(e) {
+    e.preventDefault();
+  }
+
+  handleDelete(e) {
+    e.preventDefault();
+  }
+
   handleChange(e) {
     e.preventDefault();
     if (e.target.name == 'transaction[recipient_id]')
@@ -190,6 +199,8 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
                   handleMe={this.handleMe.bind(this)}
                   handleNewest={this.handleNewest.bind(this)}
                   handlePending={this.handlePending.bind(this)}
+                  handleConfirm={this.handleConfirm.bind(this)}
+                  handleDelete={this.handleDelete.bind(this)}
                   transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}
                   is_me={this.state.is_me}
                   is_newest={this.state.is_newest}
