@@ -15,11 +15,11 @@ class Api::V1::TransactionsController < ApplicationController
     else
       render json: { errors: "Not enough money" }, status: 400
     end
-    
+
   end
 
   def index
-    per_page = params[:per_page] || PER_PAGE
+    per_page = params[:per_page].to_i || PER_PAGE
     @transactions = @service.get_lastest_transactions per_page: per_page
     render json: { data: @transactions, total: @transactions.length }, status: 200
   end
