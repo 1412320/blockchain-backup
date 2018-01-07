@@ -24,7 +24,8 @@ interface HomeContainerProps {
   available_amount: number,
   transfer_info: TransferInfo,
   transactions: Array<TransactionInfo>
-  system_transactions: Array<TransactionInfo>  
+  system_transactions: Array<TransactionInfo> ,
+  transactions_count: number 
 }
 
 interface HomeContainerState {
@@ -43,7 +44,8 @@ interface HomeContainerState {
   is_pending: boolean,
   transactions: Array<TransactionInfo>,
   system_transactions: Array<TransactionInfo>,    
-  is_confirmed: boolean
+  is_confirmed: boolean,
+  transactions_count: number
 }
 
 interface TransferInfo {
@@ -81,7 +83,8 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
       is_me: false,
       is_newest: true,
       is_pending: false,
-      is_confirmed: true
+      is_confirmed: true,
+      transactions_count: this.props.transactions_count
     }
   }
 
@@ -104,6 +107,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     this.props.dispatch(transactionActions.getNewest());
     this.props.dispatch(adminActions.getAllUsersInfo(1));
     this.props.dispatch(adminActions.getSystemInfo());    
+    this.props.dispatch(adminActions.getTransactions(1));
   }
 
   handleSuccess() {
@@ -169,6 +173,9 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   getUserPage(r){
     this.props.dispatch(adminActions.getAllUsersInfo(r));       
   }
+  getTransactionsPage(r){
+    this.props.dispatch(adminActions.getTransactions(r));       
+  }
   render() {
     return (
       <Header>
@@ -192,7 +199,9 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
                   is_pending={this.state.is_pending}
                   transactions={this.props.system_transactions}
                   handleAdminPending={this.handleAdminPending.bind(this)}
-                  handleAdminConfirmed={this.handleAdminConfirmed.bind(this)}/>}
+                  handleAdminConfirmed={this.handleAdminConfirmed.bind(this)}
+                  getTransactionsPage={this.getTransactionsPage.bind(this)}
+                  transactions_count={this.props.transactions_count}/>}
         <Modal isOpen={this.state.modal} toggle={this.closeModal.bind(this)}>
           <ModalHeader toggle={this.closeModal.bind(this)}>
             <i className="send-icon fa fa-paper-plane"></i>
@@ -217,7 +226,7 @@ function mapStateToProps(state) {
   const { wallet_address, real_amount, role, available_amount} = state.get_info;
   const { transfer_info } = state.transfer_kcoin;
   const { transactions } = state.get_my;
-  const { users, user_count, system_real_amount, system_available_amount, system_transactions} = state.admin; 
+  const { users, user_count, system_real_amount, system_available_amount, system_transactions, transactions_count} = state.admin; 
   return {
     wallet_address,
     real_amount,
@@ -229,7 +238,8 @@ function mapStateToProps(state) {
     user_count,
     system_real_amount,
     system_available_amount,
-    system_transactions
+    system_transactions,
+    transactions_count
   };
 }
 

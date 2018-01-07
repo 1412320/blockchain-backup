@@ -23,15 +23,19 @@ interface AdminPageProps {
   getUserPage(number): void,
   handleAdminPending(): void,
   handleAdminConfirmed():void,
+  getTransactionsPage(number): void,
   is_pending: boolean,
   is_confirmed: boolean,
-  transactions: Array<TransactionInfo> 
+  transactions: Array<TransactionInfo>,
+  transactions_count: number 
 }
 
 interface AdminPageState {
   activeTab: string,
   users: Array<UserInfo>,
-  activePage: number
+  activePage: number,
+  transactions: Array<TransactionInfo>,
+  activeTransPage: number   
 }
 export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
   constructor(props: AdminPageProps) {
@@ -39,7 +43,9 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
     this.state = {
       activeTab: '1',
       users: this.props.users,
-      activePage: 1
+      activePage: 1,
+      activeTransPage: 1,
+      transactions: this.props.transactions
     };
   }
   toggle(tab) {
@@ -59,7 +65,7 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
     }
     return rows;
     }
-  getPage(r){
+  getUserPage(r){
     if ((r >0) && (r <= this.initPageNumbers(this.props.user_count).length)){
       this.props.getUserPage(r);
       console.log(r)    
@@ -69,8 +75,19 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
       })
     } 
   }
+  getTransactionPage(r){
+    if ((r >0) && (r <= this.initPageNumbers(this.props.transactions_count).length)){
+      this.props.getTransactionsPage(r);
+      console.log(r)    
+      this.setState({
+        transactions: this.props.transactions,
+        activeTransPage: r
+      })
+    } 
+  }
   render() {
     let rows = this.initPageNumbers(this.props.user_count);
+    let rows_transaction = this.initPageNumbers(this.props.transactions_count);    
     return (
       <div>
         <Nav tabs>
@@ -135,11 +152,11 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
             {this.props.users ? 
             <UserTable users={this.state.users ? this.props.users : this.state.users}/> : <UserTable users={new Array<UserInfo>()}/>}
             <div className="d-flex justify-content-center pagination">
-              <a onClick={() => this.getPage(this.state.activePage - 1)} >&laquo;</a>
+              <a onClick={() => this.getUserPage(this.state.activePage - 1)} >&laquo;</a>
               {rows.map((r) =>
-                  <a onClick={() => this.getPage(r)} className={this.state.activePage == r ? "active" : ""}>{r}</a>
+                  <a onClick={() => this.getUserPage(r)} className={this.state.activePage == r ? "active" : ""}>{r}</a>
               )}
-              <a  onClick={() => this.getPage(this.state.activePage + 1)}>&raquo;</a>
+              <a  onClick={() => this.getUserPage(this.state.activePage + 1)}>&raquo;</a>
             </div>
           </TabPane>
           <TabPane tabId="3">
@@ -161,11 +178,18 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
               <div className="transactions-card">
                 {
                   !this.props.is_pending?
-                  <TransactionsTable transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}/> :
+                  <TransactionsTable page={this.state.activeTransPage} transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}/> :
                   <PendingsTable transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}/>
                 }
               </div>
             </Card>
+            <div className="d-flex justify-content-center pagination">
+              <a onClick={() => this.getTransactionPage(this.state.activeTransPage - 1)} >&laquo;</a>
+              {rows_transaction.map((r) =>
+                  <a onClick={() => this.getTransactionPage(r)} className={this.state.activeTransPage == r ? "active" : ""}>{r}</a>
+              )}
+              <a  onClick={() => this.getTransactionPage(this.state.activeTransPage + 1)}>&raquo;</a>
+            </div>
           </div>
           </TabPane>
         </TabContent>

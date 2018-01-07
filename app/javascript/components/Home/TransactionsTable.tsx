@@ -4,7 +4,8 @@ import { Row, Col, Button, Card, CardText,
 import { TransactionInfo } from '../../containers';
          
 export interface TransactionsTableProps {
-  transactions: Array<TransactionInfo>
+  transactions: Array<TransactionInfo>,
+  page: number
 }
 
 export class TransactionsTable extends React.Component< TransactionsTableProps ,{}> {
@@ -28,7 +29,7 @@ export class TransactionsTable extends React.Component< TransactionsTableProps ,
         { this.props.transactions.length > 0 ?
           this.props.transactions.map((e, i) => (
             <tr key={i}>
-              <th scope="row" className="col-1">{i + 1}</th>
+              <th scope="row" className="col-1">{10*(this.props.page-1) + i + 1}</th>
               <td className="col-3">{e.hash.slice(0, 20)}...</td> 
               <td className="col-3">{e.sender.slice(0, 20)}...</td>
               <td className="col-3">{e.receiver.slice(0, 20)}...</td>

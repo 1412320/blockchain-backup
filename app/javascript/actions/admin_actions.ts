@@ -1,6 +1,7 @@
 import { AdminContants } from '../contants';
 import { adminServices } from '../services';
 import { alertActions } from './';
+import { TransactionInfo } from '../containers';
 
 export const adminActions = {
   getAllUsersInfo,
@@ -85,8 +86,8 @@ function getTransactions(page) {
     dispatch(request({page}));
     adminServices.getTransactions(page)
         .then(
-          (response) => {
-            dispatch(success(response));
+          (response: {transactions: Array<TransactionInfo>, total:number}) => {
+            dispatch(success(response.transactions, response.total));
           },
           error => {
             console.log(error)
@@ -102,10 +103,12 @@ function getTransactions(page) {
     }
   }
 
-  function success(transactions) {
+  function success(transactions, total) {
+    console.log(total)    
     return {
       type: AdminContants.CONFIRMED_TRANSACTIONS_SUCCESS,
-      transactions
+      transactions,
+      total
     }
   }
 

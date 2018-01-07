@@ -51,7 +51,7 @@ class Api::V1::TransactionsController < ApplicationController
         value: output.amount
       }
     end
-    render json: @transactions[10*(page-1),10], status: 200
+    render json: {transactions: @transactions[10*(page-1),10], total: @transactions.length}, status: 200
   end
 
   def show

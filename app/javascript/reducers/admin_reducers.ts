@@ -4,7 +4,8 @@ const initState = {
   user_count: 0,
   system_available_amount: 0,
   system_real_amount: 0,
-  system_transactions: []
+  system_transactions: [],
+  transaction_count: 0
 };
 
 
@@ -33,6 +34,7 @@ export function admin(state = initState, action) {
     case AdminContants.CONFIRMED_TRANSACTIONS_SUCCESS:
       return Object.assign({}, state, {
         'system_transactions': action.transactions,
+        'transactions_count' : action.total
     });
     case AdminContants.CONFIRMED_TRANSACTIONS_FAILURE:
       return {}
