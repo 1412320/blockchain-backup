@@ -1,29 +1,9 @@
 import * as React from 'react';
-import { Modal, ModalBody, ModalHeader, Input,
-         Card, CardTitle, CardText, Table } from 'reactstrap';
+import { Input, Card, CardTitle, CardText, Table } from 'reactstrap';
 
-interface DetailStates {
-  modal: boolean
-}
-
-export class Detail extends React.Component<{}, DetailStates> {
+export class Detail extends React.Component<{}, {}> {
   constructor(props) {
     super(props);
-    this.state = {
-      modal: false
-    }
-  }
-
-  closeModal() {
-    this.setState({
-      modal: false
-    })
-  }
-
-  openModal() {
-    this.setState({
-      modal: true
-    })
   }
 
   render() {
