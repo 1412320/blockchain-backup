@@ -69,7 +69,7 @@ export class HomePage extends React.Component<HomePageProps> {
                   <TransactionsTable transactions={this.props.transactions} page={1}/> :
                   <PendingsTable transactions={this.props.transactions}
                                  handleConfirm={this.props.handleConfirm}
-                                 handleDelete={this.props.handleDelete}/>
+                                 handleDelete={this.props.handleDelete} is_admin={false}/>
                 }
               </div>
             </Card>
