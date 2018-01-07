@@ -9,10 +9,14 @@ interface UserInfo {
   email: string,
   address: string,
   available_amount: string,
-  real_amount: string
+  real_amount: string,
+
 }
 interface AdminPageProps {
-  users: Array<UserInfo>
+  users: Array<UserInfo>,
+  system_real_amount: number,
+  system_available_amount:number,
+  user_count: number
 }
 
 interface AdminPageState {
@@ -64,6 +68,35 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
+            <Row>
+              <Col sm="12" md="3">
+                <div className="wallet-card">
+                  <Card className="card-balance">
+                    <CardTitle>ALL USERS COUNT</CardTitle>
+                    <hr/>
+                    <CardText>{this.props.user_count}</CardText>
+                  </Card>
+                </div>
+               </Col> 
+              <Col sm="12" md="3">
+                <div className="wallet-card">
+                  <Card className="card-balance">
+                    <CardTitle>SYSTEM REAL BALANCE</CardTitle>
+                    <hr/>
+                    <CardText>{this.props.system_real_amount}</CardText>
+                  </Card>
+                </div>
+              </Col>
+              <Col sm="12" md="3">
+                <div className="wallet-card">
+                  <Card className="card-balance">
+                    <CardTitle>SYSTEM AVAILABLE AMOUNT</CardTitle>
+                    <hr/>
+                    <CardText>{this.props.system_available_amount}</CardText>
+                  </Card>
+                </div>
+              </Col>
+            </Row>
           </TabPane>
           <TabPane tabId="2">
             {this.props.users ? 

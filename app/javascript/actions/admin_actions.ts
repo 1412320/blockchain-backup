@@ -64,12 +64,12 @@ function getSystemInfo() {
     }
   }
 
-  function success(user_count, system_real_amount, system_vailable_amount) {
+  function success(user_count, system_real_amount, system_available_amount) {
     return {
       type: AdminContants.SYSTEM_INFO_SUCCESS,
       user_count,
       system_real_amount,
-      system_vailable_amount
+      system_available_amount
     }
   }
 
