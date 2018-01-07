@@ -141,7 +141,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   }
 
   handlePending(e) {
-    e.preventDefault();
+    e.preventDefault();    
     this.setState({
       is_me: false,
       is_newest: false,
@@ -149,19 +149,19 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     })
     this.props.dispatch(transactionActions.getPending())
   }
-  handleAdminPending(e){
-    e.preventDefault();
+  handleAdminPending(){
     this.setState({
       is_confirmed: false,
       is_pending: true
     })
+    this.props.dispatch(adminActions.getPendingTransactions(1));         
   }
-  handleAdminConfirmed(e){
-    e.preventDefault();
+  handleAdminConfirmed(){
     this.setState({
       is_confirmed: true,      
       is_pending: false
     })
+    this.props.dispatch(adminActions.getTransactions(1));      
   }
   handleChange(e) {
     e.preventDefault();
@@ -173,8 +173,11 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   getUserPage(r){
     this.props.dispatch(adminActions.getAllUsersInfo(r));       
   }
-  getTransactionsPage(r){
-    this.props.dispatch(adminActions.getTransactions(r));       
+  getTransactionsPage(r, type){
+    if (type)
+    this.props.dispatch(adminActions.getTransactions(r));  
+    else
+    this.props.dispatch(adminActions.getPendingTransactions(r));     
   }
   render() {
     return (

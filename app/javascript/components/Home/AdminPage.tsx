@@ -23,7 +23,7 @@ interface AdminPageProps {
   getUserPage(number): void,
   handleAdminPending(): void,
   handleAdminConfirmed():void,
-  getTransactionsPage(number): void,
+  getTransactionsPage(number, boolean): void,
   is_pending: boolean,
   is_confirmed: boolean,
   transactions: Array<TransactionInfo>,
@@ -75,15 +75,28 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
       })
     } 
   }
-  getTransactionPage(r){
+  getTransactionPage(r, type){
     if ((r >0) && (r <= this.initPageNumbers(this.props.transactions_count).length)){
-      this.props.getTransactionsPage(r);
+      this.props.getTransactionsPage(r, type);
       console.log(r)    
       this.setState({
         transactions: this.props.transactions,
         activeTransPage: r
       })
     } 
+  }
+  handleAdminConfirmed()
+  {
+    this.props.handleAdminConfirmed();
+    this.setState({
+      activeTransPage: 1
+    })
+  }
+  handleAdminPending(){
+    this.props.handleAdminPending();
+    this.setState({
+      activeTransPage: 1
+    })
   }
   render() {
     let rows = this.initPageNumbers(this.props.user_count);
@@ -171,8 +184,8 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
                   </CardTitle>
                 </Col>
                 <Col lg="6" sm="4" className="d-flex justify-content-end">
-                  <Button disabled={!!this.props.is_confirmed} className="btn-newest" onClick={this.props.handleAdminConfirmed}>Confirmed</Button>
-                  <Button disabled={!!this.props.is_pending} className="btn-pending" onClick={this.props.handleAdminPending}>Pending</Button>
+                  <Button disabled={!!this.props.is_confirmed} className="btn-newest" onClick={this.handleAdminConfirmed.bind(this)}>Confirmed</Button>
+                  <Button disabled={!!this.props.is_pending} className="btn-pending" onClick={this.handleAdminPending.bind(this)}>Pending</Button>
                 </Col>
               </Row>
               <div className="transactions-card">
@@ -184,11 +197,11 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
               </div>
             </Card>
             <div className="d-flex justify-content-center pagination">
-              <a onClick={() => this.getTransactionPage(this.state.activeTransPage - 1)} >&laquo;</a>
+              <a onClick={() => this.getTransactionPage(this.state.activeTransPage - 1, this.props.is_confirmed)} >&laquo;</a>
               {rows_transaction.map((r) =>
-                  <a onClick={() => this.getTransactionPage(r)} className={this.state.activeTransPage == r ? "active" : ""}>{r}</a>
+                  <a onClick={() => this.getTransactionPage(r, this.props.is_confirmed)} className={this.state.activeTransPage == r ? "active" : ""}>{r}</a>
               )}
-              <a  onClick={() => this.getTransactionPage(this.state.activeTransPage + 1)}>&raquo;</a>
+              <a  onClick={() => this.getTransactionPage(this.state.activeTransPage + 1, this.props.is_confirmed)}>&raquo;</a>
             </div>
           </div>
           </TabPane>

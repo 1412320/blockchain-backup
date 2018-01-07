@@ -38,6 +38,15 @@ export function admin(state = initState, action) {
     });
     case AdminContants.CONFIRMED_TRANSACTIONS_FAILURE:
       return {}
+    case AdminContants.PENDING_TRANSACTIONS_REQUEST:
+      return state;
+    case AdminContants.PENDING_TRANSACTIONS_SUCCESS:
+      return Object.assign({}, state, {
+        'system_transactions': action.transactions,
+        'transactions_count' : action.total
+    });
+    case AdminContants.PENDING_TRANSACTIONS_FAILURE:
+      return {}
     default:
       return state;
   }
