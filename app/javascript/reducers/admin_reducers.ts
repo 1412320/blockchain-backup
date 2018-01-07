@@ -11,8 +11,7 @@ const initState = {
 export function admin(state = initState, action) {
   switch(action.type) {
     case AdminContants.ALL_USERS_INFO_REQUEST:
-      return {
-      }
+      return state;
     case AdminContants.ALL_USERS_INFO_SUCCESS:
       return Object.assign({}, state, {
         'users': action.users,
@@ -20,8 +19,7 @@ export function admin(state = initState, action) {
     case AdminContants.ALL_USERS_INFO_FAILURE:
       return {}
     case AdminContants.SYSTEM_INFO_REQUEST:
-    return {
-    }
+    return state;
     case AdminContants.SYSTEM_INFO_SUCCESS:
       return Object.assign({}, state, {
         'user_count': action.user_count,

@@ -1,3 +1,32 @@
 // Place all the styles related to the admin controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+$black: black;
+$color_apple_approx: rgb(0, 74, 124);;
+$white: white;
+$color_alto_approx: #ddd;
+
+.pagination {
+	display: inline-block;
+	a {
+		color: $black;
+		float: left;
+		padding: 8px 16px;
+    text-decoration: none;
+    cursor: hand;
+		&.active {
+			background-color: $color_apple_approx;
+			color: $white;
+			//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+			border-radius: 5px;
+		}
+		&:hover:not(.active) {
+			background-color: $color_alto_approx;
+			//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+			border-radius: 5px;
+		}
+	}
+}
+.address {
+  width: 980px
+}

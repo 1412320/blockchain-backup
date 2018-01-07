@@ -8,12 +8,12 @@ class Api::V1::AdminController < ApplicationController
         email: user.email,
         address: user.wallet.address,
         real_amount: user.wallet.real_amount,
-        available_amount: user.wallet.available_amount
+        available_amount: user.wallet.available_amount,
       })
     end
     page = params[:page_number].to_i
     p page
-    render json: users_info[10*(page-1),10]
+    render json: users_info[1*(page-1),1]
   end
   def system_info
     user_count = User.where("id != ?", current_user.id).count

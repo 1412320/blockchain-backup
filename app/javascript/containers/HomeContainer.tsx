@@ -94,7 +94,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     this.props.dispatch(alertActions.clear());
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch(walletActions.getInfo());
     this.props.dispatch(transactionActions.getNewest());
     this.props.dispatch(adminActions.getAllUsersInfo(1));
@@ -148,7 +148,11 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     if (e.target.name == 'transaction[amount]')
       this.state.transfer_info.amount = e.target.value
   }
-
+  getUserPage(r){
+    this.props.dispatch(adminActions.getAllUsersInfo(r));   
+    this.props.dispatch(adminActions.getSystemInfo());    
+    
+  }
   render() {
     console.log(this.props.transactions)
     return (
@@ -167,7 +171,8 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
                   : <AdminPage users={this.props.users}
                   user_count={this.props.user_count}
                   system_real_amount={this.props.system_real_amount}
-                  system_available_amount={this.props.system_available_amount}/>}
+                  system_available_amount={this.props.system_available_amount}
+                  getUserPage={this.getUserPage.bind(this)}/>}
         <Modal isOpen={this.state.modal} toggle={this.closeModal.bind(this)}>
           <ModalHeader toggle={this.closeModal.bind(this)}>
             <i className="send-icon fa fa-paper-plane"></i>

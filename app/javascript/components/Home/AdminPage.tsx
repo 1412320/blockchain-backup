@@ -16,17 +16,22 @@ interface AdminPageProps {
   users: Array<UserInfo>,
   system_real_amount: number,
   system_available_amount:number,
-  user_count: number
+  user_count: number,
+  getUserPage(number): void    
 }
 
 interface AdminPageState {
   activeTab: string,
+  users: Array<UserInfo>,
+  activePage: number
 }
 export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
   constructor(props: AdminPageProps) {
     super(props);
     this.state = {
-      activeTab: '1'
+      activeTab: '1',
+      users: this.props.users,
+      activePage: 1
     };
   }
   toggle(tab) {
@@ -36,8 +41,28 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
       });
     }
   }
+  initPageNumbers(total){
+    let total_rows = total;
+    let page = 1;
+    let rows = [];
+    for(var x = 0; x < total_rows; x += 1){
+      rows.push(page);
+      page++;
+    }
+    return rows;
+    }
+  getPage(r){
+    if ((r >0) && (r <= this.initPageNumbers(this.props.user_count).length)){
+      this.props.getUserPage(r);
+      console.log(r)    
+      this.setState({
+        users: this.props.users,
+        activePage: r
+      })
+    } 
+  }
   render() {
-    console.log(this.props.users)
+    let rows = this.initPageNumbers(this.props.user_count);
     return (
       <div>
         <Nav tabs>
@@ -100,7 +125,14 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
           </TabPane>
           <TabPane tabId="2">
             {this.props.users ? 
-            <UserTable users={this.props.users}/> : <UserTable users={new Array<UserInfo>()}/>}
+            <UserTable users={this.state.users ? this.props.users : this.state.users}/> : <UserTable users={new Array<UserInfo>()}/>}
+            <div className="d-flex justify-content-center pagination">
+              <a onClick={() => this.getPage(this.state.activePage - 1)} >&laquo;</a>
+              {rows.map((r) =>
+                  <a onClick={() => this.getPage(r)} className={this.state.activePage == r ? "active" : ""}>{r}</a>
+              )}
+              <a  onClick={() => this.getPage(this.state.activePage + 1)}>&raquo;</a>
+            </div>
           </TabPane>
           <TabPane tabId="3">
           </TabPane>
