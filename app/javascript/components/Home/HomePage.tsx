@@ -3,6 +3,7 @@ import { Row, Col, Button, Card, CardText,
          CardBody, CardTitle, CardSubtitle, Table } from 'reactstrap';
 import { connect } from 'react-redux';
 import { TransactionInfo } from '../../containers';
+import { TransactionsTable } from './TransactionsTable'
 
 interface HomePageProps {
   real_amount: number,
@@ -59,31 +60,10 @@ export class HomePage extends React.Component<HomePageProps, {}> {
                 </Col>
               </Row>
               <div className="transactions-card">
-                <Table>
-                  <thead>
-                    <tr>
-                      <th className="col-1">#</th>
-                      {!this.props.is_pending? <th className="col-3">Hash</th> : <th></th>}
-                      <th className="col-3">Sender</th>
-                      <th className="col-3">Reciever</th>
-                      <th className="col-2">Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  { this.props.transactions.length > 0 ?
-                    this.props.transactions.map((e, i) => (
-                      <tr key={i}>
-                        <th scope="row" className="col-1">{i + 1}</th>
-                        {!this.props.is_pending? <td className="col-3">{e.hash.slice(0, 20)}...</td> : <td></td>}
-                        <td className="col-3">{e.sender.slice(0, 20)}...</td>
-                        <td className="col-3">{e.receiver.slice(0, 20)}...</td>
-                        <td className="col-2">{e.value}</td>
-                        </tr>
-                      ))
-                    : null
-                  }
-                  </tbody>
-                </Table>
+                {
+                  !this.props.is_pending?
+                  <TransactionsTable transactions={this.props.transactions}/> : null
+                }
               </div>
             </Card>
           </div>

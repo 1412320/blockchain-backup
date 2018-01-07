@@ -53,6 +53,7 @@ export interface TransactionInfo {
   sender: string;
   receiver: string;
   value: number;
+  id: string;
 }
 
 class HomeContainer extends React.Component<HomeContainerProps, HomeContainerState> {
