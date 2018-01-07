@@ -130,3 +130,18 @@ function turn_on_tfa()
     })
   })
 }
+function authenticate_2_step()
+{
+  return new Promise((resolve, reject) => {
+  axios({
+      method: 'POST',
+      url: '/api/v1/authenticate_2_step',
+    })
+    .then(response => {
+      resolve(response.data);
+    })
+    .catch(error => {
+      reject(error);
+    })
+  })
+}
