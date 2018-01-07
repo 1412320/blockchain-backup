@@ -3,12 +3,12 @@ import * as React from 'react';
 import { Row, Col, Button, Card, CardText, CardBody, CardTitle, CardSubtitle, Table } from 'reactstrap';
 import axios from 'axios'
 interface UserTableProps {
-  users: Array<any>
+  users: any
 }
 interface UserTableState {
-  users: Array<any>
+  users: any
 }
-export default class UserTable extends React.Component<UserTableProps, UserTableState> {
+export class UserTable extends React.Component<UserTableProps, UserTableState> {
   constructor(props: UserTableProps) {
     super(props);
     this.state = {
@@ -27,7 +27,7 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
           </tr>
         </thead>
         <tbody>
-          {this.props.users.map((e, i) => ( 
+          {this.state.users.map((e, i) => ( 
             <tr key={i}>
               <td>{e.address}</td>
               <td>{e.email}</td>

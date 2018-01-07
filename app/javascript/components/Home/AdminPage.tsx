@@ -3,14 +3,14 @@ import { TabContent, TabPane, Nav, NavItem, NavLink,Row, Col, Button, Card, Card
          CardBody, CardTitle, CardSubtitle, Table } from 'reactstrap';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-
+import { adminActions } from '../../actions';
+import {UserTable} from './index'
 interface AdminPageProps {
-  dispatch: any,  
-  activeTab: string
+  users: Array<any>
 }
 
 interface AdminPageState {
-  activeTab: string
+  activeTab: string,
 }
 export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
   constructor(props: AdminPageProps) {
@@ -26,9 +26,6 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
       });
     }
   }
-  componentWillMount() {
-    this.props.dispatch(adminActions.getAllUsersInfo());    
-  }  
   render() {
     return (
       <div>
@@ -62,6 +59,7 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
           <TabPane tabId="1">
           </TabPane>
           <TabPane tabId="2">
+            <UserTable users={this.props.users}/>
           </TabPane>
           <TabPane tabId="3">
           </TabPane>
