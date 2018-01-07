@@ -1,27 +1,5 @@
 import { TransactionContants } from '../contants';
 
-export function get_newest(state = {}, action) {
-  switch(action.type) {
-    case TransactionContants.NEWEST_REQUEST:
-      return {
-        transactions: action
-      }
-    case TransactionContants.NEWEST_SUCCESS:
-      return {
-        transactions: {
-          hash: action.hash,
-          sender: action.sender,
-          receiver: action.receiver,
-          value: action.value
-        }
-      }
-    case TransactionContants.NEWEST_FAILURE:
-      return {}
-    default:
-      return state;
-  }
-}
-
 export function get_my(state = {}, action) {
   switch(action.type) {
     case TransactionContants.ME_REQUEST:
@@ -65,6 +43,21 @@ export function get_pending(state = {}, action) {
         }
       }
     case TransactionContants.PENDING_FAILURE:
+      return {}
+    default:
+      return state;
+  }
+}
+
+export function get_detail(state = {}, action) {
+  switch(action.type) {
+    case TransactionContants.DETAIL_REQUEST:
+      return {}
+    case TransactionContants.DETAIL_SUCCESS:
+      return {
+        transaction: action.transaction
+      }
+    case TransactionContants.DETAIL_FAILURE:
       return {}
     default:
       return state;

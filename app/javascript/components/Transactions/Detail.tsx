@@ -13,7 +13,6 @@ export class Detail extends React.Component<{}, {}> {
         <div className="wallet-card">
           <Card>
             <CardTitle>TRANSACTION DETAIL</CardTitle>
-            <CardText>
               <div className="card-table">
                 <Table>
                   <thead>
@@ -24,13 +23,12 @@ export class Detail extends React.Component<{}, {}> {
                   </thead>
                   <tbody>
                     <tr>
-                      <td></td>
-                      <td></td>
+                      <td>a</td>
+                      <td>a</td>
                     </tr>
                   </tbody>
                 </Table>
               </div>
-            </CardText>
           </Card>
         </div>
       </Header>
