@@ -38,6 +38,14 @@ export function get_info(state = {}, action) {
     });
     case UserContants.GET_TFA_CODE_FAILURE:
       return {}
+    case UserContants.TURN_ON_TFA_REQUEST:
+      return state;
+    case UserContants.TURN_ON_TFA_SUCCESS:
+    return Object.assign({}, state, {
+      'used_tfa': true,   
+    });
+    case UserContants.TURN_ON_TFA_FAILURE:
+      return {}
     default:
       return state;
   }

@@ -119,7 +119,7 @@ function turn_on_tfa()
   return new Promise((resolve, reject) => {
   axios({
       method: 'POST',
-      url: '/api/v1/turn-2fa',
+      url: '/api/v1/turn-on-tfa',
       headers: authenHeader(),
     })
     .then(response => {

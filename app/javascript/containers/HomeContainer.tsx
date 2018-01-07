@@ -276,12 +276,13 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   }
   turnonTFA()
   {
-
+    this.props.dispatch(UserActions.turn_on_tfa());
+    this.closeTFAModal();
   }
   render() {
     return (
       <Header>
-        {this.props.role == 1 ?<SubHeader toggle={this.openModal.bind(this)} toggleTFA={this.openTFAModal.bind(this)} wallet_address={this.props.wallet_address}></SubHeader>
+        {this.props.role == 1 ?<SubHeader toggle={this.openModal.bind(this)} toggleTFA={this.openTFAModal.bind(this)} used_tfa={this.props.used_tfa} wallet_address={this.props.wallet_address}></SubHeader>
         : <AdminSubHeader />}
         {this.props.role == 1 ? <HomePage real_amount={this.props.real_amount}
                   available_amount={this.props.available_amount}

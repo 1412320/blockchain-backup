@@ -234,7 +234,7 @@ function turn_on_tfa() {
     }
   }
 
-  function success(tfa_code) {
+  function success(message) {
     return {
       type: UserContants.TURN_ON_TFA_SUCCESS,
     }
