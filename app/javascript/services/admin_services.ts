@@ -56,3 +56,20 @@ function getTransactions(page)
     })
   })
 }
+function getPendingTransactions(page)
+{
+  return new Promise((resolve, reject) => {
+  axios({
+      method: 'GET',
+      url: '/api/v1/system-pending-transactions',
+      headers: authenHeader(),
+      params: {"page_number": page}
+    })
+    .then(response => {
+      resolve(response.data);
+    })
+    .catch(error => {
+      reject(error);
+    })
+  })
+}
