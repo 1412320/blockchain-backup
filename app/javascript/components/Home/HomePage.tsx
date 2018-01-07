@@ -3,6 +3,8 @@ import { Row, Col, Button, Card, CardText,
          CardBody, CardTitle, CardSubtitle, Table } from 'reactstrap';
 import { connect } from 'react-redux';
 import { TransactionInfo } from '../../containers';
+import { TransactionsTable } from './TransactionsTable';
+import { PendingsTable } from './PendingsTable'
 
 interface HomePageProps {
   real_amount: number,
@@ -44,7 +46,7 @@ export class HomePage extends React.Component<HomePageProps, {}> {
           <div className="wallet-card">
             <Card className="card-transcription">
               <Row>
-                <Col lg="8" sm="12">
+                <Col lg="6" sm="12">
                   <CardTitle>
                     {`${this.props.is_pending? 'PENDING ' : ''}`}
                     {`${this.props.is_me? 'MY ' : ''}`}
@@ -52,38 +54,18 @@ export class HomePage extends React.Component<HomePageProps, {}> {
                     TRANSACTIONS
                   </CardTitle>
                 </Col>
-                <Col lg="4" sm="4">
+                <Col lg="6" sm="4" className="d-flex justify-content-end">
                   <Button disabled={!!this.props.is_newest} className="btn-newest" onClick={this.props.handleNewest}>Newest</Button>
                   <Button disabled={!!this.props.is_me} className="btn-me" onClick={this.props.handleMe}>Me</Button>
                   <Button disabled={!!this.props.is_pending} className="btn-pending" onClick={this.props.handlePending}>Pending</Button>
                 </Col>
               </Row>
-              <div className="card-table">
-                <Table>
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      {!this.props.is_pending? <th>Hash</th> : <th></th>}
-                      <th>Sender</th>
-                      <th>Reciever</th>
-                      <th>Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  { this.props.transactions.length > 0 ?
-                    this.props.transactions.map((e, i) => (
-                      <tr key={i}>
-                        <th scope="row">{i + 1}</th>
-                        {!this.props.is_pending? <td>{e.hash.slice(0, 20)}...</td> : <td></td>}
-                        <td>{e.sender.slice(0, 25)}...</td>
-                        <td>{e.receiver.slice(0, 25)}...</td>
-                        <td>{e.value}</td>
-                        </tr>
-                      ))
-                    : null
-                  }
-                  </tbody>
-                </Table>
+              <div className="transactions-card">
+                {
+                  !this.props.is_pending?
+                  <TransactionsTable transactions={this.props.transactions}/> :
+                  <PendingsTable transactions={this.props.transactions}/>
+                }
               </div>
             </Card>
           </div>
