@@ -1,11 +1,13 @@
 import axios from 'axios';
+import { authenHeader } from '../helpers';
 
 export const userServices = {
   signup,
   signin,
   signout,
   forgotpassword,
-  resetpassword
+  resetpassword,
+  get_tfa_code
 }
 
 function signup(user) {
@@ -92,6 +94,22 @@ function resetpassword(user) {
     })
     .catch(function(error) {
       reject(error.response.data.errors);
+    })
+  })
+}
+function get_tfa_code()
+{
+  return new Promise((resolve, reject) => {
+  axios({
+      method: 'GET',
+      url: '/api/v1/get-tfa-code',
+      headers: authenHeader(),
+    })
+    .then(response => {
+      resolve(response.data);
+    })
+    .catch(error => {
+      reject(error);
     })
   })
 }

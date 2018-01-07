@@ -15,7 +15,8 @@ export function get_info(state = {}, action) {
         wallet_address: action.wallet_address,
         real_amount: action.real_amount,
         role: action.role,        
-        available_amount: action.available_amount
+        available_amount: action.available_amount,
+        used_tfa: action.used_tfa
       }
     case WalletContants.INFO_FAILURE:
       return {}

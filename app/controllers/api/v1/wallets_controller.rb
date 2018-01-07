@@ -7,7 +7,8 @@ class Api::V1::WalletsController < ApplicationController
       wallet_address: wallet.address,
       real_amount: real_amount,
       available_amount: available_amount,
-      role: current_user.role
+      role: current_user.role,
+      used_tfa: current_user.used_tfa
     }
     render json: response
   end
