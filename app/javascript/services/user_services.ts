@@ -7,7 +7,8 @@ export const userServices = {
   signout,
   forgotpassword,
   resetpassword,
-  get_tfa_code
+  get_tfa_code,
+  turn_on_tfa
 }
 
 function signup(user) {
@@ -103,6 +104,22 @@ function get_tfa_code()
   axios({
       method: 'GET',
       url: '/api/v1/get-tfa-code',
+      headers: authenHeader(),
+    })
+    .then(response => {
+      resolve(response.data);
+    })
+    .catch(error => {
+      reject(error);
+    })
+  })
+}
+function turn_on_tfa()
+{
+  return new Promise((resolve, reject) => {
+  axios({
+      method: 'POST',
+      url: '/api/v1/turn-2fa',
       headers: authenHeader(),
     })
     .then(response => {
