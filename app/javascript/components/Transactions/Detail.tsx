@@ -1,10 +1,19 @@
 import * as React from 'react';
 import { Input, Card, CardTitle, CardText, Table } from 'reactstrap';
 import { Header } from '../Commons';
+import { transactionActions } from '../../actions';
 
-export class Detail extends React.Component<{}, {}> {
-  constructor(props) {
+interface DetailProps {
+  dispatch: any
+}
+
+export class Detail extends React.Component<DetailProps, {}> {
+  constructor(props: DetailProps) {
     super(props);
+  }
+
+  componentWillMount() {
+    this.props.dispatch(transactionActions.getDetail);
   }
 
   render() {

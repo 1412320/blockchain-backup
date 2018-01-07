@@ -4,7 +4,8 @@ import { transactionServices } from '../services';
 export const transactionActions = {
   getMy,
   getNewest,
-  getPending
+  getPending,
+  getDetail
 }
 
 function getMy() {
@@ -103,6 +104,40 @@ function getPending() {
   function failure(error) {
     return {
       type: TransactionContants.ME_FAILURE,
+      error
+    }
+  }
+}
+
+function getDetail() {
+  return dispatch => {
+    dispatch(request());
+    transactionServices.getNewestTransaction()
+      .then(
+        transactions => {
+          dispatch(success(transactions))
+        },
+        error => {
+          dispatch(failure(error));
+        }
+    );
+  }
+  function request() {
+    return {
+      type: TransactionContants.DETAIL_REQUEST,
+    }
+  }
+
+  function success(transactions) {
+    return {
+      type: TransactionContants.DETAIL_SUCCESS,
+      transactions
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: TransactionContants.DETAIL_FAILURE,
       error
     }
   }
