@@ -8,12 +8,14 @@ export function authentication(state = initState, action) {
     case UserContants.LOGIN_REQUEST:
       return {
         logged_in: true,
-        user: action.user
+        user: action.user,
       };
     case UserContants.LOGIN_SUCCESS:
       return {
         logged_in: true,
-        user: action.user
+        user: action.user,
+        used_tfa: action.user.used_tfa ,
+        user_id: action.user.id       
       };
     case UserContants.LOGIN_FAILURE:
       return {};

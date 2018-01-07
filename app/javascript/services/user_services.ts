@@ -50,7 +50,7 @@ function signin(email, password) {
       return r;
     })
     .then(function(user:any) {
-      if (user) {
+      if (user.data.auth_token) {
         localStorage.setItem('user', JSON.stringify(user.data));
         location.hash = "/";
       }
