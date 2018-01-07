@@ -42,4 +42,9 @@ class Api::V1::PendingTransactionsController < ApplicationController
     end
     head 204    
   end
+  def system_pending_transactions
+    page = params[:page_number]
+    @transactions = PendingTransaction.all
+    render json: {transactions: @transactions[10*(page-1),10], total: @transactions.length}, status: 200
+  end
 end
