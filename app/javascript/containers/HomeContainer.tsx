@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal, ModalBody, ModalHeader } from 'reactstrap';
+import {  Form, FormGroup, Label, Input, InputGroup, InputGroupAddon, Button, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { Header, SubHeader, AdminSubHeader } from '../components/Commons';
 import { HomePage, WalletForm, AdminPage } from '../components/Home';
 import { walletActions, alertActions, transactionActions } from '../actions';
@@ -7,6 +7,7 @@ import { TwoFactorForm } from '../components/TwoFactorAuth';
 import { transactionServices } from '../services';
 import { connect } from 'react-redux';
 import { adminActions } from '../actions';
+import { UserActions } from '../actions';
 
 interface UserInfo {
   email: string,
@@ -27,7 +28,9 @@ interface HomeContainerProps {
   transfer_info: TransferInfo,
   transactions: Array<TransactionInfo>
   system_transactions: Array<TransactionInfo> ,
-  transactions_count: number 
+  transactions_count: number ,
+  used_tfa: boolean,
+  tfa_code:string
 }
 
 interface HomeContainerState {
@@ -50,7 +53,10 @@ interface HomeContainerState {
   transactions: Array<TransactionInfo>,
   system_transactions: Array<TransactionInfo>,    
   is_confirmed: boolean,
-  transactions_count: number
+  transactions_count: number,
+  used_tfa: boolean,
+  tfa_modal: boolean,
+  tfa_code: string
 }
 
 interface TransferInfo {
@@ -92,7 +98,10 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
       is_newest: true,
       is_pending: false,
       is_confirmed: true,
-      transactions_count: this.props.transactions_count
+      transactions_count: this.props.transactions_count,
+      used_tfa: this.props.used_tfa,
+      tfa_modal: false,
+      tfa_code: this.props.tfa_code
     }
   }
 
@@ -106,6 +115,21 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   openModal() {
     this.setState({
       modal: true
+    })
+    this.props.dispatch(alertActions.clear());
+  }
+  closeTFAModal() {
+    this.setState({
+      tfa_modal: false
+    })
+    this.props.dispatch(alertActions.clear());
+  }
+
+  openTFAModal() {
+    this.props.dispatch(UserActions.get_tfa_code());    
+    this.setState({
+      tfa_modal: true,
+      tfa_code: this.props.tfa_code
     })
     this.props.dispatch(alertActions.clear());
   }
@@ -250,10 +274,15 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     else
     this.props.dispatch(adminActions.getPendingTransactions(r));     
   }
+  turnonTFA()
+  {
+    this.props.dispatch(UserActions.turn_on_tfa());
+    this.closeTFAModal();
+  }
   render() {
     return (
       <Header>
-        {this.props.role == 1 ?<SubHeader toggle={this.openModal.bind(this)} wallet_address={this.props.wallet_address}></SubHeader>
+        {this.props.role == 1 ?<SubHeader toggle={this.openModal.bind(this)} toggleTFA={this.openTFAModal.bind(this)} used_tfa={this.props.used_tfa} wallet_address={this.props.wallet_address}></SubHeader>
         : <AdminSubHeader />}
         {this.props.role == 1 ? <HomePage real_amount={this.props.real_amount}
                   available_amount={this.props.available_amount}
@@ -301,13 +330,29 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
                        handleSubmit={this.handleSubmitConfirm.bind(this)}
                        handleChange={this.handleChangeOtp.bind(this)}>
         </TwoFactorForm>
+        <Modal isOpen={this.state.tfa_modal} toggle={this.closeTFAModal.bind(this)}>
+          <ModalHeader toggle={this.closeTFAModal.bind(this)}>
+            <i className="send-icon fa fa-paper-plane"></i>
+            Send
+          </ModalHeader>
+          <hr/>
+          <ModalBody>
+            <Form className="wallet-form" onSubmit={this.turnonTFA.bind(this)}>
+              <FormGroup>
+                <Label for="recipient-id">Enter this code to your google authenticator app: {this.props.tfa_code} </Label>
+              </FormGroup>
+              <hr/>
+              <Button type="submit" className="wallet-submit">CONTINUE</Button>
+            </Form>
+          </ModalBody>
+        </Modal>
       </Header>
     );
   }
 }
 
 function mapStateToProps(state) {
-  const { wallet_address, real_amount, role, available_amount} = state.get_info;
+  const { wallet_address, real_amount, role, available_amount, used_tfa, tfa_code} = state.get_info;
   const { transfer_info } = state.transfer_kcoin;
   const { transactions } = state.get_my;
   const { users, user_count, system_real_amount, system_available_amount, system_transactions, transactions_count} = state.admin; 
@@ -323,7 +368,9 @@ function mapStateToProps(state) {
     system_real_amount,
     system_available_amount,
     system_transactions,
-    transactions_count
+    transactions_count,
+    used_tfa,
+    tfa_code
   };
 }
 

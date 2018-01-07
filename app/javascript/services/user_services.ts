@@ -1,11 +1,15 @@
 import axios from 'axios';
+import { authenHeader } from '../helpers';
 
 export const userServices = {
   signup,
   signin,
   signout,
   forgotpassword,
-  resetpassword
+  resetpassword,
+  get_tfa_code,
+  turn_on_tfa,
+  authenticate_2_step
 }
 
 function signup(user) {
@@ -42,12 +46,8 @@ function signin(email, password) {
       error = e.response.data.errors;
       reject(error);
     })
-    .then(function(r) {
-      response = r;
-      return r;
-    })
     .then(function(user:any) {
-      if (user) {
+      if (user.data.auth_token) {
         localStorage.setItem('user', JSON.stringify(user.data));
         location.hash = "/";
       }
@@ -93,5 +93,60 @@ function resetpassword(user) {
     .catch(function(error) {
       reject(error.response.data.errors);
     })
+  })
+}
+function get_tfa_code()
+{
+  return new Promise((resolve, reject) => {
+  axios({
+      method: 'GET',
+      url: '/api/v1/get-tfa-code',
+      headers: authenHeader(),
+    })
+    .then(response => {
+      resolve(response.data);
+    })
+    .catch(error => {
+      reject(error);
+    })
+  })
+}
+function turn_on_tfa()
+{
+  return new Promise((resolve, reject) => {
+  axios({
+      method: 'POST',
+      url: '/api/v1/turn-on-tfa',
+      headers: authenHeader(),
+    })
+    .then(response => {
+      resolve(response.data);
+    })
+    .catch(error => {
+      reject(error);
+    })
+  })
+}
+function authenticate_2_step(user_id, otp_code)
+{
+  let response;
+  let error;
+  return new Promise((resolve, reject) => {
+  axios({
+      method: 'POST',
+      url: '/api/v1/authenticate_2_step',
+      params: {"user_id": user_id, "otp_code": otp_code}
+    })
+    .catch(function(e) {
+      error = e.response.data.errors;
+      reject(error);
+    })
+    .then(function(user:any) {
+      if (user.data.auth_token) {
+        localStorage.setItem('user', JSON.stringify(user.data));
+        location.hash = "/";
+      }
+      resolve(user.data);
+    });
   })
 }

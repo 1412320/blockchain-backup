@@ -8,7 +8,10 @@ export const UserActions = {
   signin,
   signout,
   forgotpassword,
-  resetpassword
+  resetpassword,
+  get_tfa_code,
+  turn_on_tfa,
+  authenticate_2_step
 }
 
 function signup(user) {
@@ -171,6 +174,112 @@ function resetpassword(user) {
   function failure(error) {
     return {
       type: UserContants.RESETPASSWORD_FAILURE,
+      error
+    }
+  }
+}
+function get_tfa_code() {
+  return dispatch => {
+    dispatch(request());
+      userServices.get_tfa_code()
+        .then(
+          (response: {tfa_code: string}) => {
+            dispatch(success(response.tfa_code));
+          },
+          error => {
+            dispatch(failure(error));
+            dispatch(alertActions.error(error));
+          }
+        );
+  }
+
+  function request() {
+    return {
+      type: UserContants.GET_TFA_CODE_REQUEST,
+    }
+  }
+
+  function success(tfa_code) {
+    return {
+      type: UserContants.GET_TFA_CODE_SUCCESS,
+      tfa_code
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: UserContants.GET_TFA_CODE_FAILURE,
+      error
+    }
+  }
+}
+function turn_on_tfa() {
+  return dispatch => {
+    dispatch(request());
+      userServices.turn_on_tfa()
+        .then(
+          (response: {message: string}) => {
+            dispatch(success(response.message));
+            dispatch(alertActions.success(response.message));            
+          },
+          error => {
+            dispatch(failure(error));
+            dispatch(alertActions.error(error));
+          }
+        );
+  }
+
+  function request() {
+    return {
+      type: UserContants.TURN_ON_TFA_REQUEST,
+    }
+  }
+
+  function success(message) {
+    return {
+      type: UserContants.TURN_ON_TFA_SUCCESS,
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: UserContants.TURN_ON_TFA_FAILURE,
+      error
+    }
+  }
+}
+function authenticate_2_step(user_id, otp_code) {
+  return dispatch => {
+    dispatch(request());
+      userServices.authenticate_2_step(user_id, otp_code)
+      .then(
+        user => {
+          dispatch(success(user));
+          dispatch(alertActions.clear());
+        },
+        error => {
+          dispatch(failure(error));
+          dispatch(alertActions.error(error));
+        }
+      );
+  }
+
+  function request() {
+    return {
+      type: UserContants.AUTHENTICATE_2_STEP_REQUEST,
+    }
+  }
+
+  function success(user) {
+    return {
+      type: UserContants.AUTHENTICATE_2_STEP_SUCCESS,
+      user,
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: UserContants.AUTHENTICATE_2_STEP_FAILURE,
       error
     }
   }
