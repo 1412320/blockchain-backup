@@ -19,7 +19,7 @@ interface HomePageProps {
   is_pending: boolean
 }
 
-export class HomePage extends React.Component<HomePageProps, {}> {
+export class HomePage extends React.Component<HomePageProps> {
   constructor(props: HomePageProps) {
     super(props);
   }
@@ -44,7 +44,7 @@ export class HomePage extends React.Component<HomePageProps, {}> {
         </Col>
         <Col sm="12" md="9">
           <div className="wallet-card">
-            <Card className="card-transcription">
+            <Card>
               <Row>
                 <Col lg="6" sm="12">
                   <CardTitle>

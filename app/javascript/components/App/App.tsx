@@ -11,6 +11,7 @@ import { ForgotPasswordPage } from '../ResetPassword';
 import { ResetPasswordPage } from '../ResetPassword';
 import { Header } from '../Commons';
 import { HomeContainer } from '../../containers';
+import { Detail } from '../Transactions';
 
 interface AppProps {
   dispatch: any,
@@ -41,6 +42,7 @@ class App extends React.Component<AppProps, {}> {
             <Route path="/users/sign_up" component={SignUpPage} />
             <Route path="/users/password/new" component={ForgotPasswordPage} />
             <Route path="/password_reset" component={ResetPasswordPage} />
+            <Route path="/transactions/:id" component={Detail}/>
           </div>
         </HashRouter>
       </div>

@@ -34,7 +34,6 @@ export function get_my(state = {}, action) {
         }
       }
     case TransactionContants.ME_SUCCESS:
-      console.log(action);
       return {
         transactions: action.transactions
       }
