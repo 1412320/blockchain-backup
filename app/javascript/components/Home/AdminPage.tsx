@@ -162,14 +162,18 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
             </Row>
           </TabPane>
           <TabPane tabId="2">
-            {this.props.users ? 
-            <UserTable users={this.state.users ? this.props.users : this.state.users}/> : <UserTable users={new Array<UserInfo>()}/>}
-            <div className="d-flex justify-content-center pagination">
-              <a onClick={() => this.getUserPage(this.state.activePage - 1)} >&laquo;</a>
-              {rows.map((r) =>
-                  <a onClick={() => this.getUserPage(r)} className={this.state.activePage == r ? "active" : ""}>{r}</a>
-              )}
-              <a  onClick={() => this.getUserPage(this.state.activePage + 1)}>&raquo;</a>
+            <div className="wallet-card">            
+              <Card className="card-transcription">
+                {this.props.users ? 
+                <UserTable users={this.state.users ? this.props.users : this.state.users}/> : <UserTable users={new Array<UserInfo>()}/>}
+              </Card>
+              <div className="d-flex justify-content-center pagination">
+                <a onClick={() => this.getUserPage(this.state.activePage - 1)} >&laquo;</a>
+                {rows.map((r) =>
+                    <a onClick={() => this.getUserPage(r)} className={this.state.activePage == r ? "active" : ""}>{r}</a>
+                )}
+                <a  onClick={() => this.getUserPage(this.state.activePage + 1)}>&raquo;</a>
+              </div>
             </div>
           </TabPane>
           <TabPane tabId="3">
@@ -184,8 +188,8 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
                   </CardTitle>
                 </Col>
                 <Col lg="6" sm="4" className="d-flex justify-content-end">
-                  <Button disabled={!!this.props.is_confirmed} className="btn-newest" onClick={this.handleAdminConfirmed.bind(this)}>Confirmed</Button>
-                  <Button disabled={!!this.props.is_pending} className="btn-pending" onClick={this.handleAdminPending.bind(this)}>Pending</Button>
+                  <Button disabled={!!this.props.is_confirmed} onClick={this.handleAdminConfirmed.bind(this)}>Confirmed</Button>
+                  <Button disabled={!!this.props.is_pending} className="btn-me" onClick={this.handleAdminPending.bind(this)}>Pending</Button>
                 </Col>
               </Row>
               <div className="transactions-card">
