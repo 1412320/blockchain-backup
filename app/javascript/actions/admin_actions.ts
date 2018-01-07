@@ -13,7 +13,6 @@ function getAllUsersInfo(page) {
         .then(
           (response) => {
             dispatch(success(response));
-            dispatch(alertActions.success("success"));
           },
           error => {
             dispatch(failure(error));
@@ -49,7 +48,6 @@ function getSystemInfo() {
         .then(
           (response: {user_count: number, system_real_amount: number, system_available_amount: number}) => {
             dispatch(success(response.user_count, response.system_real_amount, response.system_available_amount));
-            dispatch(alertActions.success("success"));
           },
           error => {
             dispatch(failure(error));
