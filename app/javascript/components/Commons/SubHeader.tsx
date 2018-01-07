@@ -24,10 +24,10 @@ export class SubHeader extends React.Component<SubHeaderProps, {}> {
           Send KCOIN
         </Button>
         {!this.props.used_tfa ? <Button className="btn-wallet" onClick={this.props.toggleTFA}>
-          <i className="send-icon fa fa-paper-plane"></i>
-          Turn on TFA auth
+          <i className="send-icon fa fa-toggle-off"></i>
+          Turn on TFA mode
         </Button> : ""}
-        
+
         <span className="wallet-id"><strong>Wallet ID:</strong> {this.props.wallet_address}</span>
         <hr/>
       </div>
