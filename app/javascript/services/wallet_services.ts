@@ -17,7 +17,7 @@ function getWalletInfo() {
       resolve(response.data);
     })
     .catch(error => {
-      reject(error);
+      reject(error.response.data.errors);
     })
   })
 }
@@ -33,7 +33,7 @@ function transferCoin(transactions) {
       resolve(response);
     })
     .catch(error => {
-      reject(error.response.statusText);
+      reject(error.response.data.errors);
     })
   })
 }

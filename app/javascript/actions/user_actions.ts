@@ -1,13 +1,12 @@
 import { UserContants } from '../contants';
-import { history } from '../helpers';
-import { authenHeader } from '../helpers';
+import { history, clear_alert } from '../helpers';
 import { userServices } from '../services';
 import { alertActions } from './';
 
 export const UserActions = {
   signup,
   signin,
-  signout, 
+  signout,
   forgotpassword,
   resetpassword
 }
@@ -24,6 +23,7 @@ function signup(user) {
           error => {
             dispatch(failure(error));
             dispatch(alertActions.error(error));
+            clear_alert(dispatch);
           }
         );
   }
@@ -58,10 +58,13 @@ function signin(email, password) {
         user => {
           dispatch(success(user));
           dispatch(alertActions.clear());
+          dispatch(alertActions.success("Signin successfully"));
+          clear_alert(dispatch);
         },
         error => {
           dispatch(failure(error));
           dispatch(alertActions.error(error));
+          clear_alert(dispatch);
         }
       );
   }
@@ -102,10 +105,12 @@ function forgotpassword(email) {
           (response: {message: string}) => {
             dispatch(success(response.message));
             dispatch(alertActions.success(response.message));
+            clear_alert(dispatch);
           },
           error => {
             dispatch(failure(error));
             dispatch(alertActions.error(error));
+            clear_alert(dispatch);
           }
         );
   }
@@ -139,10 +144,12 @@ function resetpassword(user) {
           (response: {message: string}) => {
             dispatch(success(response.message));
             dispatch(alertActions.success(response.message));
+            clear_alert(dispatch);
           },
           error => {
             dispatch(failure(error));
             dispatch(alertActions.error(error));
+            clear_alert(dispatch);
           }
         );
   }

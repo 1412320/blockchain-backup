@@ -3,6 +3,8 @@ import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { Header, SubHeader, AdminSubHeader } from '../components/Commons';
 import { HomePage, WalletForm, AdminPage } from '../components/Home';
 import { walletActions, alertActions, transactionActions } from '../actions';
+import { TwoFactorForm } from '../components/TwoFactorAuth';
+import { transactionServices } from '../services';
 import { connect } from 'react-redux';
 import { adminActions } from '../actions';
 
@@ -35,9 +37,12 @@ interface HomeContainerState {
   users: Array<UserInfo>,
   system_real_amount: number,
   system_available_amount: number,
-  user_count: number  
+  user_count: number
   available_amount: number,
   modal: boolean,
+  otp_modal: boolean,
+  confirm_id: string,
+  otp_code: string,
   transfer_info: TransferInfo,
   is_me: boolean,
   is_newest: boolean,
@@ -74,6 +79,9 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
       system_real_amount: this.props.system_real_amount,
       available_amount: this.props.available_amount,
       modal: false,
+      otp_modal: false,
+      confirm_id: '',
+      otp_code: '',
       transfer_info: {
         recipient_id: '',
         amount: 0
@@ -102,6 +110,19 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     this.props.dispatch(alertActions.clear());
   }
 
+  closeOtpModal() {
+    this.setState({
+      otp_modal: false
+    })
+  }
+
+  openOtpModal() {
+    this.setState({
+      otp_modal: true
+    })
+    this.props.dispatch(alertActions.clear());
+  }
+
   componentDidMount() {
     this.props.dispatch(walletActions.getInfo());
     this.props.dispatch(transactionActions.getNewest());
@@ -118,6 +139,16 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   handleSubmit(e) {
     e.preventDefault();
     this.props.dispatch(walletActions.transfer(this.state.transfer_info));
+    this.closeModal();
+    setTimeout(() => {
+      this.setState({
+        is_pending: true,
+        is_newest: false,
+        is_me: false
+      })
+      this.props.dispatch(walletActions.getInfo());
+      this.props.dispatch(transactionActions.getPending());
+    }, 1000)
   }
 
   handleMe(e) {
@@ -163,12 +194,52 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     })
     this.props.dispatch(adminActions.getTransactions(1));      
   }
+
+  handleConfirm(e) {
+    e.preventDefault();
+    const t_id = e.target.getAttribute('data-content');
+    this.setState({
+      confirm_id: t_id
+    })
+    this.openOtpModal();
+  }
+
+  handleChangeOtp(e) {
+    this.setState({
+      otp_code: e.target.value
+    })
+  }
+
+  handleSubmitConfirm(e) {
+    e.preventDefault();
+    this.props.dispatch(transactionActions.confirmTransaction(this.state.confirm_id, this.state.otp_code));
+    this.closeOtpModal();
+    setTimeout(() => {
+      this.setState({
+        is_pending: true,
+        is_newest: false,
+        is_me: false
+      })
+      this.props.dispatch(transactionActions.getPending());
+      this.props.dispatch(walletActions.getInfo());
+    }, 1000)
+  }
+
+  handleDelete(e) {
+    const t_id = e.target.getAttribute('data-content');
+    transactionServices.deleteTransaction(t_id).then( res => {
+      this.props.dispatch(transactionActions.getPending());
+      this.props.dispatch(walletActions.getInfo());
+    });
+  }
+
   handleChange(e) {
     e.preventDefault();
     if (e.target.name == 'transaction[recipient_id]')
       this.state.transfer_info.recipient_id = e.target.value
     if (e.target.name == 'transaction[amount]')
       this.state.transfer_info.amount = e.target.value
+    this.setState(this.state);;
   }
   getUserPage(r){
     this.props.dispatch(adminActions.getAllUsersInfo(r));       
@@ -190,6 +261,8 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
                   handleMe={this.handleMe.bind(this)}
                   handleNewest={this.handleNewest.bind(this)}
                   handlePending={this.handlePending.bind(this)}
+                  handleConfirm={this.handleConfirm.bind(this)}
+                  handleDelete={this.handleDelete.bind(this)}
                   transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}
                   is_me={this.state.is_me}
                   is_newest={this.state.is_newest}
@@ -221,6 +294,13 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
             </WalletForm>
           </ModalBody>
         </Modal>
+
+        <TwoFactorForm closeModal={this.closeOtpModal.bind(this)}
+                       openModal={this.openOtpModal.bind(this)}
+                       modal={this.state.otp_modal}
+                       handleSubmit={this.handleSubmitConfirm.bind(this)}
+                       handleChange={this.handleChangeOtp.bind(this)}>
+        </TwoFactorForm>
       </Header>
     );
   }

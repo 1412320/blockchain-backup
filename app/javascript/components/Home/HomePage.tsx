@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Row, Col, Button, Card, CardText,
          CardBody, CardTitle, CardSubtitle, Table } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { TransactionInfo } from '../../containers';
 import { TransactionsTable } from './TransactionsTable';
@@ -16,10 +17,12 @@ interface HomePageProps {
   handlePending() :void,
   is_me: boolean,
   is_newest: boolean,
-  is_pending: boolean
+  is_pending: boolean,
+  handleDelete() :void,
+  handleConfirm():void
 }
 
-export class HomePage extends React.Component<HomePageProps, {}> {
+export class HomePage extends React.Component<HomePageProps> {
   constructor(props: HomePageProps) {
     super(props);
   }
@@ -44,13 +47,13 @@ export class HomePage extends React.Component<HomePageProps, {}> {
         </Col>
         <Col sm="12" md="9">
           <div className="wallet-card">
-            <Card className="card-transcription">
+            <Card>
               <Row>
                 <Col lg="6" sm="12">
                   <CardTitle>
-                    {`${this.props.is_pending? 'PENDING ' : ''}`}
-                    {`${this.props.is_me? 'MY ' : ''}`}
-                    {`${this.props.is_newest? 'NEWEST ' : ''}`}
+                    {this.props.is_pending ? 'PENDING ' : ''}
+                    {this.props.is_me ? 'MY ' : ''}
+                    {this.props.is_newest ? 'NEWEST ' : ''}
                     TRANSACTIONS
                   </CardTitle>
                 </Col>
@@ -64,7 +67,9 @@ export class HomePage extends React.Component<HomePageProps, {}> {
                 {
                   !this.props.is_pending?
                   <TransactionsTable transactions={this.props.transactions} page={1}/> :
-                  <PendingsTable transactions={this.props.transactions}/>
+                  <PendingsTable transactions={this.props.transactions}
+                                 handleConfirm={this.props.handleConfirm}
+                                 handleDelete={this.props.handleDelete}/>
                 }
               </div>
             </Card>

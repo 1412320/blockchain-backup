@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { HashRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-
+import { authenHeader } from '../../helpers';
 import { history } from '../../helpers';
 import { alertActions } from '../../actions';
 import { AuthenRouter } from '../../containers';
@@ -11,6 +11,7 @@ import { ForgotPasswordPage } from '../ResetPassword';
 import { ResetPasswordPage } from '../ResetPassword';
 import { Header } from '../Commons';
 import { HomeContainer } from '../../containers';
+import { Detail } from '../Transactions';
 
 interface AppProps {
   dispatch: any,
@@ -32,7 +33,7 @@ class App extends React.Component<AppProps, {}> {
     return (
       <div>
         {alert.message &&
-          <div className={`alert ${alert.type}`}>{alert.message}</div>
+          <div className={`alert ${alert.type == 'alert-error' ? 'alert-danger' : 'alert-success'} `}>{alert.message}</div>
         }
         <HashRouter>
           <div>
@@ -41,6 +42,7 @@ class App extends React.Component<AppProps, {}> {
             <Route path="/users/sign_up" component={SignUpPage} />
             <Route path="/users/password/new" component={ForgotPasswordPage} />
             <Route path="/password_reset" component={ResetPasswordPage} />
+            <Route path="/transactions/:id" component={Detail}/>
           </div>
         </HashRouter>
       </div>

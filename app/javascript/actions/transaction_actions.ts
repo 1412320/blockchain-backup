@@ -1,10 +1,13 @@
 import { TransactionContants } from '../contants';
 import { transactionServices } from '../services';
+import { alertActions } from '../actions';
 
 export const transactionActions = {
   getMy,
   getNewest,
-  getPending
+  getPending,
+  getDetail,
+  confirmTransaction
 }
 
 function getMy() {
@@ -17,6 +20,7 @@ function getMy() {
         },
         error => {
           dispatch(failure(error));
+          dispatch(alertActions.error(error));
         }
     );
   }
@@ -51,6 +55,7 @@ function getNewest() {
         },
         error => {
           dispatch(failure(error));
+          dispatch(alertActions.error(error));
         }
     );
   }
@@ -85,6 +90,7 @@ function getPending() {
         },
         error => {
           dispatch(failure(error));
+          dispatch(alertActions.error(error));
         })
   };
   function request() {
@@ -103,6 +109,76 @@ function getPending() {
   function failure(error) {
     return {
       type: TransactionContants.ME_FAILURE,
+      error
+    }
+  }
+}
+
+function getDetail(t_id) {
+  return dispatch => {
+    dispatch(request());
+    transactionServices.getTransactionDetail(t_id)
+      .then(
+        transaction => {
+          dispatch(success(transaction))
+        },
+        error => {
+          dispatch(failure(error));
+          dispatch(alertActions.error(error));
+        }
+    );
+  }
+  function request() {
+    return {
+      type: TransactionContants.DETAIL_REQUEST,
+    }
+  }
+
+  function success(transaction) {
+    return {
+      type: TransactionContants.DETAIL_SUCCESS,
+      transaction
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: TransactionContants.DETAIL_FAILURE,
+      error
+    }
+  }
+}
+
+function confirmTransaction(t_id, otp_code) {
+  return dispatch => {
+    dispatch(request());
+    transactionServices.confirmTransaction(t_id, otp_code)
+      .then(
+        transaction => {
+          dispatch(success(transaction));
+        },
+        error => {
+          dispatch(failure(error));
+          dispatch(alertActions.error(error));
+        }
+    );
+  }
+  function request() {
+    return {
+      type: TransactionContants.CONFIRM_REQUEST,
+    }
+  }
+
+  function success(transaction) {
+    return {
+      type: TransactionContants.CONFIRM_SUCCESS,
+      transaction
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: TransactionContants.CONFIRM_FAILURE,
       error
     }
   }

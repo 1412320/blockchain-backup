@@ -31,7 +31,7 @@ class Api::V1::PendingTransactionsController < ApplicationController
         render json: { errors: "Not enough money" }, status: 400
       end
     else
-      render json: { errors: "Wrong OTP code" }, code: 400
+      render json: { errors: "Wrong OTP code" }, status: 400
     end
   end
 
@@ -40,7 +40,7 @@ class Api::V1::PendingTransactionsController < ApplicationController
     if pending
       pending.destroy
     end
-    head 204    
+    head 204
   end
   def system_pending_transactions
     page = params[:page_number].to_i
