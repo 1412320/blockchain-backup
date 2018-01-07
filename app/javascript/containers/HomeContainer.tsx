@@ -4,6 +4,7 @@ import { Header, SubHeader, AdminSubHeader } from '../components/Commons';
 import { HomePage, WalletForm, AdminPage } from '../components/Home';
 import { walletActions, alertActions, transactionActions } from '../actions';
 import { TwoFactorForm } from '../components/TwoFactorAuth';
+import { transactionServices } from '../services';
 import { connect } from 'react-redux';
 import { adminActions } from '../actions';
 
@@ -139,6 +140,15 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     e.preventDefault();
     this.props.dispatch(walletActions.transfer(this.state.transfer_info));
     this.closeModal();
+    setTimeout(() => {
+      this.setState({
+        is_pending: true,
+        is_newest: false,
+        is_me: false
+      })
+      this.props.dispatch(walletActions.getInfo());
+      this.props.dispatch(transactionActions.getPending());
+    }, 1000)
   }
 
   handleMe(e) {
@@ -204,11 +214,14 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     e.preventDefault();
     this.props.dispatch(transactionActions.confirmTransaction(this.state.confirm_id, this.state.otp_code));
     this.closeOtpModal();
-    this.props.dispatch(transactionActions.getPending());
   }
 
   handleDelete(e) {
-    e.preventDefault();
+    const t_id = e.target.getAttribute('data-content');
+    transactionServices.deleteTransaction(t_id).then( res => {
+      this.props.dispatch(transactionActions.getPending());
+      this.props.dispatch(walletActions.getInfo());
+    });
   }
 
   handleChange(e) {

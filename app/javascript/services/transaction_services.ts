@@ -5,7 +5,8 @@ export const transactionServices = {
   getNewestTransaction,
   getPendingTransaction,
   getTransactionDetail,
-  confirmTransaction
+  confirmTransaction,
+  deleteTransaction
 }
 
 function getMyTransaction() {

@@ -1,5 +1,6 @@
 import { TransactionContants } from '../contants';
 import { transactionServices } from '../services';
+import { alertActions } from '../actions';
 
 export const transactionActions = {
   getMy,
@@ -150,7 +151,7 @@ function confirmTransaction(t_id, otp_code) {
     transactionServices.confirmTransaction(t_id, otp_code)
       .then(
         transaction => {
-          dispatch(success(transaction))
+          dispatch(success(transaction));
         },
         error => {
           dispatch(failure(error));
