@@ -5,7 +5,7 @@ class Api::V1::AdminController < ApplicationController
     users_info = Array.new
     @users.each do |user|
       users_info.push({
-        user: user,
+        email: email,
         address: user.wallet.address,
         real_amount: user.wallet.real_amount,
         available_amount: user.wallet.available_amount
