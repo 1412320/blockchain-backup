@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Input, Card, CardTitle, CardText, Table } from 'reactstrap';
-import { Header } from '../Commons';
+import { Header, Footer } from '../Commons';
 import { transactionActions } from '../../actions';
 
 interface DetailProps {
@@ -44,14 +44,15 @@ class Detail extends React.Component<DetailProps, DetailState> {
 
   render() {
     return(
-      <Header>
-        <div className="wallet-card">
+      <div>
+        <Header></Header>
+        <div className="container wallet-card">
           <Card className="card-transaction">
             <CardTitle>TRANSACTION DETAIL</CardTitle>
             { this.props.transaction ?
               <div>
                 <CardText><strong>Hash: </strong>{this.props.transaction.hash}</CardText>
-                <div className="card-table container">
+                <div className="card-table">
                   <Table>
                     <thead>
                       <tr>
@@ -91,14 +92,14 @@ class Detail extends React.Component<DetailProps, DetailState> {
             }
           </Card>
         </div>
-      </Header>
+        <Footer></Footer>
+      </div>
     );
   }
 }
 
 function mapStateToProps(state) {
   const { transaction } = state.get_detail;
-  console.log(transaction);
   return {
     transaction
   };
