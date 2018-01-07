@@ -22,7 +22,7 @@ interface SignInState {
 class SignInPage extends React.Component<SignInProps, SignInState> {
   constructor(props: SignInProps) {
     super(props);
-    this.props.dispatch(UserActions.signout());
+    // this.props.dispatch(UserActions.signout());
     this.state = {
       email: '',
       password: '',
@@ -71,7 +71,7 @@ class SignInPage extends React.Component<SignInProps, SignInState> {
           </div>
           <div className="form-group">
             <button className="btn btn-login">Continue</button>
-            <Link to="/users/password/new" className="btn btn-link">Forgot your password</Link>            
+            <Link to="/users/password/new" className="btn btn-link">Forgot your password</Link>
             <Link to="/users/sign_up" className="btn btn-link">Sign Up</Link>
           </div>
         </form>

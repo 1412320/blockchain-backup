@@ -2,6 +2,7 @@ import { AdminContants } from '../contants';
 import { adminServices } from '../services';
 import { alertActions } from './';
 import { TransactionInfo } from '../containers';
+import { clear_alert } from '../helpers';
 
 export const adminActions = {
   getAllUsersInfo,
@@ -18,9 +19,9 @@ function getAllUsersInfo(page) {
             dispatch(success(response));
           },
           error => {
-            console.log(error)
             dispatch(failure(error));
             dispatch(alertActions.error(error));
+            clear_alert(dispatch);
           }
         );
   }
@@ -56,6 +57,7 @@ function getSystemInfo() {
           error => {
             dispatch(failure(error));
             dispatch(alertActions.error(error));
+            clear_alert(dispatch);
           }
         );
   }

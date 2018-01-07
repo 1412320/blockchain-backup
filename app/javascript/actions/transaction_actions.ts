@@ -20,6 +20,7 @@ function getMy() {
         },
         error => {
           dispatch(failure(error));
+          dispatch(alertActions.error(error));
         }
     );
   }
@@ -54,6 +55,7 @@ function getNewest() {
         },
         error => {
           dispatch(failure(error));
+          dispatch(alertActions.error(error));
         }
     );
   }
@@ -88,6 +90,7 @@ function getPending() {
         },
         error => {
           dispatch(failure(error));
+          dispatch(alertActions.error(error));
         })
   };
   function request() {
@@ -121,6 +124,7 @@ function getDetail(t_id) {
         },
         error => {
           dispatch(failure(error));
+          dispatch(alertActions.error(error));
         }
     );
   }
@@ -155,6 +159,7 @@ function confirmTransaction(t_id, otp_code) {
         },
         error => {
           dispatch(failure(error));
+          dispatch(alertActions.error(error));
         }
     );
   }

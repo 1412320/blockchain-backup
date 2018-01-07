@@ -214,6 +214,15 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     e.preventDefault();
     this.props.dispatch(transactionActions.confirmTransaction(this.state.confirm_id, this.state.otp_code));
     this.closeOtpModal();
+    setTimeout(() => {
+      this.setState({
+        is_pending: true,
+        is_newest: false,
+        is_me: false
+      })
+      this.props.dispatch(transactionActions.getPending());
+      this.props.dispatch(walletActions.getInfo());
+    }, 1000)
   }
 
   handleDelete(e) {

@@ -33,7 +33,7 @@ class App extends React.Component<AppProps, {}> {
     return (
       <div>
         {alert.message &&
-          <div className={`alert ${alert.type}`}>{alert.message}</div>
+          <div className={`alert ${alert.type == 'alert-error' ? 'alert-danger' : 'alert-success'} `}>{alert.message}</div>
         }
         <HashRouter>
           <div>
