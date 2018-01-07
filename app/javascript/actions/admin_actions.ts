@@ -47,8 +47,8 @@ function getSystemInfo() {
     dispatch(request());
     adminServices.getSystemInfo()
         .then(
-          (response) => {
-            dispatch(success(response));
+          (response: {user_count: number, system_real_amount: number, system_available_amount: number}) => {
+            dispatch(success(response.user_count, response.system_real_amount, response.system_available_amount));
             dispatch(alertActions.success("success"));
           },
           error => {
@@ -60,13 +60,13 @@ function getSystemInfo() {
 
   function request() {
     return {
-      type: AdminContants.ALL_USERS_INFO_REQUEST,
+      type: AdminContants.SYSTEM_INFO_REQUEST,
     }
   }
 
   function success(user_count, system_real_amount, system_vailable_amount) {
     return {
-      type: AdminContants.ALL_USERS_INFO_SUCCESS,
+      type: AdminContants.SYSTEM_INFO_SUCCESS,
       user_count,
       system_real_amount,
       system_vailable_amount
@@ -75,7 +75,7 @@ function getSystemInfo() {
 
   function failure(error) {
     return {
-      type: AdminContants.ALL_USERS_INFO_FAILURE,
+      type: AdminContants.SYSTEM_INFO_FAILURE,
       error
     }
   }
