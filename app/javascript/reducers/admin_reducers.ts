@@ -3,8 +3,8 @@ const initState = {
   users: [],
   user_count: 0,
   system_available_amount: 0,
-  system_real_amount: 0
-
+  system_real_amount: 0,
+  system_transactions: []
 };
 
 
@@ -27,6 +27,14 @@ export function admin(state = initState, action) {
         'system_available_amount': action.system_available_amount,        
     });
     case AdminContants.SYSTEM_INFO_FAILURE:
+      return {}
+    case AdminContants.CONFIRMED_TRANSACTIONS_REQUEST:
+      return state;
+    case AdminContants.CONFIRMED_TRANSACTIONS_SUCCESS:
+      return Object.assign({}, state, {
+        'system_transactions': action.transactions,
+    });
+    case AdminContants.CONFIRMED_TRANSACTIONS_FAILURE:
       return {}
     default:
       return state;
