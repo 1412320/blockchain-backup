@@ -18,6 +18,9 @@ Rails.application.routes.draw do
       resources :transactions, only: [:create, :index, :show] do
         get 'my', on: :collection  
       end
+      resources :pending_transactions, only: [:index, :destroy] do
+        post 'confirm', on: :member
+      end
     end
   end
   get 'users/password/edit/:token', to: 'api/v1/passwords#reset'

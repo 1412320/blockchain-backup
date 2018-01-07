@@ -5,6 +5,8 @@ class Wallet < ApplicationRecord
   end
 
   def available_amount
-    Output.get_confirm_receive(address).where(is_used: false).sum(:amount)
+    amount = Output.get_confirm_receive(address).where(is_used: false).sum(:amount)
+    pending = PendingTransaction.where(user_id: user_id).sum(:amount)
+    amount - pending
   end
 end
