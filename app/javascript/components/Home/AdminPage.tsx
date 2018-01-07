@@ -68,7 +68,6 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
   getUserPage(r){
     if ((r >0) && (r <= this.initPageNumbers(this.props.user_count).length)){
       this.props.getUserPage(r);
-      console.log(r)    
       this.setState({
         users: this.props.users,
         activePage: r
@@ -78,7 +77,6 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
   getTransactionPage(r, type){
     if ((r >0) && (r <= this.initPageNumbers(this.props.transactions_count).length)){
       this.props.getTransactionsPage(r, type);
-      console.log(r)    
       this.setState({
         transactions: this.props.transactions,
         activeTransPage: r

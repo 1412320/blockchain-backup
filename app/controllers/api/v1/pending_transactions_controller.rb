@@ -44,7 +44,16 @@ class Api::V1::PendingTransactionsController < ApplicationController
   end
   def system_pending_transactions
     page = params[:page_number].to_i
-    @transactions = PendingTransaction.all
-    render json: {transactions: @transactions[10*(page-1),10], total: @transactions.length}, status: 200
+    @transactions = PendingTransaction.all.limit(10).offset(10*(page-1)).to_a
+    @transactions.map! do |pending|
+      sender = pending.user.wallet.address
+      {
+        id: pending.id,
+        sender: sender,
+        receiver: pending.receiver,
+        value: pending.amount
+      }
+    end
+    render json: {transactions: @transactions, total: @transactions.length}, status: 200
   end
 end

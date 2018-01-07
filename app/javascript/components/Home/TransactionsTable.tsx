@@ -12,6 +12,12 @@ export class TransactionsTable extends React.Component< TransactionsTableProps ,
   constructor(props: TransactionsTableProps) {
     super(props);
   }
+  shouldComponentUpdate(nextProps , nextState) {
+    if (nextProps.transactions.length > 0 && nextProps.transactions[0].hash){
+      return true;
+    }
+    return false;
+  }
 
   render() {
     return (
@@ -26,7 +32,7 @@ export class TransactionsTable extends React.Component< TransactionsTableProps ,
           </tr>
         </thead>
         <tbody>
-        { this.props.transactions.length > 0 ?
+        { this.props.transactions.length > 0 && this.props.transactions[0].hash ?
           this.props.transactions.map((e, i) => (
             <tr key={i}>
               <th scope="row" className="col-1">{10*(this.props.page-1) + i + 1}</th>
