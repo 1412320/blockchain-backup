@@ -3,7 +3,8 @@ import { authenHeader } from '../helpers';
 
 export const adminServices = {
   getAllUsersInfo,
-  getSystemInfo
+  getSystemInfo,
+  getTransactions
 }
 function getAllUsersInfo(page)
 {
