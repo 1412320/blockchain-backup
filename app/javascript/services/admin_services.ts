@@ -38,3 +38,20 @@ function getSystemInfo()
     })
   })
 }
+function getTransactions(page)
+{
+  return new Promise((resolve, reject) => {
+  axios({
+      method: 'GET',
+      url: '/api/v1/system-confirmed-transactions',
+      headers: authenHeader(),
+      params: {"page_number": page}
+    })
+    .then(response => {
+      resolve(response.data);
+    })
+    .catch(error => {
+      reject(error);
+    })
+  })
+}

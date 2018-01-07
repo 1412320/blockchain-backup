@@ -173,7 +173,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     return (
       <Header>
         <SubHeader toggle={this.openModal.bind(this)} wallet_address={this.props.wallet_address}></SubHeader>
-        {this.props.role ? <HomePage real_amount={this.props.real_amount}
+        {this.props.role == 1 ? <HomePage real_amount={this.props.real_amount}
                   available_amount={this.props.available_amount}
                   dispatch={this.props.dispatch}
                   handleMe={this.handleMe.bind(this)}
