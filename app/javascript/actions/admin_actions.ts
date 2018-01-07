@@ -6,7 +6,8 @@ import { TransactionInfo } from '../containers';
 export const adminActions = {
   getAllUsersInfo,
   getSystemInfo,
-  getTransactions
+  getTransactions,
+  getPendingTransactions
 }
 function getAllUsersInfo(page) {
   return dispatch => {
@@ -115,6 +116,44 @@ function getTransactions(page) {
   function failure(error) {
     return {
       type: AdminContants.CONFIRMED_TRANSACTIONS_FAILURE,
+      error
+    }
+  }
+}
+function getPendingTransactions(page) {
+  return dispatch => {
+    dispatch(request({page}));
+    adminServices.getPendingTransactions(page)
+        .then(
+          (response: {transactions: Array<TransactionInfo>, total:number}) => {
+            dispatch(success(response.transactions, response.total));
+          },
+          error => {
+            console.log(error)
+            dispatch(failure(error));
+            dispatch(alertActions.error(error));
+          }
+        );
+  }
+
+  function request(page) {
+    return {
+      type: AdminContants.PENDING_TRANSACTIONS_REQUEST,
+    }
+  }
+
+  function success(transactions, total) {
+    console.log(total)    
+    return {
+      type: AdminContants.PENDING_TRANSACTIONS_SUCCESS,
+      transactions,
+      total
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: AdminContants.PENDING_TRANSACTIONS_FAILURE,
       error
     }
   }
