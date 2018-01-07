@@ -1,10 +1,9 @@
 import { WalletContants } from '../contants';
 import { walletServices } from '../services';
+import { alertActions } from '../actions';
 
 export const walletActions = {
   getInfo,
-  getAll,
-  getNewest,
   transfer
 }
 
@@ -13,11 +12,13 @@ function getInfo() {
     dispatch(request());
     walletServices.getWalletInfo()
       .then(
-        (response: {wallet_address: string, real_amount: number}) => {
-          dispatch(success(response.wallet_address, response.real_amount))
+        (response: {wallet_address: string, real_amount: number, available_amount: number}) => {
+          dispatch(success(response.wallet_address, response.real_amount, response.available_amount))
+          dispatch(walletServices.getWalletInfo());
         },
         error => {
-          dispatch(failure())
+          dispatch(failure(error))
+          dispatch(alertActions.error(error));
         }
       );
   }
@@ -27,77 +28,19 @@ function getInfo() {
     }
   }
 
-  function success(wallet_address, real_amount) {
+  function success(wallet_address, real_amount, available_amount) {
     return {
       type: WalletContants.INFO_SUCCESS,
       wallet_address,
-      real_amount
+      real_amount,
+      available_amount
     }
   }
 
-  function failure() {
+  function failure(error) {
     return {
-      type: WalletContants.INFO_FAILURE
-    }
-  }
-}
-
-function getAll() {
-  return dispatch => {
-    dispatch(request());
-    walletServices.getAllTransaction()
-      .then(
-        dispatch(success())
-      )
-      .catch(
-        dispatch(failure())
-      );
-  }
-  function request() {
-    return {
-      type: WalletContants.ALL_REQUEST
-    }
-  }
-
-  function success() {
-    return {
-      type: WalletContants.ALL_SUCCESS
-    }
-  }
-
-  function failure() {
-    return {
-      type: WalletContants.ALL_FAILURE
-    }
-  }
-}
-
-function getNewest() {
-  return dispatch => {
-    dispatch(request());
-    walletServices.getNewestTransaction()
-      .then(
-        dispatch(success())
-      )
-      .catch(
-        dispatch(failure())
-      );
-  }
-  function request() {
-    return {
-      type: WalletContants.NEWEST_REQUEST
-    }
-  }
-
-  function success() {
-    return {
-      type: WalletContants.NEWEST_SUCCESS
-    }
-  }
-
-  function failure() {
-    return {
-      type: WalletContants.TRANSFER_FAILURE
+      type: WalletContants.INFO_FAILURE,
+      error
     }
   }
 }
@@ -109,27 +52,31 @@ function transfer(transactions) {
       .then(
         transactions => {
           dispatch(success(transactions))
+        },
+        error => {
+          dispatch(failure(error));
+          dispatch(alertActions.error(error));
         }
       )
-      .catch(
-        dispatch(failure(transactions))
-      );
   }
   function request(transactions) {
     return {
-      type: WalletContants.INFO_REQUEST
+      type: WalletContants.TRANSFER_REQUEST,
+      transactions
     }
   }
 
   function success(transactions) {
     return {
-      type: WalletContants.INFO_SUCCESS
+      type: WalletContants.TRANSFER_SUCCESS,
+      transactions
     }
   }
 
-  function failure(transactions) {
+  function failure(error) {
     return {
-      type: WalletContants.INFO_FAILURE
+      type: WalletContants.TRANSFER_FAILURE,
+      error
     }
   }
 }

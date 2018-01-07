@@ -17,7 +17,7 @@ interface ResetPasswordState {
     reset_password_token: string,
     password: string,
     password_confirmation: string,
-  },  
+  },
   is_submit: boolean
 }
 
@@ -30,7 +30,7 @@ class ResetPasswordPage extends React.Component<ResetPasswordProps, ResetPasswor
         reset_password_token: '',
         password: '',
         password_confirmation: ''
-      },     
+      },
       is_submit: false
     };
 
@@ -54,22 +54,20 @@ class ResetPasswordPage extends React.Component<ResetPasswordProps, ResetPasswor
   };
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.getUrlParameter())
     this.setState( {
       is_submit: true,
       user: {
         reset_password_token: this.getUrlParameter(),
         password: this.state.user.password,
-        password_confirmation: this.state.user.password_confirmation      
+        password_confirmation: this.state.user.password_confirmation
       }
     }, () => {
       const {user} = this.state;
-      console.log("jdnskda"  + this.state.user.reset_password_token)
       const { dispatch } = this.props;
       if (user.reset_password_token && user.password && user.password_confirmation) {
         dispatch(UserActions.resetpassword(user));
       }
-    });    
+    });
   }
   render() {
     const { user, is_submit } = this.state;
@@ -84,7 +82,7 @@ class ResetPasswordPage extends React.Component<ResetPasswordProps, ResetPasswor
               <div className="help-block">Password is required</div>
             }
           </div>
-          
+
           <div className='form-group'>
             <label htmlFor="password_confirmation">Password confirmation</label>
             <input type="password" className={'form-control' + (is_submit && !user.password_confirmation ? ' login-alert' : '')}

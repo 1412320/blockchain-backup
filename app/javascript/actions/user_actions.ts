@@ -57,6 +57,7 @@ function signin(email, password) {
       .then(
         user => {
           dispatch(success(user));
+          dispatch(alertActions.clear());
         },
         error => {
           dispatch(failure(error));
