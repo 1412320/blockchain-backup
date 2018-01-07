@@ -7,7 +7,7 @@ export class Header extends React.Component<{}, {}> {
     return (
       <div>
         <Navbar className="nav-header" expand="md">
-          <NavbarBrand className="banner">BLOCKCHAIN</NavbarBrand>
+            <Link to="/" className="banner navbar-brand">BLOCKCHAIN</Link>
             <Nav className="ml-auto" navbar>
               <NavItem>
                 <Link to="/users/sign_in">Logout</Link>

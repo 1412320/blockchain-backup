@@ -90,20 +90,20 @@ function getPending() {
   };
   function request() {
     return {
-      type: TransactionContants.ME_REQUEST
+      type: TransactionContants.PENDING_REQUEST
     }
   }
 
   function success(transactions) {
     return {
-      type: TransactionContants.ME_SUCCESS,
+      type: TransactionContants.PENDING_SUCCESS,
       transactions
     }
   }
 
   function failure(error) {
     return {
-      type: TransactionContants.ME_FAILURE,
+      type: TransactionContants.PENDING_FAILURE,
       error
     }
   }

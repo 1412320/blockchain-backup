@@ -25,22 +25,10 @@ export function get_my(state = {}, action) {
 export function get_pending(state = {}, action) {
   switch(action.type) {
     case TransactionContants.PENDING_REQUEST:
-      return {
-        transactions: {
-          id: action.id,
-          sender: action.sender,
-          receiver: action.receiver,
-          value: action.value
-        }
-      }
+      return {}
     case TransactionContants.PENDING_SUCCESS:
       return {
-        transactions: {
-          id: action.id,
-          sender: action.sender,
-          receiver: action.receiver,
-          value: action.value
-        }
+        transactions: action.transactions
       }
     case TransactionContants.PENDING_FAILURE:
       return {}
