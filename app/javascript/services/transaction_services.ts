@@ -10,11 +10,9 @@ function getMyTransaction() {
   return new Promise((resolve, reject) => {
     axios.get('/api/v1/transactions/me')
     .then(response => {
-      console.log(response);
       resolve(response.data.data);
     })
     .catch(error => {
-      console.log(error);
       reject(error);
     })
   })

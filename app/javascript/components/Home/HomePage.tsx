@@ -44,7 +44,7 @@ export class HomePage extends React.Component<HomePageProps, {}> {
           <div className="wallet-card">
             <Card className="card-transcription">
               <Row>
-                <Col lg="8" sm="12">
+                <Col lg="6" sm="12">
                   <CardTitle>
                     {`${this.props.is_pending? 'PENDING ' : ''}`}
                     {`${this.props.is_me? 'MY ' : ''}`}
@@ -52,7 +52,7 @@ export class HomePage extends React.Component<HomePageProps, {}> {
                     TRANSACTIONS
                   </CardTitle>
                 </Col>
-                <Col lg="4" sm="4">
+                <Col lg="6" sm="4" className="d-flex justify-content-end">
                   <Button disabled={!!this.props.is_newest} className="btn-newest" onClick={this.props.handleNewest}>Newest</Button>
                   <Button disabled={!!this.props.is_me} className="btn-me" onClick={this.props.handleMe}>Me</Button>
                   <Button disabled={!!this.props.is_pending} className="btn-pending" onClick={this.props.handlePending}>Pending</Button>

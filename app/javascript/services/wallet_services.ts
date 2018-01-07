@@ -33,7 +33,6 @@ function transferCoin(transactions) {
       resolve(response);
     })
     .catch(error => {
-      console.log(error);
       reject(error.response.statusText);
     })
   })
