@@ -8,7 +8,6 @@ export function admin(state = {}, action) {
       }
     case AdminContants.ALL_USERS_INFO_SUCCESS:
       return {
-
         users: action.users     
       }
     case AdminContants.ALL_USERS_INFO_FAILURE:

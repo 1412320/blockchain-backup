@@ -5,8 +5,14 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { adminActions } from '../../actions';
 import {UserTable} from './index'
+interface UserInfo {
+  email: string,
+  address: string,
+  available_amount: string,
+  real_amount: string
+}
 interface AdminPageProps {
-  users: Array<any>
+  users: Array<UserInfo>
 }
 
 interface AdminPageState {
@@ -27,6 +33,7 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
     }
   }
   render() {
+    console.log(this.props.users)
     return (
       <div>
         <Nav tabs>
@@ -59,7 +66,8 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
           <TabPane tabId="1">
           </TabPane>
           <TabPane tabId="2">
-            <UserTable users={this.props.users}/>
+            {this.props.users ? 
+            <UserTable users={this.props.users}/> : <UserTable users={new Array<UserInfo>()}/>}
           </TabPane>
           <TabPane tabId="3">
           </TabPane>

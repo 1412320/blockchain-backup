@@ -8,19 +8,25 @@ import { UserActions } from '../actions';
 import { connect } from 'react-redux';
 import { adminActions } from '../actions';
 
+interface UserInfo {
+  email: string,
+  address: string,
+  available_amount: string,
+  real_amount: string
+}
 interface HomeContainerProps {
   dispatch: any,
   wallet_address: string,
   real_amount: number,
   role: number,
-  users: Array<any> 
+  users: Array<UserInfo> 
 }
 
 interface HomeContainerState {
   wallet_address: string,
   real_amount: number,
   role: number,
-  users: Array<any>  
+  users: Array<UserInfo>  
 }
 
 class HomeContainer extends React.Component<HomeContainerProps, HomeContainerState> {
@@ -36,8 +42,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
 
   componentWillMount() {
     this.props.dispatch(walletActions.getInfo());
-    this.props.dispatch(adminActions.getAllUsersInfo(1));   
-    console.log(this.state.users)     
+    this.props.dispatch(adminActions.getAllUsersInfo(1)); 
   }
 
   render() {
@@ -46,7 +51,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
         <SubHeader wallet_address={this.props.wallet_address}></SubHeader>
         {this.state.role == 0 ? 
         <HomePage real_amount={this.props.real_amount}></HomePage> :
-        <AdminPage users={this.state.users}/>
+        <AdminPage users={this.props.users}/>
         }
       </Header>
     );
