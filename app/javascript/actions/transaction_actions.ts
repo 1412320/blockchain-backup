@@ -5,7 +5,8 @@ export const transactionActions = {
   getMy,
   getNewest,
   getPending,
-  getDetail
+  getDetail,
+  confirmTransaction
 }
 
 function getMy() {
@@ -138,6 +139,40 @@ function getDetail(t_id) {
   function failure(error) {
     return {
       type: TransactionContants.DETAIL_FAILURE,
+      error
+    }
+  }
+}
+
+function confirmTransaction(t_id) {
+  return dispatch => {
+    dispatch(request());
+    transactionServices.confirmTransaction(t_id)
+      .then(
+        transaction => {
+          dispatch(success(transaction))
+        },
+        error => {
+          dispatch(failure(error));
+        }
+    );
+  }
+  function request() {
+    return {
+      type: TransactionContants.CONFIRM_REQUEST,
+    }
+  }
+
+  function success(transaction) {
+    return {
+      type: TransactionContants.CONFIRM_SUCCESS,
+      transaction
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: TransactionContants.CONFIRM_FAILURE,
       error
     }
   }
