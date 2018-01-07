@@ -58,26 +58,26 @@ export class HomePage extends React.Component<HomePageProps, {}> {
                   <Button disabled={!!this.props.is_pending} className="btn-pending" onClick={this.props.handlePending}>Pending</Button>
                 </Col>
               </Row>
-              <div className="card-table">
+              <div className="transactions-card">
                 <Table>
                   <thead>
                     <tr>
-                      <th>#</th>
-                      {!this.props.is_pending? <th>Hash</th> : <th></th>}
-                      <th>Sender</th>
-                      <th>Reciever</th>
-                      <th>Amount</th>
+                      <th className="col-1">#</th>
+                      {!this.props.is_pending? <th className="col-3">Hash</th> : <th></th>}
+                      <th className="col-3">Sender</th>
+                      <th className="col-3">Reciever</th>
+                      <th className="col-2">Amount</th>
                     </tr>
                   </thead>
                   <tbody>
                   { this.props.transactions.length > 0 ?
                     this.props.transactions.map((e, i) => (
                       <tr key={i}>
-                        <th scope="row">{i + 1}</th>
-                        {!this.props.is_pending? <td>{e.hash.slice(0, 20)}...</td> : <td></td>}
-                        <td>{e.sender.slice(0, 25)}...</td>
-                        <td>{e.receiver.slice(0, 25)}...</td>
-                        <td>{e.value}</td>
+                        <th scope="row" className="col-1">{i + 1}</th>
+                        {!this.props.is_pending? <td className="col-3">{e.hash.slice(0, 20)}...</td> : <td></td>}
+                        <td className="col-3">{e.sender.slice(0, 20)}...</td>
+                        <td className="col-3">{e.receiver.slice(0, 20)}...</td>
+                        <td className="col-2">{e.value}</td>
                         </tr>
                       ))
                     : null
