@@ -5,6 +5,7 @@ import { alertActions } from './';
 export const adminActions = {
   getAllUsersInfo,
   getSystemInfo,
+  getTransactions
 }
 function getAllUsersInfo(page) {
   return dispatch => {
@@ -75,6 +76,42 @@ function getSystemInfo() {
   function failure(error) {
     return {
       type: AdminContants.SYSTEM_INFO_FAILURE,
+      error
+    }
+  }
+}
+function getTransactions(page) {
+  return dispatch => {
+    dispatch(request({page}));
+    adminServices.getTransactions(page)
+        .then(
+          (response) => {
+            dispatch(success(response));
+          },
+          error => {
+            console.log(error)
+            dispatch(failure(error));
+            dispatch(alertActions.error(error));
+          }
+        );
+  }
+
+  function request(page) {
+    return {
+      type: AdminContants.CONFIRMED_TRANSACTIONS_REQUEST,
+    }
+  }
+
+  function success(transactions) {
+    return {
+      type: AdminContants.CONFIRMED_TRANSACTIONS_SUCCESS,
+      transactions
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: AdminContants.CONFIRMED_TRANSACTIONS_FAILURE,
       error
     }
   }
