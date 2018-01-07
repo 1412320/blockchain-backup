@@ -14,9 +14,6 @@ export class Header extends React.Component<{}, {}> {
               </NavItem>
             </Nav>
         </Navbar>
-        <div className="container-fluid">
-          {this.props.children}
-        </div>
       </div>
     );
   }

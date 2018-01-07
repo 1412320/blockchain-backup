@@ -43,19 +43,46 @@
   src: font-url('Montserrat-ThinItalic.ttf') format("opentype");
 }
 
+html {
+  min-height: 100%;
+  position: relative;
+}
+
 body {
-  margin: 0px;
+  margin: 0 0 50px;
   padding: 0;
   display: flex;
   flex-direction: column;
   height: 100%;
   font-family: "Montserrat Regular", sans-serif !important;
- }
+}
 
- #alert {
-   color: red;
- }
+#alert {
+  color: red;
+}
 
- .alert {
-   margin-bottom: 0;
- }
+.alert {
+  margin-bottom: 0;
+}
+
+.content {
+  min-height: 100%;
+}
+
+.content-inside {
+  padding: 20px 20px 50px;
+}
+
+.footer {
+  bottom: 0;
+  width: 100%;
+  position: absolute;
+  height: 55px;
+  line-height: 40px;
+  background-color: #004a7c;
+  color: white;
+
+  .footer-block {
+    vertical-align: middle;
+  }
+}
