@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
-import { Header, SubHeader } from '../components/Commons';
+import { Header, SubHeader, AdminSubHeader } from '../components/Commons';
 import { HomePage, WalletForm, AdminPage } from '../components/Home';
 import { walletActions, alertActions, transactionActions } from '../actions';
 import { connect } from 'react-redux';
@@ -182,7 +182,8 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   render() {
     return (
       <Header>
-        <SubHeader toggle={this.openModal.bind(this)} wallet_address={this.props.wallet_address}></SubHeader>
+        {this.props.role == 1 ?<SubHeader toggle={this.openModal.bind(this)} wallet_address={this.props.wallet_address}></SubHeader>
+        : <AdminSubHeader />}
         {this.props.role == 1 ? <HomePage real_amount={this.props.real_amount}
                   available_amount={this.props.available_amount}
                   dispatch={this.props.dispatch}
