@@ -11,6 +11,7 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     @user = User.new(user_params)
+    @user.role = 1
     if @user.save
       auth_token = JsonWebToken.encode(user_id: @user.id)
       render :json => {
