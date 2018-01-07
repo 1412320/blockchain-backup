@@ -70,6 +70,15 @@
       font-weight: 300;
     }
   }
+  .card-transaction {
+    .card-text {
+      font-weight: 300;
+      text-align: left;
+      strong {
+        font-weight: bold;
+      }
+    }
+  }
 }
 
 .wallet-id {

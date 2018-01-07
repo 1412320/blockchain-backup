@@ -109,13 +109,13 @@ function getPending() {
   }
 }
 
-function getDetail() {
+function getDetail(t_id) {
   return dispatch => {
     dispatch(request());
-    transactionServices.getNewestTransaction()
+    transactionServices.getTransactionDetail(t_id)
       .then(
-        transactions => {
-          dispatch(success(transactions))
+        transaction => {
+          dispatch(success(transaction))
         },
         error => {
           dispatch(failure(error));
@@ -128,10 +128,10 @@ function getDetail() {
     }
   }
 
-  function success(transactions) {
+  function success(transaction) {
     return {
       type: TransactionContants.DETAIL_SUCCESS,
-      transactions
+      transaction
     }
   }
 

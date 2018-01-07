@@ -3,7 +3,8 @@ import axios from 'axios';
 export const transactionServices = {
   getMyTransaction,
   getNewestTransaction,
-  getPendingTransaction
+  getPendingTransaction,
+  getTransactionDetail
 }
 
 function getMyTransaction() {
@@ -46,7 +47,6 @@ function getTransactionDetail(t_id) {
   return new Promise((resolve, reject) => {
     axios.get(`/api/v1/transactions/${t_id}`)
     .then(response => {
-      console.log(response.data.data);
       resolve(response.data.data);
     })
     .catch(error => {

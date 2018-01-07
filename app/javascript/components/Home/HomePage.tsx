@@ -49,9 +49,9 @@ export class HomePage extends React.Component<HomePageProps> {
               <Row>
                 <Col lg="6" sm="12">
                   <CardTitle>
-                    {`${this.props.is_pending? 'PENDING ' : ''}`}
-                    {`${this.props.is_me? 'MY ' : ''}`}
-                    {`${this.props.is_newest? 'NEWEST ' : ''}`}
+                    {this.props.is_pending ? 'PENDING ' : ''}
+                    {this.props.is_me ? 'MY ' : ''}
+                    {this.props.is_newest ? 'NEWEST ' : ''}
                     TRANSACTIONS
                   </CardTitle>
                 </Col>

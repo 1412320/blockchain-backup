@@ -12,3 +12,5 @@ export function authenHeader() {
     return {};
   }
 }
+
+authenHeader();

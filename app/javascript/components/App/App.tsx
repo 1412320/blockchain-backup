@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { HashRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-
+import { authenHeader } from '../../helpers';
 import { history } from '../../helpers';
 import { alertActions } from '../../actions';
 import { AuthenRouter } from '../../containers';
