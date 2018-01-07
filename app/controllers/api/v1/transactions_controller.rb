@@ -19,8 +19,8 @@ class Api::V1::TransactionsController < ApplicationController
   end
 
   def index
-    per_page = params[:per_page].to_i || PER_PAGE
-    @transactions = @service.get_lastest_transactions per_page: per_page
+    per_page = params[:per_page] || PER_PAGE
+    @transactions = @service.get_lastest_transactions per_page: per_page.to_i
     render json: { data: @transactions, total: @transactions.length }, status: 200
   end
 

@@ -22,7 +22,7 @@ function getMyTransaction() {
 
 function getNewestTransaction() {
   return new Promise((resolve, reject) => {
-    axios.get('/api/v1/transactions')
+    axios.get('/api/v1/transactions?per_page=15')
     .then(response => {
       resolve(response.data.data);
     })
