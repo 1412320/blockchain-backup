@@ -1,4 +1,14 @@
 import { WalletContants } from '../contants';
+import { UserContants } from '../contants';
+
+const initState = { 
+  wallet_address: "",
+  real_amount: 0,
+  role: 0,
+  available_amount: 0,
+  used_tfa: false,
+  tfa_code: ""
+};
 
 
 export function get_info(state = {}, action) {
@@ -19,6 +29,14 @@ export function get_info(state = {}, action) {
         used_tfa: action.used_tfa
       }
     case WalletContants.INFO_FAILURE:
+      return {}
+    case UserContants.GET_TFA_CODE_REQUEST:
+      return state;
+    case UserContants.GET_TFA_CODE_SUCCESS:
+     return Object.assign({}, state, {
+        'tfa_code': action.tfa_code,   
+    });
+    case UserContants.GET_TFA_CODE_FAILURE:
       return {}
     default:
       return state;

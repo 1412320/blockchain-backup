@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       devise_scope :user do
        post 'authenticate_2_step', :to => 'sessions#authenticate_2_step'
       end
-      get 'tfa_code', :to => 'users#get_tfa_code'
+      get 'get-tfa-code', :to => 'users#get_tfa_code'
       resources :transactions, only: [:create, :index, :show] do
         get 'me', on: :collection
       end

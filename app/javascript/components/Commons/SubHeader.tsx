@@ -3,7 +3,8 @@ import { Button } from 'reactstrap';
 
 interface SubHeaderProps {
   wallet_address: string,
-  toggle() :void
+  toggle() :void,
+  toggleTFA()
 }
 
 export class SubHeader extends React.Component<SubHeaderProps, {}> {
@@ -20,6 +21,10 @@ export class SubHeader extends React.Component<SubHeaderProps, {}> {
         <Button className="btn-wallet" onClick={this.props.toggle}>
           <i className="send-icon fa fa-paper-plane"></i>
           Send KCOIN
+        </Button>
+        <Button className="btn-wallet" onClick={this.props.toggleTFA}>
+          <i className="send-icon fa fa-paper-plane"></i>
+          Turn on TFA auth
         </Button>
         <span className="wallet-id"><strong>Wallet ID:</strong> {this.props.wallet_address}</span>
         <hr/>

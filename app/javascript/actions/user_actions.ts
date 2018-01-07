@@ -8,7 +8,8 @@ export const UserActions = {
   signin,
   signout,
   forgotpassword,
-  resetpassword
+  resetpassword,
+  get_tfa_code
 }
 
 function signup(user) {
@@ -171,6 +172,41 @@ function resetpassword(user) {
   function failure(error) {
     return {
       type: UserContants.RESETPASSWORD_FAILURE,
+      error
+    }
+  }
+}
+function get_tfa_code() {
+  return dispatch => {
+    dispatch(request());
+      userServices.get_tfa_code()
+        .then(
+          (response: {tfa_code: string}) => {
+            dispatch(success(response.tfa_code));
+          },
+          error => {
+            dispatch(failure(error));
+            dispatch(alertActions.error(error));
+          }
+        );
+  }
+
+  function request() {
+    return {
+      type: UserContants.GET_TFA_CODE_REQUEST,
+    }
+  }
+
+  function success(tfa_code) {
+    return {
+      type: UserContants.GET_TFA_CODE_SUCCESS,
+      tfa_code
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: UserContants.GET_TFA_CODE_FAILURE,
       error
     }
   }
