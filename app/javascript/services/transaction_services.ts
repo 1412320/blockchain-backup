@@ -56,13 +56,16 @@ function getTransactionDetail(t_id) {
   })
 }
 
-function confirmTransaction(t_id) {
+function confirmTransaction(t_id, otp_code) {
   return new Promise((resolve, reject) => {
-    axios.post(`/api/v1/transactions/${t_id}/confirm`)
+    axios.post(`/api/v1/pending_transactions/${t_id}/confirm`, {
+      otp_code: otp_code
+    })
     .then(response => {
       resolve(response.data.data);
     })
     .catch(error => {
+      console.log(error);
       reject(error);
     })
   })

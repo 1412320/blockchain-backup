@@ -23,3 +23,18 @@ export function authentication(state = initState, action) {
       return state;
   }
 }
+
+export function verify_otp(state = {}, action) {
+  switch (action.type) {
+    case UserContants.OTP_REQUEST:
+      return {}
+    case UserContants.OTP_SUCCESS:
+      return {
+        
+      }
+    case UserContants.OTP_FAILURE:
+      return {}
+    default:
+      return state;
+  }
+}

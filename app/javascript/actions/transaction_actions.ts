@@ -144,10 +144,10 @@ function getDetail(t_id) {
   }
 }
 
-function confirmTransaction(t_id) {
+function confirmTransaction(t_id, otp_code) {
   return dispatch => {
     dispatch(request());
-    transactionServices.confirmTransaction(t_id)
+    transactionServices.confirmTransaction(t_id, otp_code)
       .then(
         transaction => {
           dispatch(success(transaction))

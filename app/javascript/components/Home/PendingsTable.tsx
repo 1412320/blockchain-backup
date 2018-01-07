@@ -35,8 +35,8 @@ export class PendingsTable extends React.Component< PendingsTableProps ,{}> {
               <td className="col-3">{e.receiver.slice(0, 20)}...</td>
               <td className="col-2">{e.value}</td>
               <td className="col-3">
-              <Button color="primary" className="btn-me" onClick={this.props.handleConfirm}>Confirm</Button>
-              <Button color="danger" className="btn-me" onClick={this.props.handleDelete}>Delete</Button>
+              <Button color="primary" className="btn-me" data-content={e.id} onClick={this.props.handleConfirm}>Confirm</Button>
+              <Button color="danger" className="btn-me" data-content={e.id} onClick={this.props.handleDelete}>Delete</Button>
               </td>
               </tr>
             ))

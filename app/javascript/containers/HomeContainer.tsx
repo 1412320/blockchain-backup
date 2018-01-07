@@ -3,6 +3,7 @@ import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { Header, SubHeader, AdminSubHeader } from '../components/Commons';
 import { HomePage, WalletForm, AdminPage } from '../components/Home';
 import { walletActions, alertActions, transactionActions } from '../actions';
+import { TwoFactorForm } from '../components/TwoFactorAuth';
 import { connect } from 'react-redux';
 import { adminActions } from '../actions';
 
@@ -38,6 +39,9 @@ interface HomeContainerState {
   user_count: number
   available_amount: number,
   modal: boolean,
+  otp_modal: boolean,
+  confirm_id: string,
+  otp_code: string,
   transfer_info: TransferInfo,
   is_me: boolean,
   is_newest: boolean,
@@ -74,6 +78,9 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
       system_real_amount: this.props.system_real_amount,
       available_amount: this.props.available_amount,
       modal: false,
+      otp_modal: false,
+      confirm_id: '',
+      otp_code: '',
       transfer_info: {
         recipient_id: '',
         amount: 0
@@ -98,6 +105,20 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   openModal() {
     this.setState({
       modal: true
+    })
+    this.props.dispatch(alertActions.clear());
+  }
+
+  closeOtpModal() {
+    this.setState({
+      otp_modal: false
+    })
+    this.props.dispatch(alertActions.clear());
+  }
+
+  openOtpModal() {
+    this.setState({
+      otp_modal: true
     })
     this.props.dispatch(alertActions.clear());
   }
@@ -166,6 +187,22 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
 
   handleConfirm(e) {
     e.preventDefault();
+    const t_id = e.target.getAttribute('data-content');
+    this.setState({
+      confirm_id: t_id
+    })
+    this.openOtpModal();
+  }
+
+  handleChangeOtp(e) {
+    this.setState({
+      otp_code: e.target.value
+    })
+  }
+
+  handleSubmitConfirm(e) {
+    e.preventDefault();
+    this.props.dispatch(transactionActions.confirmTransaction(this.state.confirm_id, this.state.otp_code));
   }
 
   handleDelete(e) {
@@ -178,6 +215,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
       this.state.transfer_info.recipient_id = e.target.value
     if (e.target.name == 'transaction[amount]')
       this.state.transfer_info.amount = e.target.value
+    this.setState(this.state);;
   }
   getUserPage(r){
     this.props.dispatch(adminActions.getAllUsersInfo(r));       
@@ -232,6 +270,13 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
             </WalletForm>
           </ModalBody>
         </Modal>
+
+        <TwoFactorForm closeModal={this.closeOtpModal.bind(this)}
+                       openModal={this.openOtpModal.bind(this)}
+                       modal={this.state.otp_modal}
+                       handleSubmit={this.handleSubmitConfirm.bind(this)}
+                       handleChange={this.handleChangeOtp.bind(this)}>
+        </TwoFactorForm>
       </Header>
     );
   }
