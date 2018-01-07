@@ -28,7 +28,7 @@ class Api::V1::SessionsController < Devise::SessionsController
   def authenticate_2_step
     @user = User.find(params[:user_id])
     auth_token = JsonWebToken.encode(user_id: @user.id)
-    if @user.authenticate_otp(params[:otp_code])
+    if @user.authenticate_otp(params[:otp_code].to_s)
       render :json => {
         :user => @user.as_json(:only => [:id, :email, :used_tfa]),
         :auth_token => auth_token,

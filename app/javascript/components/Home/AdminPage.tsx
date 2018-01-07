@@ -192,7 +192,8 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
                 {
                   !this.props.is_pending?
                   <TransactionsTable page={this.state.activeTransPage} transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}/> :
-                  <PendingsTable transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}/>
+                  <PendingsTable transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}
+                                 handleConfirm={null} handleDelete={null}/>
                 }
               </div>
             </Card>

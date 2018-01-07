@@ -8,7 +8,8 @@ export const userServices = {
   forgotpassword,
   resetpassword,
   get_tfa_code,
-  turn_on_tfa
+  turn_on_tfa,
+  authenticate_2_step
 }
 
 function signup(user) {
@@ -44,10 +45,6 @@ function signin(email, password) {
     .catch(function(e) {
       error = e.response.data.errors;
       reject(error);
-    })
-    .then(function(r) {
-      response = r;
-      return r;
     })
     .then(function(user:any) {
       if (user.data.auth_token) {
@@ -130,18 +127,26 @@ function turn_on_tfa()
     })
   })
 }
-function authenticate_2_step()
+function authenticate_2_step(user_id, otp_code)
 {
+  let response;
+  let error;
   return new Promise((resolve, reject) => {
   axios({
       method: 'POST',
       url: '/api/v1/authenticate_2_step',
+      params: {"user_id": user_id, "otp_code": otp_code}
     })
-    .then(response => {
-      resolve(response.data);
-    })
-    .catch(error => {
+    .catch(function(e) {
+      error = e.response.data.errors;
       reject(error);
     })
+    .then(function(user:any) {
+      if (user.data.auth_token) {
+        localStorage.setItem('user', JSON.stringify(user.data));
+        location.hash = "/";
+      }
+      resolve(user.data);
+    });
   })
 }

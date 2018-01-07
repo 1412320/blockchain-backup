@@ -19,6 +19,20 @@ export function authentication(state = initState, action) {
       };
     case UserContants.LOGIN_FAILURE:
       return {};
+    case UserContants.AUTHENTICATE_2_STEP_REQUEST:
+      return {
+        logged_in: true,
+        user: action.user,
+      };
+    case UserContants.AUTHENTICATE_2_STEP_SUCCESS:
+      return {
+        logged_in: true,
+        user: action.user,    
+      };
+    case UserContants.AUTHENTICATE_2_STEP_FAILURE:
+      return {
+        used_tfa: false
+      };
     case UserContants.LOGOUT:
       return {};
     default:

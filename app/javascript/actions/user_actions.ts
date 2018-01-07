@@ -10,7 +10,8 @@ export const UserActions = {
   forgotpassword,
   resetpassword,
   get_tfa_code,
-  turn_on_tfa
+  turn_on_tfa,
+  authenticate_2_step
 }
 
 function signup(user) {
@@ -243,6 +244,42 @@ function turn_on_tfa() {
   function failure(error) {
     return {
       type: UserContants.TURN_ON_TFA_FAILURE,
+      error
+    }
+  }
+}
+function authenticate_2_step(user_id, otp_code) {
+  return dispatch => {
+    dispatch(request());
+      userServices.authenticate_2_step(user_id, otp_code)
+      .then(
+        user => {
+          dispatch(success(user));
+          dispatch(alertActions.clear());
+        },
+        error => {
+          dispatch(failure(error));
+          dispatch(alertActions.error(error));
+        }
+      );
+  }
+
+  function request() {
+    return {
+      type: UserContants.AUTHENTICATE_2_STEP_REQUEST,
+    }
+  }
+
+  function success(user) {
+    return {
+      type: UserContants.AUTHENTICATE_2_STEP_SUCCESS,
+      user,
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: UserContants.AUTHENTICATE_2_STEP_FAILURE,
       error
     }
   }
