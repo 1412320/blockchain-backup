@@ -42,7 +42,7 @@ class App extends React.Component<AppProps, {}> {
             <Route path="/users/sign_up" component={SignUpPage} />
             <Route path="/users/password/new" component={ForgotPasswordPage} />
             <Route path="/password_reset" component={ResetPasswordPage} />
-            <Route path="/transactions/:id" component={Detail}/>
+            <AuthenRouter path="/transactions/:id" component={Detail}/>
           </div>
         </HashRouter>
       </div>

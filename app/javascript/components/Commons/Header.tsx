@@ -9,8 +9,10 @@ export class Header extends React.Component<{}, {}> {
         <Navbar className="nav-header" expand="md">
             <Link to="/" className="banner navbar-brand">BLOCKCHAIN</Link>
             <Nav className="ml-auto" navbar>
-              <NavItem>
-                <Link to="/users/sign_in">Logout</Link>
+              <NavItem >
+                <div onClick={ () => localStorage.removeItem('user') }>
+                  <Link to="/users/sign_in" >Logout</Link>
+                </div>
               </NavItem>
             </Nav>
         </Navbar>
