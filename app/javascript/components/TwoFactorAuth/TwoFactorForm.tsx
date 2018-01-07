@@ -23,7 +23,7 @@ export class TwoFactorForm extends React.Component<TwoFactorFormProps, {}> {
         </ModalHeader>
         <hr/>
         <ModalBody>
-          <Input type="text" name="tfa_code" placeholder="000000" onChange={this.props.handleChange}></Input>
+          <Input type="text" name="tfa_code" placeholder="123456" onChange={this.props.handleChange}></Input>
         </ModalBody>
         <Button color="success" onClick={this.props.handleSubmit}>CONFIRM</Button>
       </Modal>

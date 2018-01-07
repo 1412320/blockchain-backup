@@ -113,7 +113,6 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     this.setState({
       otp_modal: false
     })
-    this.props.dispatch(alertActions.clear());
   }
 
   openOtpModal() {
@@ -139,6 +138,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   handleSubmit(e) {
     e.preventDefault();
     this.props.dispatch(walletActions.transfer(this.state.transfer_info));
+    this.closeModal();
   }
 
   handleMe(e) {
@@ -203,6 +203,8 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   handleSubmitConfirm(e) {
     e.preventDefault();
     this.props.dispatch(transactionActions.confirmTransaction(this.state.confirm_id, this.state.otp_code));
+    this.closeOtpModal();
+    this.props.dispatch(transactionActions.getPending());
   }
 
   handleDelete(e) {

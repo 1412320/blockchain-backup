@@ -65,7 +65,6 @@ function confirmTransaction(t_id, otp_code) {
       resolve(response.data.data);
     })
     .catch(error => {
-      console.log(error);
       reject(error);
     })
   })
