@@ -10,22 +10,26 @@ if User.count < 3
     {
       email: 'minhluong96@gmail.com',
       password: '123456',
-      confirmed_at: Time.now
+      confirmed_at: Time.now,
+      role: 1
     },
     {
       email: 'quocminh97@gmail.com',
       password: '123456',
-      confirmed_at: Time.now
+      confirmed_at: Time.now,
+      role: 1
     },
     {
       email: 'ngoc120742@gmail.com',
       password: '123456',
-      confirmed_at: Time.now
+      confirmed_at: Time.now,
+      role: 1
     },
     {
       email: 'admin@gmail.com',
-      password: 'admin',
-      confirmed_at: Time.now
+      password: '123456',
+      confirmed_at: Time.now,
+      role: 0
     }
   ])
   wallet = Wallet.find_by(user_id: 1)
