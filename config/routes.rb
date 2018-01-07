@@ -17,6 +17,7 @@ Rails.application.routes.draw do
        post 'authenticate_2_step', :to => 'sessions#authenticate_2_step'
       end
       get 'get-tfa-code', :to => 'users#get_tfa_code'
+      post 'turn-on-tfa', :to => 'users#turn_on_tfa'      
       resources :transactions, only: [:create, :index, :show] do
         get 'me', on: :collection
       end
