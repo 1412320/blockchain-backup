@@ -34,7 +34,7 @@ function getPendingTransaction() {
   return new Promise((resolve, reject) => {
     axios.get('/api/v1/pending_transactions')
     .then(response => {
-      resolve(response);
+      resolve(response.data.data);
     })
     .catch(error => {
       reject(error);

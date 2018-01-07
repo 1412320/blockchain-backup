@@ -3,7 +3,8 @@ import { Row, Col, Button, Card, CardText,
          CardBody, CardTitle, CardSubtitle, Table } from 'reactstrap';
 import { connect } from 'react-redux';
 import { TransactionInfo } from '../../containers';
-import { TransactionsTable } from './TransactionsTable'
+import { TransactionsTable } from './TransactionsTable';
+import { PendingsTable } from './PendingsTable'
 
 interface HomePageProps {
   real_amount: number,
@@ -62,7 +63,8 @@ export class HomePage extends React.Component<HomePageProps, {}> {
               <div className="transactions-card">
                 {
                   !this.props.is_pending?
-                  <TransactionsTable transactions={this.props.transactions}/> : null
+                  <TransactionsTable transactions={this.props.transactions}/> :
+                  <PendingsTable transactions={this.props.transactions}/>
                 }
               </div>
             </Card>

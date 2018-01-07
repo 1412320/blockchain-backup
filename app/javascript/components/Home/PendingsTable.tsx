@@ -3,12 +3,12 @@ import { Row, Col, Button, Card, CardText,
          CardBody, CardTitle, CardSubtitle, Table } from 'reactstrap';
 import { TransactionInfo } from '../../containers';
          
-export interface TransactionsTableProps {
+export interface PendingsTableProps {
   transactions: Array<TransactionInfo>
 }
 
-export class TransactionsTable extends React.Component< TransactionsTableProps ,{}> {
-  constructor(props: TransactionsTableProps) {
+export class PendingsTable extends React.Component< PendingsTableProps ,{}> {
+  constructor(props: PendingsTableProps) {
     super(props);
   }
 
@@ -18,10 +18,10 @@ export class TransactionsTable extends React.Component< TransactionsTableProps ,
         <thead>
           <tr>
             <th className="col-1">#</th>
-            <th className="col-3">Hash</th> 
             <th className="col-3">Sender</th>
             <th className="col-3">Reciever</th>
             <th className="col-2">Amount</th>
+            <th className="col-3">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -29,15 +29,16 @@ export class TransactionsTable extends React.Component< TransactionsTableProps ,
           this.props.transactions.map((e, i) => (
             <tr key={i}>
               <th scope="row" className="col-1">{i + 1}</th>
-              <td className="col-3">{e.hash.slice(0, 20)}...</td> 
               <td className="col-3">{e.sender.slice(0, 20)}...</td>
               <td className="col-3">{e.receiver.slice(0, 20)}...</td>
               <td className="col-2">{e.value}</td>
+              <td className="col-3">
+              <Button color="primary" className="btn-me">Confirm</Button>
+              <Button color="danger" className="btn-me">Delete</Button>
+              </td>
               </tr>
             ))
-          : <div style={{marginTop: "50px"}} className="d-flex justify-content-center">
-            <i className="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
-          </div>
+          : null
         }
         </tbody>
       </Table>

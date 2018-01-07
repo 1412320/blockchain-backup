@@ -80,27 +80,30 @@ function getPending() {
     dispatch(request());
     transactionServices.getPendingTransaction()
       .then(
-        dispatch(success())
-      )
-      .catch(
-        dispatch(failure())
-      );
-  }
+        transactions => {
+          dispatch(success(transactions))
+        },
+        error => {
+          dispatch(failure(error));
+        })
+  };
   function request() {
     return {
       type: TransactionContants.ME_REQUEST
     }
   }
 
-  function success() {
+  function success(transactions) {
     return {
-      type: TransactionContants.ME_SUCCESS
+      type: TransactionContants.ME_SUCCESS,
+      transactions
     }
   }
 
-  function failure() {
+  function failure(error) {
     return {
-      type: TransactionContants.ME_FAILURE
+      type: TransactionContants.ME_FAILURE,
+      error
     }
   }
 }

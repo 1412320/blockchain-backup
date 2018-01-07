@@ -28,7 +28,7 @@ class Api::V1::TransactionsController < ApplicationController
     @address = current_user.wallet.address
     @outputs = Output.where(sender: @address).or(
       Output.where(receiver: @address)
-    )
+    ).order(id: :desc)
     @transactions = @outputs.map do |output|
       {
         hash: output.output_ref,
