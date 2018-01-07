@@ -9,7 +9,8 @@ export const UserActions = {
   signout,
   forgotpassword,
   resetpassword,
-  get_tfa_code
+  get_tfa_code,
+  turn_on_tfa
 }
 
 function signup(user) {
@@ -207,6 +208,41 @@ function get_tfa_code() {
   function failure(error) {
     return {
       type: UserContants.GET_TFA_CODE_FAILURE,
+      error
+    }
+  }
+}
+function turn_on_tfa() {
+  return dispatch => {
+    dispatch(request());
+      userServices.turn_on_tfa()
+        .then(
+          (response: {message: string}) => {
+            dispatch(success(response.message));
+            dispatch(alertActions.success(response.message));            
+          },
+          error => {
+            dispatch(failure(error));
+            dispatch(alertActions.error(error));
+          }
+        );
+  }
+
+  function request() {
+    return {
+      type: UserContants.TURN_ON_TFA_REQUEST,
+    }
+  }
+
+  function success(tfa_code) {
+    return {
+      type: UserContants.TURN_ON_TFA_SUCCESS,
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: UserContants.TURN_ON_TFA_FAILURE,
       error
     }
   }
