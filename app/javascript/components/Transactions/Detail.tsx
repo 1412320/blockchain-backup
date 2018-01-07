@@ -51,19 +51,38 @@ class Detail extends React.Component<DetailProps, DetailState> {
             { this.props.transaction ?
               <div>
                 <CardText><strong>Hash: </strong>{this.props.transaction.hash}</CardText>
-                <div className="card-table">
+                <div className="card-table container">
                   <Table>
                     <thead>
                       <tr>
-                        <th>Name</th>
-                        <th>Value</th>
+                        <th>Reference Output</th>
+                        <th className="text-right">Output Index</th>
                       </tr>
                     </thead>
                     <tbody>
+                      {this.props.transaction.inputs.map((e, i) => (
+                        <tr key={i}>
+                          <td>{e.outputHash}</td>
+                          <td className="text-right">{e.outputIndex}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                  <br/>
+                  <Table>
+                    <thead>
                       <tr>
-                        <td>a</td>
-                        <td>a</td>
+                        <th>Receiver's Address</th>
+                        <th className="text-right">Value</th>
                       </tr>
+                    </thead>
+                    <tbody>
+                      {this.props.transaction.outputs.map((e,i) => (
+                        <tr key={i}>
+                          <td>{e.to}</td>
+                          <td className="text-right">{e.value}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </Table>
                 </div>
@@ -79,6 +98,7 @@ class Detail extends React.Component<DetailProps, DetailState> {
 
 function mapStateToProps(state) {
   const { transaction } = state.get_detail;
+  console.log(transaction);
   return {
     transaction
   };
