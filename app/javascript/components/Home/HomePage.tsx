@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Row, Col, Button, Card, CardText,
          CardBody, CardTitle, CardSubtitle, Table } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { TransactionInfo } from '../../containers';
 import { TransactionsTable } from './TransactionsTable';
