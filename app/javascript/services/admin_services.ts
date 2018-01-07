@@ -19,7 +19,6 @@ function getAllUsersInfo(page)
     })
     .catch(error => {
       console.log(error)
-      reject(error);
     })
   })
 }
@@ -35,8 +34,7 @@ function getSystemInfo()
       resolve(response.data);
     })
     .catch(error => {
-      console.log(error)
-      reject(error);
+      console.log(error.response)
     })
   })
 }

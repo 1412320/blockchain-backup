@@ -15,6 +15,7 @@ function getAllUsersInfo(page) {
             dispatch(success(response));
           },
           error => {
+            console.log(error)
             dispatch(failure(error));
             dispatch(alertActions.error(error));
           }

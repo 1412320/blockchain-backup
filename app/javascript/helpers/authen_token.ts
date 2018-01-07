@@ -1,7 +1,9 @@
+import axios from 'axios';
+
 export function authenHeader() {
   let user = JSON.parse(localStorage.getItem('user'));
-  console.log(user.auth_token)
   if (user) {
+    axios.defaults.headers.common['Authorization'] = user.auth_token;
     return {
       'Authorization': user.auth_token
     };

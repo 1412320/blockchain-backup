@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { Header, SubHeader } from '../components/Commons';
-import { AdminPage } from '../components/Home';
-import { HomePage } from '../components/Home';
-import { walletActions } from '../actions';
-import { UserActions } from '../actions';
+import { HomePage, WalletForm, AdminPage } from '../components/Home';
+import { walletActions, alertActions, transactionActions } from '../actions';
 import { connect } from 'react-redux';
 import { adminActions } from '../actions';
 
@@ -23,6 +21,9 @@ interface HomeContainerProps {
   system_real_amount: number,
   system_available_amount: number,
   user_count: number
+  available_amount: number,
+  transfer_info: TransferInfo,
+  transactions: Array<TransactionInfo>
 }
 
 interface HomeContainerState {
@@ -33,6 +34,25 @@ interface HomeContainerState {
   system_real_amount: number,
   system_available_amount: number,
   user_count: number  
+  available_amount: number,
+  modal: boolean,
+  transfer_info: TransferInfo,
+  is_me: boolean,
+  is_newest: boolean,
+  is_pending: boolean,
+  transactions: Array<TransactionInfo>
+}
+
+interface TransferInfo {
+  recipient_id: string,
+  amount: number,
+}
+
+export interface TransactionInfo {
+  hash:string;
+  sender: string;
+  receiver: string;
+  value: number;
 }
 
 class HomeContainer extends React.Component<HomeContainerProps, HomeContainerState> {
@@ -45,45 +65,144 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
       users: this.props.users,
       user_count: this.props.user_count,
       system_available_amount: this.props.system_available_amount,
-      system_real_amount: this.props.system_real_amount
+      system_real_amount: this.props.system_real_amount,
+      available_amount: this.props.available_amount,
+      modal: false,
+      transfer_info: {
+        recipient_id: '',
+        amount: 0
+      },
+      transactions: [],
+      is_me: false,
+      is_newest: true,
+      is_pending: false
     }
+  }
+
+  closeModal() {
+    this.setState({
+      modal: false
+    })
+    this.props.dispatch(alertActions.clear());
+  }
+
+  openModal() {
+    this.setState({
+      modal: true
+    })
+    this.props.dispatch(alertActions.clear());
   }
 
   componentWillMount() {
     this.props.dispatch(walletActions.getInfo());
-    this.props.dispatch(adminActions.getAllUsersInfo(1)); 
-    this.props.dispatch(adminActions.getSystemInfo());     
+    this.props.dispatch(transactionActions.getNewest());
+    this.props.dispatch(adminActions.getAllUsersInfo(1));
+    this.props.dispatch(adminActions.getSystemInfo());    
+  }
+
+  handleSuccess() {
+    this.closeModal();
+    this.props.dispatch(walletActions.getInfo());
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    this.props.dispatch(walletActions.transfer(this.state.transfer_info));
+  }
+
+  handleMe(e) {
+    e.preventDefault();
+    this.setState({
+      is_me: true,
+      is_newest: false,
+      is_pending: false
+    })
+    this.props.dispatch(transactionActions.getMy())
+  }
+
+  handleNewest(e) {
+    e.preventDefault();
+    this.setState({
+      is_me: false,
+      is_newest: true,
+      is_pending: false
+    })
+    this.props.dispatch(transactionActions.getNewest())
+  }
+
+  handlePending(e) {
+    e.preventDefault();
+    this.setState({
+      is_me: false,
+      is_newest: false,
+      is_pending: true
+    })
+    this.props.dispatch(transactionActions.getPending())
+  }
+
+  handleChange(e) {
+    e.preventDefault();
+    if (e.target.name == 'transaction[recipient_id]')
+      this.state.transfer_info.recipient_id = e.target.value
+    if (e.target.name == 'transaction[amount]')
+      this.state.transfer_info.amount = e.target.value
   }
 
   render() {
-    console.log(this.props)
+    console.log(this.props.transactions)
     return (
       <Header>
-        <SubHeader wallet_address={this.props.wallet_address}></SubHeader>
-        {this.state.role == 0 ? 
-        <HomePage real_amount={this.props.real_amount}></HomePage> :
-        <AdminPage users={this.props.users} 
-        user_count={this.props.user_count} 
-        system_available_amount={this.props.system_available_amount}
-        system_real_amount={this.props.system_real_amount}/>
-        }
+        <SubHeader toggle={this.openModal.bind(this)} wallet_address={this.props.wallet_address}></SubHeader>
+        {this.props.role ? <HomePage real_amount={this.props.real_amount}
+                  available_amount={this.props.available_amount}
+                  dispatch={this.props.dispatch}
+                  handleMe={this.handleMe.bind(this)}
+                  handleNewest={this.handleNewest.bind(this)}
+                  handlePending={this.handlePending.bind(this)}
+                  transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}
+                  is_me={this.state.is_me}
+                  is_newest={this.state.is_newest}
+                  is_pending={this.state.is_pending}/>
+                  : <AdminPage users={this.props.users}
+                  user_count={this.props.user_count}
+                  system_real_amount={this.props.system_real_amount}
+                  system_available_amount={this.props.system_available_amount}/>}
+        <Modal isOpen={this.state.modal} toggle={this.closeModal.bind(this)}>
+          <ModalHeader toggle={this.closeModal.bind(this)}>
+            <i className="send-icon fa fa-paper-plane"></i>
+            Send
+          </ModalHeader>
+          <hr/>
+          <ModalBody>
+            <WalletForm sender_id={this.props.wallet_address}
+                        handleSuccess={this.handleSuccess.bind(this)}
+                        handleSubmit={this.handleSubmit.bind(this)}
+                        handleChange={this.handleChange.bind(this)}>
+            </WalletForm>
+          </ModalBody>
+        </Modal>
       </Header>
     );
   }
 }
 
 function mapStateToProps(state) {
-    const { wallet_address, real_amount , role} = state.get_info;
-    const { users, user_count, system_real_amount, system_available_amount} = state.admin; 
-    return {
-        wallet_address,
-        real_amount,
-        role,
-        users,
-        user_count,
-        system_real_amount,
-        system_available_amount
-    };
+  const { wallet_address, real_amount, role, available_amount} = state.get_info;
+  const { transfer_info } = state.transfer_kcoin;
+  const { transactions } = state.get_my;
+  const { users, user_count, system_real_amount, system_available_amount} = state.admin; 
+  return {
+    wallet_address,
+    real_amount,
+    available_amount,
+    transfer_info,
+    transactions,
+    role,
+    users,
+    user_count,
+    system_real_amount,
+    system_available_amount
+  };
 }
 
 const connectedHomeContainer = connect(mapStateToProps)(HomeContainer);

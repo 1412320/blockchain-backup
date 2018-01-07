@@ -30,6 +30,14 @@ ActiveRecord::Schema.define(version: 20180106171701) do
     t.index ["output_ref", "output_index"], name: "index_outputs_on_output_ref_and_output_index", unique: true
   end
 
+  create_table "pending_transactions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "receiver"
+    t.integer "amount"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "transactions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "hash_str"
     t.string "block_hash"

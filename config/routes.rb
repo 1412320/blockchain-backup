@@ -16,7 +16,10 @@ Rails.application.routes.draw do
       end
       get 'tfa_code', :to => 'users#get_tfa_code'
       resources :transactions, only: [:create, :index, :show] do
-        get 'my', on: :collection  
+        get 'me', on: :collection  
+      end
+      resources :pending_transactions, only: [:index, :destroy] do
+        post 'confirm', on: :member
       end
     end
   end
