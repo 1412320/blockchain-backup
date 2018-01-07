@@ -10,7 +10,9 @@ Rails.application.routes.draw do
     namespace :v1 do
       get 'wallet', :to => 'wallets#show'
       get 'all-users-info', :to => 'admin#all_user_infos'      
-      get 'system-info', :to => 'admin#system_info'      
+      get 'system-info', :to => 'admin#system_info'    
+      get 'system-confirmed-transactions', :to =>'transactions#system_confirmed_transactions'  
+      get 'system-pending-transactions', :to =>'pending_transactions#system_pending_transactions'        
       devise_scope :user do
        post 'authenticate_2_step', :to => 'sessions#authenticate_2_step'
       end

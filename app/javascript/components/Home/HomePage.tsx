@@ -63,7 +63,7 @@ export class HomePage extends React.Component<HomePageProps, {}> {
               <div className="transactions-card">
                 {
                   !this.props.is_pending?
-                  <TransactionsTable transactions={this.props.transactions}/> :
+                  <TransactionsTable transactions={this.props.transactions} page={1}/> :
                   <PendingsTable transactions={this.props.transactions}/>
                 }
               </div>

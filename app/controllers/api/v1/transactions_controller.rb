@@ -40,6 +40,20 @@ class Api::V1::TransactionsController < ApplicationController
     render json: { data: @transactions, total: @transactions.length }, status: 200
   end
 
+  def system_confirmed_transactions
+    page = params[:page_number].to_i    
+    @outputs = Output.all.order(id: :desc)
+    @transactions = @outputs.map do |output|
+      {
+        hash: output.output_ref,
+        sender: output.sender,
+        receiver: output.receiver,
+        value: output.amount
+      }
+    end
+    render json: {transactions: @transactions[10*(page-1),10], total: @transactions.length}, status: 200
+  end
+
   def show
     transaction = @service.get_transaction(params[:id])
     render json: { data: transaction }, status: 200

@@ -29,7 +29,7 @@ export class UserTable extends React.Component<UserTableProps, UserTableState> {
         <tbody>
           {this.props.users.map((e, i) => ( 
             <tr key={i}>
-              <td>{e.address}</td>
+              <td className="address">{e.address}</td>
               <td>{e.email}</td>
               <td>{e.real_amount}</td>
               <td>{e.available_amount}</td>             

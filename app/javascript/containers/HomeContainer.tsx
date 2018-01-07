@@ -24,6 +24,8 @@ interface HomeContainerProps {
   available_amount: number,
   transfer_info: TransferInfo,
   transactions: Array<TransactionInfo>
+  system_transactions: Array<TransactionInfo> ,
+  transactions_count: number 
 }
 
 interface HomeContainerState {
@@ -40,7 +42,10 @@ interface HomeContainerState {
   is_me: boolean,
   is_newest: boolean,
   is_pending: boolean,
-  transactions: Array<TransactionInfo>
+  transactions: Array<TransactionInfo>,
+  system_transactions: Array<TransactionInfo>,    
+  is_confirmed: boolean,
+  transactions_count: number
 }
 
 interface TransferInfo {
@@ -74,9 +79,12 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
         amount: 0
       },
       transactions: [],
+      system_transactions: [],      
       is_me: false,
       is_newest: true,
-      is_pending: false
+      is_pending: false,
+      is_confirmed: true,
+      transactions_count: this.props.transactions_count
     }
   }
 
@@ -94,11 +102,12 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     this.props.dispatch(alertActions.clear());
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch(walletActions.getInfo());
     this.props.dispatch(transactionActions.getNewest());
     this.props.dispatch(adminActions.getAllUsersInfo(1));
     this.props.dispatch(adminActions.getSystemInfo());    
+    this.props.dispatch(adminActions.getTransactions(1));
   }
 
   handleSuccess() {
@@ -132,7 +141,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   }
 
   handlePending(e) {
-    e.preventDefault();
+    e.preventDefault();    
     this.setState({
       is_me: false,
       is_newest: false,
@@ -140,7 +149,20 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     })
     this.props.dispatch(transactionActions.getPending())
   }
-
+  handleAdminPending(){
+    this.setState({
+      is_confirmed: false,
+      is_pending: true
+    })
+    this.props.dispatch(adminActions.getPendingTransactions(1));         
+  }
+  handleAdminConfirmed(){
+    this.setState({
+      is_confirmed: true,      
+      is_pending: false
+    })
+    this.props.dispatch(adminActions.getTransactions(1));      
+  }
   handleChange(e) {
     e.preventDefault();
     if (e.target.name == 'transaction[recipient_id]')
@@ -148,13 +170,20 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
     if (e.target.name == 'transaction[amount]')
       this.state.transfer_info.amount = e.target.value
   }
-
+  getUserPage(r){
+    this.props.dispatch(adminActions.getAllUsersInfo(r));       
+  }
+  getTransactionsPage(r, type){
+    if (type)
+    this.props.dispatch(adminActions.getTransactions(r));  
+    else
+    this.props.dispatch(adminActions.getPendingTransactions(r));     
+  }
   render() {
-    console.log(this.props.transactions)
     return (
       <Header>
         <SubHeader toggle={this.openModal.bind(this)} wallet_address={this.props.wallet_address}></SubHeader>
-        {this.props.role ? <HomePage real_amount={this.props.real_amount}
+        {this.props.role == 1 ? <HomePage real_amount={this.props.real_amount}
                   available_amount={this.props.available_amount}
                   dispatch={this.props.dispatch}
                   handleMe={this.handleMe.bind(this)}
@@ -167,7 +196,15 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
                   : <AdminPage users={this.props.users}
                   user_count={this.props.user_count}
                   system_real_amount={this.props.system_real_amount}
-                  system_available_amount={this.props.system_available_amount}/>}
+                  system_available_amount={this.props.system_available_amount}
+                  getUserPage={this.getUserPage.bind(this)}
+                  is_confirmed={this.state.is_confirmed}
+                  is_pending={this.state.is_pending}
+                  transactions={this.props.system_transactions}
+                  handleAdminPending={this.handleAdminPending.bind(this)}
+                  handleAdminConfirmed={this.handleAdminConfirmed.bind(this)}
+                  getTransactionsPage={this.getTransactionsPage.bind(this)}
+                  transactions_count={this.props.transactions_count}/>}
         <Modal isOpen={this.state.modal} toggle={this.closeModal.bind(this)}>
           <ModalHeader toggle={this.closeModal.bind(this)}>
             <i className="send-icon fa fa-paper-plane"></i>
@@ -178,7 +215,8 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
             <WalletForm sender_id={this.props.wallet_address}
                         handleSuccess={this.handleSuccess.bind(this)}
                         handleSubmit={this.handleSubmit.bind(this)}
-                        handleChange={this.handleChange.bind(this)}>
+                        handleChange={this.handleChange.bind(this)}
+                        >
             </WalletForm>
           </ModalBody>
         </Modal>
@@ -191,7 +229,7 @@ function mapStateToProps(state) {
   const { wallet_address, real_amount, role, available_amount} = state.get_info;
   const { transfer_info } = state.transfer_kcoin;
   const { transactions } = state.get_my;
-  const { users, user_count, system_real_amount, system_available_amount} = state.admin; 
+  const { users, user_count, system_real_amount, system_available_amount, system_transactions, transactions_count} = state.admin; 
   return {
     wallet_address,
     real_amount,
@@ -202,7 +240,9 @@ function mapStateToProps(state) {
     users,
     user_count,
     system_real_amount,
-    system_available_amount
+    system_available_amount,
+    system_transactions,
+    transactions_count
   };
 }
 

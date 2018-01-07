@@ -8,7 +8,7 @@ class Api::V1::AdminController < ApplicationController
         email: user.email,
         address: user.wallet.address,
         real_amount: user.wallet.real_amount,
-        available_amount: user.wallet.available_amount
+        available_amount: user.wallet.available_amount,
       })
     end
     page = params[:page_number].to_i

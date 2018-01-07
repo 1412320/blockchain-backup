@@ -1,10 +1,13 @@
 import { AdminContants } from '../contants';
 import { adminServices } from '../services';
 import { alertActions } from './';
+import { TransactionInfo } from '../containers';
 
 export const adminActions = {
   getAllUsersInfo,
   getSystemInfo,
+  getTransactions,
+  getPendingTransactions
 }
 function getAllUsersInfo(page) {
   return dispatch => {
@@ -75,6 +78,82 @@ function getSystemInfo() {
   function failure(error) {
     return {
       type: AdminContants.SYSTEM_INFO_FAILURE,
+      error
+    }
+  }
+}
+function getTransactions(page) {
+  return dispatch => {
+    dispatch(request({page}));
+    adminServices.getTransactions(page)
+        .then(
+          (response: {transactions: Array<TransactionInfo>, total:number}) => {
+            dispatch(success(response.transactions, response.total));
+          },
+          error => {
+            console.log(error)
+            dispatch(failure(error));
+            dispatch(alertActions.error(error));
+          }
+        );
+  }
+
+  function request(page) {
+    return {
+      type: AdminContants.CONFIRMED_TRANSACTIONS_REQUEST,
+    }
+  }
+
+  function success(transactions, total) {
+    console.log(total)    
+    return {
+      type: AdminContants.CONFIRMED_TRANSACTIONS_SUCCESS,
+      transactions,
+      total
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: AdminContants.CONFIRMED_TRANSACTIONS_FAILURE,
+      error
+    }
+  }
+}
+function getPendingTransactions(page) {
+  return dispatch => {
+    dispatch(request({page}));
+    adminServices.getPendingTransactions(page)
+        .then(
+          (response: {transactions: Array<TransactionInfo>, total:number}) => {
+            dispatch(success(response.transactions, response.total));
+          },
+          error => {
+            console.log(error)
+            dispatch(failure(error));
+            dispatch(alertActions.error(error));
+          }
+        );
+  }
+
+  function request(page) {
+    return {
+      type: AdminContants.PENDING_TRANSACTIONS_REQUEST,
+    }
+  }
+
+  function success(transactions, total) {
+    console.log(total)    
+    return {
+      type: AdminContants.PENDING_TRANSACTIONS_SUCCESS,
+      transactions,
+      total
+    }
+  }
+
+  function failure(error) {
+    return {
+      type: AdminContants.PENDING_TRANSACTIONS_FAILURE,
       error
     }
   }
