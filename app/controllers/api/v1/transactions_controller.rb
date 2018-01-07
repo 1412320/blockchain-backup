@@ -41,6 +41,7 @@ class Api::V1::TransactionsController < ApplicationController
   end
 
   def system_confirmed_transactions
+    page = params[:page_number].to_i    
     @outputs = Output.all.order(id: :desc)
     @transactions = @outputs.map do |output|
       {
@@ -50,7 +51,7 @@ class Api::V1::TransactionsController < ApplicationController
         value: output.amount
       }
     end
-    render json: { data: @transactions, total: @transactions.length }, status: 200
+    render json: @transactions[10*(page-1),10], status: 200
   end
 
   def show
