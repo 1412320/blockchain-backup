@@ -13,7 +13,7 @@ class Api::V1::AdminController < ApplicationController
     end
     page = params[:page_number].to_i
     p page
-    render json: users_info[1*(page-1),1]
+    render json: users_info[10*(page-1),10]
   end
   def system_info
     user_count = User.where("id != ?", current_user.id).count

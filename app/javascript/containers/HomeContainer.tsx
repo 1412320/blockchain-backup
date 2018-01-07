@@ -149,9 +149,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
       this.state.transfer_info.amount = e.target.value
   }
   getUserPage(r){
-    this.props.dispatch(adminActions.getAllUsersInfo(r));   
-    this.props.dispatch(adminActions.getSystemInfo());    
-    
+    this.props.dispatch(adminActions.getAllUsersInfo(r));       
   }
   render() {
     console.log(this.props.transactions)

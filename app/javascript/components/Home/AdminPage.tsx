@@ -45,7 +45,7 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
     let total_rows = total;
     let page = 1;
     let rows = [];
-    for(var x = 0; x < total_rows; x += 1){
+    for(var x = 0; x < total_rows; x += 10){
       rows.push(page);
       page++;
     }
@@ -94,7 +94,7 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
             <Row>
-              <Col sm="12" md="3">
+              <Col sm="12" md="4">
                 <div className="wallet-card">
                   <Card className="card-balance">
                     <CardTitle>ALL USERS COUNT</CardTitle>
@@ -103,7 +103,7 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
                   </Card>
                 </div>
                </Col> 
-              <Col sm="12" md="3">
+              <Col sm="12" md="4">
                 <div className="wallet-card">
                   <Card className="card-balance">
                     <CardTitle>SYSTEM REAL BALANCE</CardTitle>
@@ -112,7 +112,7 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
                   </Card>
                 </div>
               </Col>
-              <Col sm="12" md="3">
+              <Col sm="12" md="4">
                 <div className="wallet-card">
                   <Card className="card-balance">
                     <CardTitle>SYSTEM AVAILABLE AMOUNT</CardTitle>
