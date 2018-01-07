@@ -5,6 +5,9 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { adminActions } from '../../actions';
 import {UserTable} from './index'
+import { TransactionInfo } from '../../containers';
+import { TransactionsTable } from './TransactionsTable';
+import { PendingsTable } from './PendingsTable'
 interface UserInfo {
   email: string,
   address: string,
@@ -17,7 +20,12 @@ interface AdminPageProps {
   system_real_amount: number,
   system_available_amount:number,
   user_count: number,
-  getUserPage(number): void    
+  getUserPage(number): void,
+  handleAdminPending(): void,
+  handleAdminConfirmed():void,
+  is_pending: boolean,
+  is_confirmed: boolean,
+  transactions: Array<TransactionInfo> 
 }
 
 interface AdminPageState {
@@ -135,6 +143,30 @@ export class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
             </div>
           </TabPane>
           <TabPane tabId="3">
+          <div className="wallet-card">
+            <Card className="card-transcription">
+              <Row>
+                <Col lg="6" sm="12">
+                  <CardTitle>
+                    {`${this.props.is_pending? 'PENDING ' : ''}`}
+                    {`${this.props.is_confirmed? 'CONFIRMED ' : ''}`}
+                    TRANSACTIONS
+                  </CardTitle>
+                </Col>
+                <Col lg="6" sm="4" className="d-flex justify-content-end">
+                  <Button disabled={!!this.props.is_confirmed} className="btn-newest" onClick={this.props.handleAdminConfirmed}>Confirmed</Button>
+                  <Button disabled={!!this.props.is_pending} className="btn-pending" onClick={this.props.handleAdminPending}>Pending</Button>
+                </Col>
+              </Row>
+              <div className="transactions-card">
+                {
+                  !this.props.is_pending?
+                  <TransactionsTable transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}/> :
+                  <PendingsTable transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}/>
+                }
+              </div>
+            </Card>
+          </div>
           </TabPane>
         </TabContent>
       </div>
