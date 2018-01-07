@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby "2.4.2"
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -20,6 +21,7 @@ gem 'active_model_otp'
 gem 'bootstrap', '4.0.0.beta2.1'
 gem 'jquery-rails'
 gem 'font-awesome-rails'
+gem 'figaro'
 gem 'whenever', require: false
 
 group :development, :test do

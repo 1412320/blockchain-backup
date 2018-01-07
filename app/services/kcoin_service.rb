@@ -1,4 +1,5 @@
 require ('crawlers/kcoin_crawler')
+require ('kcoin_transaction')
 class KcoinService
   def initialize(user)
     @user = user
