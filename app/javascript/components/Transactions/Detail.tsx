@@ -52,7 +52,7 @@ class Detail extends React.Component<DetailProps, DetailState> {
             { this.props.transaction ?
               <div>
                 <CardText><strong>Hash: </strong>{this.props.transaction.hash}</CardText>
-                <div className="card-table">
+                <div className="card-table transaction-details">
                   <Table>
                     <thead>
                       <tr>
