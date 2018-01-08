@@ -39,7 +39,9 @@ export function admin(state = initState, action) {
     case AdminContants.CONFIRMED_TRANSACTIONS_FAILURE:
       return {}
     case AdminContants.PENDING_TRANSACTIONS_REQUEST:
-      return state;
+      return Object.assign({}, state, {
+        'system_transactions': []
+    });
     case AdminContants.PENDING_TRANSACTIONS_SUCCESS:
       return Object.assign({}, state, {
         'system_transactions': action.transactions,

@@ -20,7 +20,7 @@ function getAllUsersInfo(page)
       resolve(response.data);
     })
     .catch(error => {
-      console.log(error)
+      reject(error.response.data.errors);
     })
   })
 }
@@ -36,7 +36,7 @@ function getSystemInfo()
       resolve(response.data);
     })
     .catch(error => {
-      console.log(error.response)
+      reject(error.response.data.errors);
     })
   })
 }
@@ -53,7 +53,7 @@ function getTransactions(page)
       resolve(response.data);
     })
     .catch(error => {
-      reject(error);
+      reject(error.response.data.errors);
     })
   })
 }
@@ -70,7 +70,7 @@ function getPendingTransactions(page)
       resolve(response.data);
     })
     .catch(error => {
-      reject(error);
+      reject(error.response.data.errors);
     })
   })
 }

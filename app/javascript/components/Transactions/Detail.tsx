@@ -92,7 +92,7 @@ class Detail extends React.Component<DetailProps, DetailState> {
             }
           </Card>
         </div>
-        <Footer></Footer>
+        <Footer/>
       </div>
     );
   }

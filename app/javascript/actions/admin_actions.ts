@@ -93,7 +93,6 @@ function getTransactions(page) {
             dispatch(success(response.transactions, response.total));
           },
           error => {
-            console.log(error)
             dispatch(failure(error));
             dispatch(alertActions.error(error));
           }
@@ -107,7 +106,6 @@ function getTransactions(page) {
   }
 
   function success(transactions, total) {
-    console.log(total)    
     return {
       type: AdminContants.CONFIRMED_TRANSACTIONS_SUCCESS,
       transactions,
@@ -131,7 +129,6 @@ function getPendingTransactions(page) {
             dispatch(success(response.transactions, response.total));
           },
           error => {
-            console.log(error)
             dispatch(failure(error));
             dispatch(alertActions.error(error));
           }
@@ -145,7 +142,6 @@ function getPendingTransactions(page) {
   }
 
   function success(transactions, total) {
-    console.log(total)    
     return {
       type: AdminContants.PENDING_TRANSACTIONS_SUCCESS,
       transactions,

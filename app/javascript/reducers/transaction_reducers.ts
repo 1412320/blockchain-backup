@@ -25,7 +25,9 @@ export function get_my(state = {}, action) {
 export function get_pending(state = {}, action) {
   switch(action.type) {
     case TransactionContants.PENDING_REQUEST:
-      return {}
+      return {
+        transactions: []
+      }
     case TransactionContants.PENDING_SUCCESS:
       return {
         transactions: action.transactions

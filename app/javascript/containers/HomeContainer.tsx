@@ -284,40 +284,42 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
       <div>
       <Header></Header>
         <div className="content">
+        { this.props.role != null ? 
           <div className="content-inside">
-            {this.props.role == 1 ? <SubHeader toggle={this.openModal.bind(this)}
-                                               toggleTFA={this.openTFAModal.bind(this)}
-                                               used_tfa={this.props.used_tfa}
-                                               wallet_address={this.props.wallet_address}
-                                               dispatch={this.props.dispatch}>
-                                    </SubHeader>
-                                    : <AdminSubHeader />
+            {this.props.role == 1 ? 
+              <SubHeader toggle={this.openModal.bind(this)}
+                         toggleTFA={this.openTFAModal.bind(this)}
+                         used_tfa={this.props.used_tfa}
+                         wallet_address={this.props.wallet_address}
+                         dispatch={this.props.dispatch}/> :
+              <AdminSubHeader />
             }
 
-            {this.props.role == 1 ? <HomePage real_amount={this.props.real_amount}
-                      available_amount={this.props.available_amount}
-                      dispatch={this.props.dispatch}
-                      handleMe={this.handleMe.bind(this)}
-                      handleNewest={this.handleNewest.bind(this)}
-                      handlePending={this.handlePending.bind(this)}
-                      handleConfirm={this.handleConfirm.bind(this)}
-                      handleDelete={this.handleDelete.bind(this)}
-                      transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}
-                      is_me={this.state.is_me}
-                      is_newest={this.state.is_newest}
-                      is_pending={this.state.is_pending}/>
-                      : <AdminPage users={this.props.users}
-                      user_count={this.props.user_count}
-                      system_real_amount={this.props.system_real_amount}
-                      system_available_amount={this.props.system_available_amount}
-                      getUserPage={this.getUserPage.bind(this)}
-                      is_confirmed={this.state.is_confirmed}
-                      is_pending={this.state.is_pending}
-                      transactions={this.props.system_transactions}
-                      handleAdminPending={this.handleAdminPending.bind(this)}
-                      handleAdminConfirmed={this.handleAdminConfirmed.bind(this)}
-                      getTransactionsPage={this.getTransactionsPage.bind(this)}
-                      transactions_count={this.props.transactions_count}/>}
+            {this.props.role == 1 ? 
+              <HomePage real_amount={this.props.real_amount}
+                        available_amount={this.props.available_amount}
+                        dispatch={this.props.dispatch}
+                        handleMe={this.handleMe.bind(this)}
+                        handleNewest={this.handleNewest.bind(this)}
+                        handlePending={this.handlePending.bind(this)}
+                        handleConfirm={this.handleConfirm.bind(this)}
+                        handleDelete={this.handleDelete.bind(this)}
+                        transactions={this.props.transactions ? this.props.transactions : new Array<TransactionInfo>()}
+                        is_me={this.state.is_me}
+                        is_newest={this.state.is_newest}
+                        is_pending={this.state.is_pending}/> : 
+              <AdminPage users={this.props.users}
+                         user_count={this.props.user_count}
+                         system_real_amount={this.props.system_real_amount}
+                         system_available_amount={this.props.system_available_amount}
+                         getUserPage={this.getUserPage.bind(this)}
+                         is_confirmed={this.state.is_confirmed}
+                         is_pending={this.state.is_pending}
+                         transactions={this.props.system_transactions}
+                         handleAdminPending={this.handleAdminPending.bind(this)}
+                         handleAdminConfirmed={this.handleAdminConfirmed.bind(this)}
+                         getTransactionsPage={this.getTransactionsPage.bind(this)}
+                         transactions_count={this.props.transactions_count}/>}
             <Modal isOpen={this.state.modal} toggle={this.closeModal.bind(this)}>
               <ModalHeader toggle={this.closeModal.bind(this)}>
                 <i className="send-icon fa fa-paper-plane"></i>
@@ -356,10 +358,10 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
                 </Form>
               </ModalBody>
             </Modal>
-          </div>
+          </div> : null
+        }
         </div>
-
-        <Footer></Footer>
+        <Footer/>
       </div>
     );
   }
