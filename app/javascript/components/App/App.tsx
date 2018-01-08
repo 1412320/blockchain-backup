@@ -12,6 +12,7 @@ import { ResetPasswordPage } from '../ResetPassword';
 import { Header } from '../Commons';
 import { HomeContainer } from '../../containers';
 import { Detail } from '../Transactions';
+import { Fade } from 'reactstrap';
 
 interface AppProps {
   dispatch: any,
@@ -32,9 +33,11 @@ class App extends React.Component<AppProps, {}> {
     const { alert } = this.props;
     return (
       <div>
-        {alert.message &&
-          <div className={`alert ${alert.type == 'alert-error' ? 'alert-danger' : 'alert-success'} `}>{alert.message}</div>
-        }
+        <Fade in={!!alert.message} tag="div" 
+              className={`alert ${alert.type == 'alert-error' ? 'alert-danger' : 'alert-success'} main-alert`}>
+           {alert.message}
+         </Fade>
+        
         <HashRouter>
           <div>
             <AuthenRouter exact path="/" component={HomeContainer} />

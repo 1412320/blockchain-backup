@@ -61,6 +61,16 @@ body {
   color: red;
 }
 
+.main-alert {
+  position:absolute;
+  width: 100%;
+  border-radius: 0;
+  height: 55px;
+  &.show{
+    z-index: 1000;
+  }
+}
+
 .alert {
   margin-bottom: 0;
 }
