@@ -60,7 +60,7 @@ export class SubHeader extends React.Component<SubHeaderProps, SubHeaderStates> 
         </Button> : ""}
         <CopyToClipboard text={this.props.wallet_address}
           onCopy={() => {
-            this.props.dispatch(alertActions.success("Copied to clipboard"));
+            this.props.dispatch(alertActions.success("Your address has been copied to clipboard"));
             clear_alert(this.props.dispatch);
           }}>
           <Button className="btn-wallet wallet-id">

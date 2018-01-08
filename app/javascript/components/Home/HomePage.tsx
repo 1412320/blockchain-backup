@@ -59,7 +59,7 @@ export class HomePage extends React.Component<HomePageProps> {
                 <Col lg="6" sm="4" className="d-flex justify-content-end">
                   <Button disabled={!!this.props.is_newest} className="btn-newest" onClick={this.props.handleNewest}>Newest</Button>
                   <Button disabled={!!this.props.is_me} className="btn-me" onClick={this.props.handleMe}>Me</Button>
-                  <Button disabled={!!this.props.is_pending} className="btn-pending" onClick={this.props.handlePending}>Pending</Button>
+                  <Button disabled={!!this.props.is_pending} className="btn-newest" onClick={this.props.handlePending}>Pending</Button>
                 </Col>
               </Row>
               <div className="transactions-card">
