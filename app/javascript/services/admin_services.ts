@@ -20,7 +20,7 @@ function getAllUsersInfo(page)
       resolve(response.data);
     })
     .catch(error => {
-      reject(error.response.data.errors);
+      
     })
   })
 }
@@ -36,7 +36,7 @@ function getSystemInfo()
       resolve(response.data);
     })
     .catch(error => {
-      reject(error.response.data.errors);
+      
     })
   })
 }
@@ -53,7 +53,7 @@ function getTransactions(page)
       resolve(response.data);
     })
     .catch(error => {
-      reject(error.response.data.errors);
+      
     })
   })
 }
