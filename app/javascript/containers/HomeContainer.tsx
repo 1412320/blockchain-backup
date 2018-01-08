@@ -288,7 +288,8 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
             {this.props.role == 1 ? <SubHeader toggle={this.openModal.bind(this)}
                                                toggleTFA={this.openTFAModal.bind(this)}
                                                used_tfa={this.props.used_tfa}
-                                               wallet_address={this.props.wallet_address}>
+                                               wallet_address={this.props.wallet_address}
+                                               dispatch={this.props.dispatch}>
                                     </SubHeader>
                                     : <AdminSubHeader />
             }

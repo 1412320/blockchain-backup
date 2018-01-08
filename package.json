@@ -10,6 +10,7 @@
     "history": "^4.7.2",
     "postcss-import": "^11.0.0",
     "react": "^16.2.0",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.2.0",
     "react-on-rails": "^10.0.2",
     "react-redux": "^5.0.6",

@@ -71,6 +71,7 @@
     }
   }
   .card-transaction {
+    margin-top: 30px !important;
     .card-text {
       font-weight: 300;
       text-align: left;
@@ -83,7 +84,14 @@
 
 .wallet-id {
   float: right !important;
-  font-style: italic;
+}
+
+.text-id {
+  vertical-align: middle;
+  line-height: 30px;
+  font-weight: bold;
+  margin-right: 15px;
+  color: rgb(0, 74, 124);
 }
 
 .modal-content {
