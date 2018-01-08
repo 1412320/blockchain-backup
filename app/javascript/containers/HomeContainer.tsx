@@ -46,6 +46,7 @@ interface HomeContainerState {
   otp_modal: boolean,
   confirm_id: string,
   otp_code: string,
+  otp_password: string,  
   transfer_info: TransferInfo,
   is_me: boolean,
   is_newest: boolean,
@@ -88,6 +89,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
       otp_modal: false,
       confirm_id: '',
       otp_code: '',
+      otp_password: '',
       transfer_info: {
         recipient_id: '',
         amount: 0
@@ -229,14 +231,19 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   }
 
   handleChangeOtp(e) {
-    this.setState({
-      otp_code: e.target.value
-    })
+    if(e.target.name == 'tfa_code')
+      this.setState({
+        otp_code: e.target.value
+      })
+    if(e.target.name == 'password')
+      this.setState({
+        otp_password: e.target.value
+      })
   }
 
   handleSubmitConfirm(e) {
     e.preventDefault();
-    this.props.dispatch(transactionActions.confirmTransaction(this.state.confirm_id, this.state.otp_code));
+    this.props.dispatch(transactionActions.confirmTransaction(this.state.confirm_id, this.state.otp_code, this.state.otp_password));
     this.closeOtpModal();
     setTimeout(() => {
       this.setState({
@@ -246,7 +253,7 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
       })
       this.props.dispatch(transactionActions.getPending());
       this.props.dispatch(walletActions.getInfo());
-    }, 1000)
+    }, 2000)
   }
 
   handleDelete(e) {

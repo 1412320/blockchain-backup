@@ -1,6 +1,7 @@
 import { TransactionContants } from '../contants';
 import { transactionServices } from '../services';
 import { alertActions } from '../actions';
+import { clear_alert } from '../helpers';
 
 export const transactionActions = {
   getMy,
@@ -51,7 +52,7 @@ function getNewest() {
     transactionServices.getNewestTransaction()
       .then(
         transactions => {
-          dispatch(success(transactions))
+          dispatch(success(transactions));
         },
         error => {
           dispatch(failure(error));
@@ -149,13 +150,15 @@ function getDetail(t_id) {
   }
 }
 
-function confirmTransaction(t_id, otp_code) {
+function confirmTransaction(t_id, otp_code, otp_password) {
   return dispatch => {
     dispatch(request());
-    transactionServices.confirmTransaction(t_id, otp_code)
+    transactionServices.confirmTransaction(t_id, otp_code, otp_password)
       .then(
         transaction => {
           dispatch(success(transaction));
+          dispatch(alertActions.success("Confirm transaction successfully"));
+          clear_alert(dispatch);      
         },
         error => {
           dispatch(failure(error));
