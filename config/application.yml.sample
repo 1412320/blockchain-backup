@@ -1,0 +1,5 @@
+HOST_URL: localhost:3000
+PORT: '3000'
+HOST: localhost
+GMAIL_USERNAME: fashionclubdev@gmail.com
+GMAIL_PASSWORD: 
