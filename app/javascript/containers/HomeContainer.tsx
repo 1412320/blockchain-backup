@@ -8,7 +8,7 @@ import { transactionServices } from '../services';
 import { connect } from 'react-redux';
 import { adminActions } from '../actions';
 import { UserActions } from '../actions';
-
+import Cable from 'actioncable';
 interface UserInfo {
   email: string,
   address: string,
@@ -150,13 +150,33 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   }
 
   componentDidMount() {
+    this.createSocket();
     this.props.dispatch(walletActions.getInfo());
     this.props.dispatch(transactionActions.getNewest());
     this.props.dispatch(adminActions.getAllUsersInfo(1));
     this.props.dispatch(adminActions.getSystemInfo());
     this.props.dispatch(adminActions.getTransactions(1));
   }
+  createSocket() {
+    let cable = Cable.createConsumer();
+    cable.block = cable.subscriptions.create({
+      channel: 'BlockChannel'
+    }, {
+			connected: function () {
+				setTimeout(() => this.perform('follow'), 1000);
+			},
 
+			received: function(data) {
+        if (this.is_newest)
+          {
+            this.getNewest();
+          }
+			},
+      getNewest: this.props.dispatch(transactionActions.getNewest()),
+      is_newest: this.state.is_newest
+      }
+    );
+  }
   handleSuccess() {
     this.closeModal();
     this.props.dispatch(walletActions.getInfo());
