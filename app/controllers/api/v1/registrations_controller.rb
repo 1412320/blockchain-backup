@@ -69,7 +69,9 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
     user = UserBuilder.build do |builder|
       builder.set_as_member
       builder.set_not_used_tfa
-      builder.set_signup_credentials(@params[:email], @params[:password], @params[:password_confirmation])
+      builder.set_email(@params[:email])
+      builder.set_password(@params[:password])
+      builder.set_password_confirmation(@params[:password_confirmation])
     end
   end
 end

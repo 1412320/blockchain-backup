@@ -25,9 +25,15 @@ class UserBuilder
     @user.used_tfa = false
   end
 
-  def set_signup_credentials(email, password, password_confirmation)
-    @user.email = email
-    @user.password = password
+  def set_email(email)
+    @user.email = email  
+  end
+
+  def set_password(password)
+    @user.password = password   
+  end
+
+  def set_password_confirmation(password_confirmation)
     @user.password_confirmation = password_confirmation    
   end
 
