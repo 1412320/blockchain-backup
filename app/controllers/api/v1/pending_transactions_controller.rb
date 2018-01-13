@@ -25,8 +25,8 @@ class Api::V1::PendingTransactionsController < ApplicationController
             KcoinTransaction.syncing_transaction
             render json:{ message: "Transaction created" }, status: 201
           else
-            res = JSON.parse(res.body)
-            render json: { errors: res["message"] }, status: res.code.to_i
+            body = JSON.parse(res.body)
+            render json: { errors: body["message"] }, status: res.code.to_i
           end
         else
           render json: { errors: "Not enough money" }, status: 400
