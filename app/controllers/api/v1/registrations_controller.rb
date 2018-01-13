@@ -10,8 +10,8 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    @user = User.new(user_params)
-    @user.role = 1
+    @params = params[:user]
+    @user = create_user_by_builder
     if @user.save
       auth_token = JsonWebToken.encode(user_id: @user.id)
       render :json => {
@@ -65,7 +65,13 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
   #   super(resource)
   # end
   private
-  def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation)
+  def create_user_by_builder   
+    user = UserBuilder.build do |builder|
+      builder.set_as_member
+      builder.set_not_used_tfa
+      builder.set_email(@params[:email])
+      builder.set_password(@params[:password])
+      builder.set_password_confirmation(@params[:password_confirmation])
+    end
   end
 end
