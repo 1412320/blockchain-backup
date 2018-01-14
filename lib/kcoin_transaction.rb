@@ -5,7 +5,6 @@ require 'net/https'
 require 'uri'
 require 'json'
 require 'crawlers/kcoin_crawler'
-require 'array_iterator'
 
 module KcoinTransaction
 =begin TRANSACTION STRUCTURE
@@ -46,12 +45,10 @@ module KcoinTransaction
   def self.syncing_transaction
     data = KcoinCrawler.get_data('/unconfirmed-transactions')
     transactions = KcoinCrawler.parse_json(data)
-    @receivers = Wallet.all.map(&:address)
-    i = ArrayIterator.new(transactions)
-    while i.has_next?
-      record_output(i.item)
-      record_input(i.item)
-      i.next_item
+    @receivers = Wallet.all.map(&:address)    
+    transactions.each do |transaction|
+      record_output(transaction)
+      record_input(transaction)
     end
   end
 
@@ -60,10 +57,8 @@ module KcoinTransaction
     signature = RSA.sign trans_binary, private_key
     public_key = RSA.get_public_key private_key
     pub = Parser.s_to_hex public_key.to_pem
-    i = ArrayIterator.new(transaction[:inputs])
-    while i.has_next?
-      i.item[:unlockScript] = "PUB #{pub} SIG #{signature}"
-      i.next_item
+    transaction[:inputs].each do |input|
+      input[:unlockScript] = "PUB #{pub} SIG #{signature}"
     end
     transaction
   end
@@ -79,18 +74,15 @@ module KcoinTransaction
 
     # Inputs each
     inputs_buff = ""
-    i = ArrayIterator.new(inputs)
-
-    while i.has_next?
+    inputs.each do |input|
       # Output hash (hexs)
-      output_hash = Parser.hex_to_s i.item[:referencedOutputHash]
+      output_hash = Parser.hex_to_s input[:referencedOutputHash]
       # Output index (i)
-      output_index = Parser.i_to_buff i.item[:referencedOutputIndex]
+      output_index = Parser.i_to_buff input[:referencedOutputIndex]
       # UnlockScript length = 0 (i)
       unlock_script_length = Parser.i_to_buff 0
       # Add all to input buffer
       inputs_buff += (output_hash + output_index + unlock_script_length)
-      i.next_item
     end
 
     # Output count
@@ -98,27 +90,23 @@ module KcoinTransaction
 
     # Outputs each
     outputs_buff = ""
-
-    o = ArrayIterator.new(outputs)
-    while o.has_next?
+    outputs.each do |output|
       # value (i)
-      value = Parser.i_to_buff o.item[:value]
+      value = Parser.i_to_buff output[:value]
       # lockScriptLength (i)
-      lock_script_length = Parser.i_to_buff o.item[:lockScript].length
+      lock_script_length = Parser.i_to_buff output[:lockScript].length
       # lockScript (s)
-      lock_script = o.item[:lockScript]
+      lock_script = output[:lockScript]
       # add all to outputs buffer
       outputs_buff += (value + lock_script_length + lock_script)
-      o.next_item
     end
 
     version + inputs_length + inputs_buff + outputs_length + outputs_buff
   end
 
   def self.record_output(transaction)
-    i = ArrayIterator.new(transaction['outputs'])
-    while i.has_next?
-      receiver = i.item['lockScript'].split(' ')[1]
+    transaction['outputs'].each_with_index do |output, index|
+      receiver = output['lockScript'].split(' ')[1]
       if @receivers.include? receiver
         unless Transaction.find_by(hash_str: transaction['hash'])
           Transaction.create(
@@ -127,41 +115,38 @@ module KcoinTransaction
           )
         end
         o = Output.find_by(output_ref: transaction['hash'], 
-                                output_index: i.index,
+                                output_index: index,
                                 receiver: receiver)
         unless o
           Output.create(
             output_ref: transaction['hash'],
-            output_index: i.index,
-            amount: i.item['value'],
+            output_index: index,
+            amount: output['value'],
             receiver: receiver,
             sender: find_sender(transaction['inputs'][0])
           )
         end
       end
-      i.next_item
     end
   end
   
   def self.record_input(transaction)
-    i = ArrayIterator.new(transaction['inputs'])
-    while i.has_next?
-      output_ref = i.item['referencedOutputHash']
-      output_index = i.item['referencedOutputIndex']
-      sender = find_sender(i.item)
+    transaction['inputs'].each do |input|
+      output_ref = input['referencedOutputHash']
+      output_index = input['referencedOutputIndex']
+      sender = find_sender(input)
       output = Output.find_by(output_ref: output_ref, 
                               output_index: output_index,
                               receiver: sender)
       if output
-        unless Transaction.find_by(hash_str: i.item['referencedOutputHash'])
+        unless Transaction.find_by(hash_str: input['referencedOutputHash'])
           Transaction.create(
-            hash_str: i.item['referencedOutputHash'],
+            hash_str: input['referencedOutputHash'],
             is_confirm: false
           )
         end
         output.update(is_used: true)
       end
-      i.next_item
     end
   end
 

@@ -1,7 +1,5 @@
 require ('crawlers/kcoin_crawler')
 require ('kcoin_transaction')
-require 'array_iterator'
-
 class KcoinService
   def initialize(user)
     @user = user
@@ -44,15 +42,11 @@ class KcoinService
     @transactions = []
     data = KcoinCrawler.get_data("/blocks", order: -1, limit: @per_page)
     blocks = KcoinCrawler.parse_json(data)
-    i1 = ArrayIterator.new(blocks)
-    while i1.has_next?
-      i2 = ArrayIterator.new(i1.item['transactions'])
-      while i2.has_next?
-        process_transaction(i2.item)
+    blocks.each do |block|
+      block['transactions'].each do |transaction|
+        process_transaction(transaction)
         return @transactions if @transactions.length >= @per_page
-        i2.next_item
       end
-      i1.next_item
     end
     @transactions
   end
@@ -60,21 +54,17 @@ class KcoinService
   private 
   def process_transaction(transaction)
     sender = KcoinTransaction.find_sender(transaction['inputs'][0])
-
-    i = ArrayIterator.new(transaction['outputs'])
-    while i.has_next?
-      receiver = i.item['lockScript'].split(' ')[1]
+    transaction['outputs'].each do |output|
+      receiver = output['lockScript'].split(' ')[1]
       trans = {
         hash: transaction['hash'],
         sender: sender,
         receiver: receiver,
-        value: i.item['value']
+        value: output['value']
       }
       @transactions << trans
       break if @transactions.length >= @per_page
-      i.next_item
     end
-    
   end
 
   def init_transaction
