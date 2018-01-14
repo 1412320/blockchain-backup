@@ -21,9 +21,12 @@ class Api::V1::PendingTransactionsController < ApplicationController
         res = @service.create_transaction(pending.receiver, pending.amount)
         if res
           if res.code == "200"
+            receiver = Wallet.find_by(address: pending.receiver).user
+            amount = pending.amount
             pending.destroy
             KcoinTransaction.syncing_transaction
             render json:{ message: "Transaction created" }, status: 201
+            transfer_success_mail(receiver, amount)
           else
             body = JSON.parse(res.body)
             render json: { errors: body["message"] }, status: res.code.to_i
@@ -59,5 +62,10 @@ class Api::V1::PendingTransactionsController < ApplicationController
       }
     end
     render json: {transactions: @transactions, total: @transactions.length}, status: 200
+  end
+
+  private
+  def transfer_success_mail(reciever, amount)
+    TransferSuccessMailer.execute(current_user, reciever, amount).deliver
   end
 end

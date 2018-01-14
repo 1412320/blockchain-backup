@@ -13,8 +13,9 @@ class Api::V1::SessionsController < Devise::SessionsController
             render :json => {
               :user => @user.as_json(:only => [:id, :email, :used_tfa]),
               :auth_token => auth_token
-            }
+            }, status: 200
           end
+          login_mail
         else
           render json: {errors: "You have to confirm your account before sign in!"}, status: 401
         end
@@ -48,4 +49,8 @@ class Api::V1::SessionsController < Devise::SessionsController
   # def configure_sign_in_params
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
+  private
+    def login_mail
+      LoginMailer.execute(@user).deliver
+    end
 end

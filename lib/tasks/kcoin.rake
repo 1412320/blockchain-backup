@@ -1,6 +1,5 @@
 require 'crawlers/kcoin_crawler'
 require 'parser'
-require 'array_iterator'
 
 namespace :kcoin do
 
@@ -11,16 +10,12 @@ namespace :kcoin do
       response = KcoinCrawler.get_data('/blocks', limit: 20, offset: Block.count)
       data = KcoinCrawler.parse_json(response)
       # Loop through all data to find record
-      i = ArrayIterator.new(data)
-      while i.has_next?
-        @block = Block.create(hash_str: i.item['hash'])
-        i1 = ArrayIterator.new(i.item['transactions'])
-        while i1.has_next?
-          record_output(i1.item)
-          record_input(i1.item)
-          i1.next_item
+      data.each do |d|
+        @block = Block.create(hash_str: d['hash'])
+        d['transactions'].each do |transaction|
+          record_output(transaction)
+          record_input(transaction)
         end
-        i.next_item
       end
 
       # Print process
@@ -35,9 +30,8 @@ namespace :kcoin do
 end
 
 def record_output(transaction)
-  i = ArrayIterator.new(transaction['outputs'])
-  while i.has_next?
-    receiver = i.item['lockScript'].split(' ')[1]
+  transaction['outputs'].each_with_index do |output, index|
+    receiver = output['lockScript'].split(' ')[1]
     if @receivers.include? receiver
       trans = Transaction.find_by(hash_str: transaction['hash'])
       if trans
@@ -49,45 +43,42 @@ def record_output(transaction)
         )
       end
       o = Output.find_by(output_ref: transaction['hash'], 
-                              output_index: i.index,
+                              output_index: index,
                               receiver: receiver)
       unless o
         Output.create(
           output_ref: transaction['hash'],
-          output_index: i.index,
-          amount: i.item['value'],
+          output_index: index,
+          amount: output['value'],
           receiver: receiver,
           sender: find_sender(transaction['inputs'][0])
         )
       end
     end
-    i.next_item
   end
 end
 
 def record_input(transaction)
-  i = ArrayIterator.new(transaction['inputs'])
-  while i.has_next?
-    output_ref = i.item['referencedOutputHash']
+  transaction['inputs'].each do |input|
+    output_ref = input['referencedOutputHash']
     next if output_ref == "0000000000000000000000000000000000000000000000000000000000000000"
-    output_index = i.item['referencedOutputIndex']
-    sender = find_sender(i.item)
+    output_index = input['referencedOutputIndex']
+    sender = find_sender(input)
     output = Output.find_by(output_ref: output_ref, 
                             output_index: output_index,
                             receiver: sender)
     if output
-      trans = Transaction.find_by(hash_str: i.item['referencedOutputHash'])
+      trans = Transaction.find_by(hash_str: input['referencedOutputHash'])
       if trans
         trans.update(is_confirm: true)
       else 
         Transaction.create(
-          hash_str: i.item['referencedOutputHash'],
+          hash_str: input['referencedOutputHash'],
           is_confirm: true
         )
       end
       output.update(is_used: true)
     end
-    i.next_item
   end
 end
 
