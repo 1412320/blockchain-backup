@@ -1,8 +1,10 @@
 class TransferSuccessMailer < ApplicationMailer
-	def execute(user, receiver, value)
-		@user = user
-		@receiver = receiver
-		@value = value
-		mail to: user.email, subject: "Transfer KCoin successfully"
-	end
+
+		def execute(mailer_params)
+			@user = mailer_params[:user]
+			@receiver = mailer_params[:receiver]
+			@amount = mailer_params[:amount]
+			mail to: @user.email, subject: "Transfer KCoin successfully"
+		end
+
 end

@@ -15,7 +15,10 @@ class Api::V1::SessionsController < Devise::SessionsController
               :auth_token => auth_token
             }, status: 200
           end
-          login_mail
+          mailer_params = {
+            user: @user
+          }
+          login_mail(mailer_params)
         else
           render json: {errors: "You have to confirm your account before sign in!"}, status: 401
         end
@@ -50,7 +53,7 @@ class Api::V1::SessionsController < Devise::SessionsController
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
   private
-    def login_mail
-      LoginMailer.execute(@user).deliver
-    end
+  def login_mail(mailer_params)
+    LoginMailer.execute(mailer_params).deliver
+  end
 end
