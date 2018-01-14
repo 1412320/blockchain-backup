@@ -1,5 +1,6 @@
 class BlockBroadcastJob < ApplicationJob
-  def perform()
-    ActionCable.server.broadcast "block"
+  def perform
+    p 'sending'
+    ActionCable.server.broadcast "block", data: true
   end
 end

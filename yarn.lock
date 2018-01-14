@@ -34,6 +34,10 @@
   version "0.16.0"
   resolved "https://registry.yarnpkg.com/@std/esm/-/esm-0.16.0.tgz#2a7a33ecb7f1701cebd4c87df6d0d945ed51f730"
 
+"@types/actioncable@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@types/actioncable/-/actioncable-0.0.2.tgz#a1b2faa384438315dd33f210f188f623c2c8900c"
+
 "@types/history@*":
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.6.2.tgz#12cfaba693ba20f114ed5765467ff25fdf67ddb0"

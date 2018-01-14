@@ -23,6 +23,7 @@ gem 'jquery-rails'
 gem 'font-awesome-rails'
 gem 'figaro'
 gem 'whenever', require: false
+gem 'redis', '~> 3.0'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
