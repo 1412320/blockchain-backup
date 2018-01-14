@@ -8,7 +8,7 @@ import { transactionServices } from '../services';
 import { connect } from 'react-redux';
 import { adminActions } from '../actions';
 import { UserActions } from '../actions';
-
+import { Cable } from 'actioncable';
 interface UserInfo {
   email: string,
   address: string,
@@ -74,6 +74,7 @@ export interface TransactionInfo {
 }
 
 class HomeContainer extends React.Component<HomeContainerProps, HomeContainerState> {
+  block: any;
   constructor(props: HomeContainerProps) {
     super(props);
     this.state = {
@@ -150,13 +151,37 @@ class HomeContainer extends React.Component<HomeContainerProps, HomeContainerSta
   }
 
   componentDidMount() {
+    this.createSocket();
     this.props.dispatch(walletActions.getInfo());
     this.props.dispatch(transactionActions.getNewest());
     this.props.dispatch(adminActions.getAllUsersInfo(1));
     this.props.dispatch(adminActions.getSystemInfo());
     this.props.dispatch(adminActions.getTransactions(1));
   }
+  createSocket() {
+    let that = this
+    console.log('m')
+    let cable = ActionCable.createConsumer();
+    this.block = cable.subscriptions.create({
+      channel: 'BlockChannel'
+    }, {
+			connected: function () {
+        console.log("skjdhkk")
+				setTimeout(() => this.perform('follow'), 1000);
+			},
+      disconnected: () => {
 
+      },
+			received: function(data) {
+        if (that.state.is_newest)
+          {
+            that.props.dispatch(transactionActions.getNewest());
+            that.props.dispatch(walletActions.getInfo());
+    
+          }
+			}
+    });
+  }
   handleSuccess() {
     this.closeModal();
     this.props.dispatch(walletActions.getInfo());

@@ -9,7 +9,7 @@
 #
 rails_env = ENV['RAILS_ENV'] || "development"
 set :environment, rails_env
-every 5.minutes do
+every 1.minutes do
   rake "kcoin:sync"
 end
 #
